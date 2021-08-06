@@ -14,9 +14,7 @@ class EncriptoManiac(object):
 	def iniciarBaseDeClaves(self):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
 		try:
-			baseDeDatos.execute("""create table clavesYAplicaciones ( codigo integer primary key autoincrement,
-								nombreApp text,
-								clave text)""")
+			baseDeDatos.execute(ConsultaDB.crearTabla)
 		except sqlite3.OperationalError:
 			pass
 		self.baseIniciada = True
@@ -44,13 +42,13 @@ class EncriptoManiac(object):
 		
 	def ingresarClave(self,nombreApp,clave):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		baseDeDatos.execute('INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)',(nombreApp,self.encriptarASE(clave)))
+		baseDeDatos.execute(ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
 	def buscarClave(self,nombreApp):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		cursor = baseDeDatos.execute('SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?',(nombreApp,))
+		cursor = baseDeDatos.execute(ConsultaDB.buscarClave,(nombreApp,))
 		respuesta = cursor.fetchone()
 		baseDeDatos.close()
 		if( respuesta != None and len(respuesta)>0):
@@ -60,7 +58,7 @@ class EncriptoManiac(object):
 
 	def listarCuentas(self):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		cursor = baseDeDatos.execute('SELECT nombreApp FROM clavesYAplicaciones')
+		cursor = baseDeDatos.execute(ConsultaDB.listarCuentas)
 		respuesta = cursor.fetchall()
 		baseDeDatos.close()
 		if(len(respuesta)>0):
@@ -73,10 +71,18 @@ class EncriptoManiac(object):
 			
 	def actualizarClave(self,nombreApp,calveNueva):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		baseDeDatos.execute('UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?',(self.encriptarASE(calveNueva),nombreApp))
+		baseDeDatos.execute(ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
 class ConstantesEncryptoManiac:
 	baseEncriptoManiac = "manicaDB.db"
 	nombreArchivoKey = 'encriptoKey.key'
+
+class ConsultaDB:
+	actualizarClave = 'UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?'
+	listarCuentas = 'SELECT nombreApp FROM clavesYAplicaciones'
+	buscarClave = 'SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?'
+	ingresarClave = 'INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)'
+
+	crearTabla = 'CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text)'
