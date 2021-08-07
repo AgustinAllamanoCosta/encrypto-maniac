@@ -33,6 +33,7 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.dadoQueInicioCryptoManiac()
 		self.cuandoSeIngresaLaCuenta('slack').conlaClave('1234Allamano')
 		self.seVerificaQueSeInsertoCorrectamenteEnLaBase()
+		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionBuscarClaveSeEsperaQueRetorneLaClaveDesencryptada(self):
 		self.limpiarBase()
@@ -40,27 +41,31 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		self.cuandoBuscoPorSuNombre()
 		self.seVerificaQueSeObtieneLaCalveIngresada()
+		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionBuscarClaveConUnNombreDeAppQueNoExisteEnLaBaseSeEsperaQueRetorneNone(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
 		self.cuandoEjecutoElMetodoBuscarConUnNombreQueCuentaQueNoEstaEnLaBase()
 		self.seVerificaQueLaRespuestaEsNone()
+		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionListarCuentasYQueExistenCuentasEnLaBBDDSeVerificaQueLaFuncionRetornasLasCuentas(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		self.cuandoSeEjecutaListarCuentas()
-		self.seVerificaQueSeListenLasCuentas()	
+		self.seVerificaQueSeListenLasCuentas()
+		self.limpiarBase()	
 
 	def test_DadoQueSeEjecutaLaFuncionActualizarClaveYQueExisteUnRegistroEnLaBBDDSeVerificaQueLaClaveDeEseRegistroSeActualiza(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		self.cuandoSeActualizaLaClave('4444')
-		self.seVerificaQueSeActualizo()		
-	
+		self.seVerificaQueSeActualizo()
+		self.limpiarBase()		
+
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
