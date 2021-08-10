@@ -1,81 +1,54 @@
-import encriptoManiac as em
-from os import system
-class AdministradorConsolaEncriptoManiac():
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from encriptoManiac import EncriptoManiac 
+import CustomException as cust
+
+class ContextoConsolaManiac(object):
 
 	def __init__(self):
-		self.encriptoManiac = em.EncriptoManiac()
-		self.cabeceraConsola = """
-ENCRIPTO_MANIAC
-Press 1 para ingresar una nueva clave
-Press 2 para ver la clave de una cuenta ya ingresada
-Press 3 para listar todas las cuentas ingresadas
-Press 4 para modificar la clave de una cuenta ya ingresada
-Press 5 para salir :D
-"""
-		self.cursorConsola = '>->->->'
-		self.correrLoopPrincipal = True
-		self.consolLoop()
+		self.consola = ConsolaEncryptoManiac()
+		self.historial = HistorialConsola()
 
+	def bucleDeConsola(self):
+		self.escribirEnConsola(ConstanteConsola.mensajeBienvenida)
+		self.escribirEnConsola(ConstanteConsola.mensajeComandosBasicos)
+		while self.consola.correrLoop:
+			self.analizarEntrada(self.ingresarEntradas())
 
-	def consolLoop(self):
-		print(self.cabeceraConsola)
-		while self.correrLoopPrincipal:
-			resultado = '';
-			operancion = self.inputConsolaManiac('')
-			if operancion == '1':
-				resultado += self.ingresarClavePorConsola()
-			elif operancion == '2':
-				resultado += self.verClavaDeCuenta()
-			elif operancion == '3':
-				resultado += self.listarCuentasPorConsola()
-			elif operancion == '4':
-				resultado += self.modificarClavePorConsola()
-			elif operancion == '5':
-				self.salirPorConsola()
-			else:
-				resultado += 'Operacion no encontrada'
-			system('clear')
-			print(self.cabeceraConsola)
-			print(resultado)
+	def ingresarEntradas(self):
+		return input()
 
-	def ingresarClavePorConsola(self):
-		
-		nombreApp = self.inputConsolaManiac('Nombre de app a ingresar ')
-		calveAEncryptar = self.inputConsolaManiac('Clave a encryptar ')
+	def analizarEntrada(self,entrada):
+		self.consola.operacionesConsola(entrada)
+		self.historial.agregarEntrada(entrada)
 
-		self.encriptoManiac.ingresarClave(nombreApp,calveAEncryptar)
-		
-		return 'se encrypto la clave exitosamente'
+	def escribirEnConsola(self,mensaje):
+		print(mensaje)
+		self.historial.agregarEntrada(mensaje)
 
-	def verClavaDeCuenta(self):
-		nombreCuentaABuscar = self.inputConsolaManiac('Nombre de cuenta a buscar ')
-		clave = self.encriptoManiac.buscarClave(nombreCuentaABuscar)
-		if clave == None:
-			return ''
-		else:
-			return clave
+	def obtenerHistorial(self):
+		return self.historial.obtener()
 
-	def listarCuentasPorConsola(self):
-		return self.encriptoManiac.listarCuentas()
+class HistorialConsola(object):
+	
+	def __init__(self):
+		self.entradas = []
 
-	def modificarClavePorConsola(self):
-		nombreApp = self.inputConsolaManiac('Nombre de cuenta a modificar ')
-		nuevaClave = self.inputConsolaManiac('Nueva clave de la cuenta ')
+	def agregarEntrada(self,entrada):
+		self.entradas.append(entrada)
 
-		if self.encriptoManiac.buscarClave(nombreApp) == None:
-			return 'La cuenta no existe en la bbdd '
-		else:
-			self.encriptoManiac.actualizarClave(nombreApp,nuevaClave)
-			return 'Se actualizo la calve correctamente '
+	def obtener(self):
+		return self.entradas
 
-	def salirPorConsola(self):
-		self.correrLoopPrincipal = False
+class ConsolaEncryptoManiac():
 
-	def inputConsolaManiac(self,mensjaeOpciona):
-		return input(self.cursorConsola + mensjaeOpciona)
+	def __init__(self):
+		self.correrLoop = True
 
-def main():
-	adminConsol = AdministradorConsolaEncriptoManiac()
+	def operacionesConsola(self,numeroOperacion):
+		if numeroOperacion == 'exit':
+			self.correrLoop = False
 
-if __name__ == "__main__":
-	main()
+class ConstanteConsola:
+	mensajeBienvenida = 'ENCRYPTO MANIAC'
+	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregarCon para ver las contraseñas escribi listar'
