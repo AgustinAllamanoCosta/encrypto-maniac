@@ -1,0 +1,3 @@
+class InterrumpirConsola(Exception):
+	pass
+		

@@ -6,7 +6,7 @@ import CustomException as cust
 class ContextoConsolaManiac(object):
 
 	def __init__(self):
-		self.consola = ConsolaEncryptoManiac()
+		self.consola = ConsolaEncryptoManiac(self)
 		self.historial = HistorialConsola()
 
 	def bucleDeConsola(self):
@@ -42,13 +42,17 @@ class HistorialConsola(object):
 
 class ConsolaEncryptoManiac():
 
-	def __init__(self):
+	def __init__(self,contexto):
 		self.correrLoop = True
+		self.contexto = contexto
 
-	def operacionesConsola(self,numeroOperacion):
-		if numeroOperacion == 'exit':
+	def operacionesConsola(self,operacion):
+		if operacion == 'exit':
 			self.correrLoop = False
+		elif operacion == 'agregar':
+			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
 
 class ConstanteConsola:
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
-	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregarCon para ver las contraseñas escribi listar'
+	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las contraseñas escribi listar'
+	mensajePedirNombre = 'Ingrese el nombre de la cuenta'
