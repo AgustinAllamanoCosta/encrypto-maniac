@@ -32,11 +32,11 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraLaPeticionDeContraseña()	
 
-	def test_dadoQueSeIniciaElContextoDadoQueExistenCuentasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeListaLasCuentasEnLaBase(self):
+	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoListar()
 		self.cuandoSeInicia()
-		self.seVerificaQueSeListanLasCuentas()
+		self.seVerificaQueSeLlamaALaFuncionListar()
 
 	def dadoQueSeTieneUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
@@ -77,7 +77,7 @@ class TestConsolaManiac(unittest.TestCase):
 	def seVerificaQueSeMuestraLaPeticionDeContraseña(self):
 		assert self.contexto.obtenerHistorial()[3] == ConstanteConsola.mensajePedirContraseña
 
-	def seVerificaQueSeListanLasCuentas(self):
+	def seVerificaQueSeLlamaALaFuncionListar(self):
 		assert self.seEjecutoListar == True
 
 class AdministradorDeMensajes(object):
