@@ -51,8 +51,12 @@ class ConsolaEncryptoManiac():
 			self.correrLoop = False
 		elif operacion == 'agregar':
 			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
+			nombreCuenta = self.contexto.ingresarEntradas()
+			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirContraseña)
+			contraseña = self.contexto.ingresarEntradas()
 
 class ConstanteConsola:
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
 	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las contraseñas escribi listar'
 	mensajePedirNombre = 'Ingrese el nombre de la cuenta'
+	mensajePedirContraseña = 'Ingrese la contraseña'
