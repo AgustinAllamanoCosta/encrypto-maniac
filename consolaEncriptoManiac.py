@@ -53,6 +53,8 @@ class ConsolaEncryptoManiac():
 			self.comandoAgregarCuenta()
 		elif operacion == 'listar':
 			self.comandoListar()
+		elif operacion == 'vermas':
+			self.contexto.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 
 	def comandoAgregarCuenta(self):
 		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
@@ -64,6 +66,13 @@ class ConsolaEncryptoManiac():
 
 class ConstanteConsola:
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
-	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las contraseñas escribi listar'
+	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las cuentas escribi listar'
 	mensajePedirNombre = 'Ingrese el nombre de la cuenta'
 	mensajePedirContraseña = 'Ingrese la contraseña'
+	mensajeComandosAvanzados = '''Escribi: 
+	modificar -> para cambiar la clave de una cuenta
+	eliminar  -> para borrar una cuenta
+	mostrar   -> para ver la contraseña de una cuenta
+	listar    -> para ver todas las cuentas en la base
+	agregar   -> para agregar una nueva cuenta y contraseña en la base
+	vermas    -> para ver este mensaje :D'''

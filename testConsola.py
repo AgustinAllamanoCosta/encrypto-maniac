@@ -38,6 +38,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeLlamaALaFuncionListar()
 
+	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutaElComandoVerMas()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeListanElRestoDeLosComandos()
+
 	def dadoQueSeTieneUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
 
@@ -59,6 +65,10 @@ class TestConsolaManiac(unittest.TestCase):
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ConsolaEncryptoManiac.comandoListar = self.observadorFuncionListar	
 
+	def dadoQueSeEjecutaElComandoVerMas(self):
+		administrador =  AdministradorDeMensajes(['vermas','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
 
@@ -79,6 +89,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeLlamaALaFuncionListar(self):
 		assert self.seEjecutoListar == True
+
+	def seVerificaQueSeListanElRestoDeLosComandos(self):
+		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeComandosAvanzados
 
 class AdministradorDeMensajes(object):
 
