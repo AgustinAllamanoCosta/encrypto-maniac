@@ -53,7 +53,11 @@ class ConsolaEncryptoManiac():
 			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
 			nombreCuenta = self.contexto.ingresarEntradas()
 			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirContraseña)
-			contraseña = self.contexto.ingresarEntradas()
+		elif operacion == 'listar':
+			self.comandoListar()
+
+	def comandoListar(self):
+		pass
 
 class ConstanteConsola:
 	mensajeBienvenida = 'ENCRYPTO MANIAC'

@@ -32,6 +32,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraLaPeticionDeContraseña()	
 
+	def test_dadoQueSeIniciaElContextoDadoQueExistenCuentasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeListaLasCuentasEnLaBase(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutaElComandoListar()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeListanLasCuentas()
+
 	def dadoQueSeTieneUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
 
@@ -46,6 +52,15 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeIngresaElComandoAgregarConUnNombreDeCuenta(self):
 		administrador =  AdministradorDeMensajes(['agregar','slack','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+
+	def dadoQueSeEjecutaElComandoListar(self):
+		self.seEjecutoListar = False
+		administrador =  AdministradorDeMensajes(['listar','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		ConsolaEncryptoManiac.comandoListar = self.observadorFuncionListar	
+
+	def observadorFuncionListar(self):
+		self.seEjecutoListar = True
 
 	def cuandoSeInicia(self):
 		self.contexto.bucleDeConsola()
@@ -62,6 +77,9 @@ class TestConsolaManiac(unittest.TestCase):
 	def seVerificaQueSeMuestraLaPeticionDeContraseña(self):
 		assert self.contexto.obtenerHistorial()[3] == ConstanteConsola.mensajePedirContraseña
 
+	def seVerificaQueSeListanLasCuentas(self):
+		assert self.seEjecutoListar == True
+
 class AdministradorDeMensajes(object):
 
 	def __init__(self,mensajesAEnviar):
@@ -72,8 +90,6 @@ class AdministradorDeMensajes(object):
 		if(len(self.mensajes)>=self.cantidadDeMensajesEnviados):
 			mensaje = self.mensajes[self.cantidadDeMensajesEnviados]
 			self.cantidadDeMensajesEnviados+=1
-		print(self.mensajes)
-		print("Indice mensaje "+str(self.cantidadDeMensajesEnviados))
 		return mensaje;
 
 if __name__ == "__main__":
