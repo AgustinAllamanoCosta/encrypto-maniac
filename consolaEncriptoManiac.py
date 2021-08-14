@@ -50,11 +50,14 @@ class ConsolaEncryptoManiac():
 		if operacion == 'exit':
 			self.correrLoop = False
 		elif operacion == 'agregar':
-			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
-			nombreCuenta = self.contexto.ingresarEntradas()
-			self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirContraseña)
+			self.comandoAgregarCuenta()
 		elif operacion == 'listar':
 			self.comandoListar()
+
+	def comandoAgregarCuenta(self):
+		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
+		nombreCuenta = self.contexto.ingresarEntradas()
+		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirContraseña)
 
 	def comandoListar(self):
 		pass
