@@ -44,6 +44,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 
+	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutarElComandoModificar()
+		self.cuandoSeInicia()
+		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
+
 	def dadoQueSeTieneUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
 
@@ -69,8 +75,17 @@ class TestConsolaManiac(unittest.TestCase):
 		administrador =  AdministradorDeMensajes(['vermas','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
+	def dadoQueSeEjecutarElComandoModificar(self):
+		self.seEjecutoModificar = False
+		administrador =  AdministradorDeMensajes(['modificar','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		ConsolaEncryptoManiac.comandoModificar = self.observadorFuncionModificar		
+
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
+
+	def observadorFuncionModificar(self):
+		self.seEjecutoModificar = True
 
 	def cuandoSeInicia(self):
 		self.contexto.bucleDeConsola()
@@ -92,6 +107,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeListanElRestoDeLosComandos(self):
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeComandosAvanzados
+
+	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):
+		assert self.seEjecutoModificar == True
 
 class AdministradorDeMensajes(object):
 

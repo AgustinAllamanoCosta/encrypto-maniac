@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from encriptoManiac import EncriptoManiac 
 import CustomException as cust
+import re
 
 class ContextoConsolaManiac(object):
 
@@ -55,11 +56,16 @@ class ConsolaEncryptoManiac():
 			self.comandoListar()
 		elif operacion == 'vermas':
 			self.contexto.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
+		elif operacion  == 'modificar':
+			self.comandoModificar()
 
 	def comandoAgregarCuenta(self):
 		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
 		nombreCuenta = self.contexto.ingresarEntradas()
 		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirContraseña)
+
+	def comandoModificar(self):
+		pass
 
 	def comandoListar(self):
 		pass
