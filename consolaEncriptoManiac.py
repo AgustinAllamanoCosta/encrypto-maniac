@@ -22,14 +22,23 @@ class ContextoConsolaManiac(object):
 
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
+		comando = self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])	
 		try:
-			if(len(valoresEntrada)==1):
-				self.consola.operacionesConsola(valoresEntrada[0])		
-			else:
-				self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])
+			resultado = comando.ejecutar()
+			if(resultado != None):
+				self.escribirEnConsola(resultado)
+
+		except ce.ParametrosComandoIncompletos as expt:
+			print('Comando incompleto')
+			self.escribirEnConsola(expt.mensaje)
 		except ce.ParametrosComandosNullos:
+			print('Mensaje de error')
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
+		except ce.InterrumpirConsola:
+			print('Interrupir consola')
+			self.consola.correrLoop = False
 		except IndexError:
+			print('Index error')
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
 
 		self.historial.agregarEntrada(entrada)
@@ -58,32 +67,59 @@ class ConsolaEncryptoManiac():
 		self.correrLoop = True
 		self.contexto = contexto
 
-	def operacionesConsola(self,comando,argumentos=[]):
-		if comando == 'exit':
-			self.correrLoop = False
-		elif comando == 'agregar':
-			if(argumentos == []):
-				raise ce.ParametrosComandosNullos()
-			else:
-				self.comandoAgregarCuenta(argumentos[0],argumentos[1])
-		elif comando == 'listar':
-			self.comandoListar()
-		elif comando == 'vermas':
-			self.contexto.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
-		elif comando  == 'modificar':
-			if(argumentos == []):
-				raise ce.ParametrosComandosNullos()
-			else:
-				self.comandoModificar(argumentos[0])
+	def operacionesConsola(self,operacion,argumentos=[]):
+		if operacion == 'exit':
+			return ComandoExit()
+		elif operacion == 'listar':
+			return ComandoListar()
+		elif operacion == 'vermas':
+			return ComandoVerMas()
+		elif operacion == 'agregar':
+			return ComandoAgregar(argumentos)		
+		elif operacion  == 'modificar':
+			return ComandoModificar(argumentos)
 
-	def comandoAgregarCuenta(self,nombre,contrasenia):
-		pass
+class ComandoConParametro(object):
 
-	def comandoModificar(self,nombreCuenta):
-		pass
+	def __init__(self,parametros):
+		self.parametroComadno = parametros
 
-	def comandoListar(self):
-		pass
+	def ejecutar(self):
+		if(self.parametroComadno == []):
+			raise ce.ParametrosComandosNullos()
+		return None
+
+class ComandoConsola(object):
+
+	def ejecutar(self):
+		return None
+
+class ComandoAgregar(ComandoConParametro):
+	
+	def ejecutar(self):
+		super().ejecutar()
+		if(len(self.parametroComadno)==1):
+			raise ce.ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		return None
+
+class ComandoModificar(ComandoConParametro):
+
+	def ejecutar(self):
+		super().ejecutar()
+
+class ComandoListar(ComandoConsola):
+	pass
+
+class ComandoVerMas(ComandoConsola):
+
+	def ejecutar(self):
+		return ConstanteConsola.mensajeComandosAvanzados
+
+class ComandoExit(ComandoConsola):
+
+	def ejecutar(self):
+		raise ce.InterrumpirConsola()
+		return None
 
 class ConstanteConsola:
 
