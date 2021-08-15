@@ -71,12 +71,15 @@ class ConsolaEncryptoManiac():
 		elif comando == 'vermas':
 			self.contexto.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 		elif comando  == 'modificar':
-			self.comandoModificar()
+			if(argumentos == []):
+				raise ce.ParametrosComandosNullos()
+			else:
+				self.comandoModificar(argumentos[0])
 
 	def comandoAgregarCuenta(self,nombre,contrasenia):
 		pass
 
-	def comandoModificar(self):
+	def comandoModificar(self,nombreCuenta):
 		pass
 
 	def comandoListar(self):

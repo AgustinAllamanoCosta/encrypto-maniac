@@ -8,6 +8,10 @@ from os import system
 class TestConsolaManiac(unittest.TestCase):
 
 	#Test de interfaz de consola
+	#Agregar ok
+	#Listar ok
+	#VerMas ok
+	#Modificar 
 	def test_dadoQueSeIniciaElContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeSaleDelContextoAlIniciar();
@@ -56,6 +60,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
 
+	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutarElComandoModificarSinElParametro()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeMuestraElMensajeDeError()
+
 	def dadoQueSeTieneUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
 
@@ -85,18 +95,22 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueSeEjecutarElComandoModificar(self):
 		self.seEjecutoModificar = False
-		administrador =  AdministradorDeMensajes(['modificar','exit'])
+		administrador =  AdministradorDeMensajes(['modificar slack','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ConsolaEncryptoManiac.comandoModificar = self.observadorFuncionModificar
 
 	def dadoQueSeEjecutaElComandoAgregarConUnParametro(self):
 		administrador =  AdministradorDeMensajes(['agregar slack','exit'])
-		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes		
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+
+	def dadoQueSeEjecutarElComandoModificarSinElParametro(self):		
+		administrador =  AdministradorDeMensajes(['modificar ','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
 
-	def observadorFuncionModificar(self):
+	def observadorFuncionModificar(self,nombreCuenta):
 		self.seEjecutoModificar = True
 
 	def observadorFuncionAgregar(self,nombre,contrasenia):
