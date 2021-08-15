@@ -32,6 +32,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
+	def test_dadoQueSeIniciaElContextoCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutaElComandoAgregarConUnParametro()
+		self.cuandoSeInicia()
+		self.seVerificaMuestraElMensajeDeAyudaDelComando()
+
 	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoListar()
@@ -81,7 +87,11 @@ class TestConsolaManiac(unittest.TestCase):
 		self.seEjecutoModificar = False
 		administrador =  AdministradorDeMensajes(['modificar','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
-		ConsolaEncryptoManiac.comandoModificar = self.observadorFuncionModificar		
+		ConsolaEncryptoManiac.comandoModificar = self.observadorFuncionModificar
+
+	def dadoQueSeEjecutaElComandoAgregarConUnParametro(self):
+		administrador =  AdministradorDeMensajes(['agregar slack','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes		
 
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
@@ -115,6 +125,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeMuestraElMensajeDeError(self):
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeErrorComandoParametros
+
+	def seVerificaMuestraElMensajeDeAyudaDelComando(self):
+		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeAyudaComandoAgregar		
 
 class AdministradorDeMensajes(object):
 
