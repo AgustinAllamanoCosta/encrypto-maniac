@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from encriptoManiac import EncriptoManiac 
-import CustomException as cust
+import CustomException as ce
 import re
 
 class ContextoConsolaManiac(object):
@@ -22,10 +22,13 @@ class ContextoConsolaManiac(object):
 
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
-		if(len(valoresEntrada)==1):
-			self.consola.operacionesConsola(valoresEntrada[0])		
-		else:
-			self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])
+		try:
+			if(len(valoresEntrada)==1):
+				self.consola.operacionesConsola(valoresEntrada[0])		
+			else:
+				self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])
+		except ce.ParametrosComandosNullos:
+			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
 		self.historial.agregarEntrada(entrada)
 
 	def escribirEnConsola(self,mensaje):
@@ -56,7 +59,10 @@ class ConsolaEncryptoManiac():
 		if comando == 'exit':
 			self.correrLoop = False
 		elif comando == 'agregar':
-			self.comandoAgregarCuenta()
+			if(argumentos == []):
+				raise ce.ParametrosComandosNullos()
+			else:
+				self.comandoAgregarCuenta(argumentos[0],argumentos[1])
 		elif comando == 'listar':
 			self.comandoListar()
 		elif comando == 'vermas':
@@ -64,7 +70,7 @@ class ConsolaEncryptoManiac():
 		elif comando  == 'modificar':
 			self.comandoModificar()
 
-	def comandoAgregarCuenta(self):
+	def comandoAgregarCuenta(self,nombre,contrasenia):
 		pass
 
 	def comandoModificar(self):
@@ -74,6 +80,7 @@ class ConsolaEncryptoManiac():
 		pass
 
 class ConstanteConsola:
+
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
 	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las cuentas escribi listar'
 	mensajeComandosAvanzados = '''Escribi: 
@@ -83,3 +90,4 @@ class ConstanteConsola:
 	listar    -> para ver todas las cuentas en la base
 	agregar   -> para agregar una nueva cuenta y contraseña en la base
 	vermas    -> para ver este mensaje :D'''
+	mensajeErrorComandoParametros = 'Error al ingresar los parametros del comando porfavor vuelva a intentarlo'

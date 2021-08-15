@@ -26,6 +26,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
+	def test_dadoQueSeIniciaElContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutaElComandoAgregarSinParametros()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeMuestraElMensajeDeError()
+
 	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoListar()
@@ -53,12 +59,12 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueSeEjecutaElComandoAgregar(self):
 		self.seEjecutoAgregar = False
-		administrador =  AdministradorDeMensajes(['agregar','exit'])
+		administrador =  AdministradorDeMensajes(['agregar slack 1234','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ConsolaEncryptoManiac.comandoAgregarCuenta = self.observadorFuncionAgregar
 
-	def dadoQueSeIngresaElComandoAgregarConUnNombreDeCuenta(self):
-		administrador =  AdministradorDeMensajes(['agregar slack','exit'])
+	def dadoQueSeEjecutaElComandoAgregarSinParametros(self):
+		administrador =  AdministradorDeMensajes(['agregar','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
 	def dadoQueSeEjecutaElComandoListar(self):
@@ -83,7 +89,7 @@ class TestConsolaManiac(unittest.TestCase):
 	def observadorFuncionModificar(self):
 		self.seEjecutoModificar = True
 
-	def observadorFuncionAgregar(self):
+	def observadorFuncionAgregar(self,nombre,contrasenia):
 		self.seEjecutoAgregar = True
 
 	def cuandoSeInicia(self):
@@ -106,6 +112,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeLlamaALaFuncionAgregar(self):
 		assert self.seEjecutoAgregar == True
+
+	def seVerificaQueSeMuestraElMensajeDeError(self):
+		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeErrorComandoParametros
 
 class AdministradorDeMensajes(object):
 
