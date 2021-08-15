@@ -9,6 +9,7 @@ class ContextoConsolaManiac(object):
 	def __init__(self):
 		self.consola = ConsolaEncryptoManiac(self)
 		self.historial = HistorialConsola()
+		self.patronConsola = re.compile('\S+')
 
 	def bucleDeConsola(self):
 		self.escribirEnConsola(ConstanteConsola.mensajeBienvenida)
@@ -20,7 +21,11 @@ class ContextoConsolaManiac(object):
 		return input()
 
 	def analizarEntrada(self,entrada):
-		self.consola.operacionesConsola(entrada)
+		valoresEntrada = self.patronConsola.findall(entrada)
+		if(len(valoresEntrada)==1):
+			self.consola.operacionesConsola(valoresEntrada[0])		
+		else:
+			self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])
 		self.historial.agregarEntrada(entrada)
 
 	def escribirEnConsola(self,mensaje):
@@ -47,22 +52,20 @@ class ConsolaEncryptoManiac():
 		self.correrLoop = True
 		self.contexto = contexto
 
-	def operacionesConsola(self,operacion):
-		if operacion == 'exit':
+	def operacionesConsola(self,comando,argumentos=[]):
+		if comando == 'exit':
 			self.correrLoop = False
-		elif operacion == 'agregar':
+		elif comando == 'agregar':
 			self.comandoAgregarCuenta()
-		elif operacion == 'listar':
+		elif comando == 'listar':
 			self.comandoListar()
-		elif operacion == 'vermas':
+		elif comando == 'vermas':
 			self.contexto.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
-		elif operacion  == 'modificar':
+		elif comando  == 'modificar':
 			self.comandoModificar()
 
 	def comandoAgregarCuenta(self):
-		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirNombre)
-		nombreCuenta = self.contexto.ingresarEntradas()
-		self.contexto.escribirEnConsola(ConstanteConsola.mensajePedirContraseña)
+		pass
 
 	def comandoModificar(self):
 		pass
@@ -73,8 +76,6 @@ class ConsolaEncryptoManiac():
 class ConstanteConsola:
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
 	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las cuentas escribi listar'
-	mensajePedirNombre = 'Ingrese el nombre de la cuenta'
-	mensajePedirContraseña = 'Ingrese la contraseña'
 	mensajeComandosAvanzados = '''Escribi: 
 	modificar -> para cambiar la clave de una cuenta
 	eliminar  -> para borrar una cuenta

@@ -20,17 +20,11 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestrasLaListaDeComandosbasicos()
 
-	def test_dadoQueSeIniciaElContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeMuestrLaPeticionDeNombreDeCuenta(self):
+	def test_dadoQueSeIniciaElContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
 		self.dadoQueSeTieneUnContexto()
-		self.dadoQueSeIngresaElComandoAgregar()
+		self.dadoQueSeEjecutaElComandoAgregar()
 		self.cuandoSeInicia()
-		self.seVerificaQueSuMuestraLaPeticionDeNombreDeCuenta()
-
-	def test_dadoQueSeIniciaElContextoCundoSeIngresaElComandoAgregarCuadoSeAgregaUnNombreDeCuentaSeVerificaQueSeMuestrLaPeticionDeContraseña(self):
-		self.dadoQueSeTieneUnContexto()
-		self.dadoQueSeIngresaElComandoAgregarConUnNombreDeCuenta()
-		self.cuandoSeInicia()
-		self.seVerificaQueSeMuestraLaPeticionDeContraseña()	
+		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
 	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
 		self.dadoQueSeTieneUnContexto()
@@ -57,12 +51,14 @@ class TestConsolaManiac(unittest.TestCase):
 		administrador =  AdministradorDeMensajes(['exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
-	def dadoQueSeIngresaElComandoAgregar(self):
-		administrador =  AdministradorDeMensajes(['agregar','','exit'])
+	def dadoQueSeEjecutaElComandoAgregar(self):
+		self.seEjecutoAgregar = False
+		administrador =  AdministradorDeMensajes(['agregar','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		ConsolaEncryptoManiac.comandoAgregarCuenta = self.observadorFuncionAgregar
 
 	def dadoQueSeIngresaElComandoAgregarConUnNombreDeCuenta(self):
-		administrador =  AdministradorDeMensajes(['agregar','slack','exit'])
+		administrador =  AdministradorDeMensajes(['agregar slack','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
 	def dadoQueSeEjecutaElComandoListar(self):
@@ -87,6 +83,9 @@ class TestConsolaManiac(unittest.TestCase):
 	def observadorFuncionModificar(self):
 		self.seEjecutoModificar = True
 
+	def observadorFuncionAgregar(self):
+		self.seEjecutoAgregar = True
+
 	def cuandoSeInicia(self):
 		self.contexto.bucleDeConsola()
 
@@ -96,12 +95,6 @@ class TestConsolaManiac(unittest.TestCase):
 	def seVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
 		assert self.contexto.obtenerHistorial()[1] == ConstanteConsola.mensajeComandosBasicos
 
-	def seVerificaQueSuMuestraLaPeticionDeNombreDeCuenta(self):
-		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajePedirNombre
-
-	def seVerificaQueSeMuestraLaPeticionDeContraseña(self):
-		assert self.contexto.obtenerHistorial()[3] == ConstanteConsola.mensajePedirContraseña
-
 	def seVerificaQueSeLlamaALaFuncionListar(self):
 		assert self.seEjecutoListar == True
 
@@ -110,6 +103,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):
 		assert self.seEjecutoModificar == True
+
+	def seVerificaQueSeLlamaALaFuncionAgregar(self):
+		assert self.seEjecutoAgregar == True
 
 class AdministradorDeMensajes(object):
 
