@@ -12,6 +12,8 @@ class TestConsolaManiac(unittest.TestCase):
 	#Listar ok
 	#VerMas ok
 	#Modificar ok
+	#Eliminar
+	#Mostrar
 
 	def setUp(self):
 		self.funcionesOriginales = {
@@ -19,7 +21,9 @@ class TestConsolaManiac(unittest.TestCase):
 			'ComandoAgregar': ComandoAgregar.ejecutar,
 			'ComandoListar': ComandoListar.ejecutar,
 			'ComandoVerMas': ComandoVerMas.ejecutar,
-			'ComandoExit' : ComandoExit.ejecutar
+			'ComandoExit' : ComandoExit.ejecutar,
+			'ComandoEliminar' : ComandoEliminar.ejecutar
+
 		}
 
 	def test_dadoQueSeIniciaElContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
@@ -76,12 +80,25 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
 
+	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSeVerirficaQueSeLlamaALaFuncion(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutarElComandoEliminar()
+		self.cuandoSeInicia()
+		self.seVerifiacaQueSeLlamaALaFuncionComandoEliminar()
+
+	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutarElComandoEliminarSinParametros()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeMuestraElMensajeDeError()
+
 	def tearDown(self):
 		ComandoModificar.ejecutar = self.funcionesOriginales['ComandoModificar']
 		ComandoAgregar.ejecutar = self.funcionesOriginales['ComandoAgregar']
 		ComandoListar.ejecutar = self.funcionesOriginales['ComandoListar']
 		ComandoVerMas.ejecutar = self.funcionesOriginales['ComandoVerMas']
 		ComandoExit.ejecutar = self.funcionesOriginales['ComandoExit']
+		ComandoEliminar.ejecutar = self.funcionesOriginales['ComandoEliminar']
 		
 
 	def dadoQueSeTieneUnContexto(self):
@@ -125,6 +142,15 @@ class TestConsolaManiac(unittest.TestCase):
 		administrador =  AdministradorDeMensajes(['modificar','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
+	def dadoQueSeEjecutarElComandoEliminar(self):		
+		administrador =  AdministradorDeMensajes(['eliminar slack','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		ComandoEliminar.ejecutar = self.observadorFuncionEliminar
+	
+	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):		
+		administrador =  AdministradorDeMensajes(['eliminar ','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
 
@@ -133,6 +159,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def observadorFuncionAgregar(self):
 		self.seEjecutoAgregar = True
+
+	def observadorFuncionEliminar(self):
+		self.seEjecutoEliminar = True
 
 	def cuandoSeInicia(self):
 		self.contexto.bucleDeConsola()
@@ -156,12 +185,13 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoAgregar == True
 
 	def seVerificaQueSeMuestraElMensajeDeError(self):
-		print('Historial mensaje')
-		print(self.contexto.obtenerHistorial())
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeErrorComandoParametros
 
 	def seVerificaMuestraElMensajeDeAyudaDelComando(self):
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeAyudaComandoAgregar		
+
+	def seVerifiacaQueSeLlamaALaFuncionComandoEliminar(self):
+		assert self.seEjecutoEliminar == True
 
 class AdministradorDeMensajes(object):
 

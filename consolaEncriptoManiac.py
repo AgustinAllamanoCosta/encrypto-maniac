@@ -78,6 +78,8 @@ class ConsolaEncryptoManiac():
 			return ComandoAgregar(argumentos)		
 		elif operacion  == 'modificar':
 			return ComandoModificar(argumentos)
+		elif operacion == 'eliminar':
+			return ComandoEliminar(argumentos)
 
 class ComandoConParametro(object):
 
@@ -121,10 +123,16 @@ class ComandoExit(ComandoConsola):
 		raise ce.InterrumpirConsola()
 		return None
 
+class ComandoEliminar(ComandoConParametro):
+
+	def ejecutar(self):
+		super().ejecutar()
+
+
 class ConstanteConsola:
 
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
-	mensajeComandosBasicos = 'Para agregar una contraseña escribi agregar para ver las cuentas escribi listar'
+	mensajeComandosBasicos = '''Para agregar una contraseña escribi agregar.\nPara ver las cuentas escribi listar.'''
 	mensajeComandosAvanzados = '''Escribi: 
 	modificar -> para cambiar la clave de una cuenta
 	eliminar  -> para borrar una cuenta
