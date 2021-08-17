@@ -102,6 +102,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 
+	def test_dadoQueSeIniciarElContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEnviaUnComandoEnMayuscula()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeEjecutaIgual()
+
 	def tearDown(self):
 		ComandoModificar.ejecutar = self.funcionesOriginales['ComandoModificar']
 		ComandoAgregar.ejecutar = self.funcionesOriginales['ComandoAgregar']
@@ -174,6 +180,11 @@ class TestConsolaManiac(unittest.TestCase):
 		administrador =  AdministradorDeMensajes(['asdasdasdsa ','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
+	def dadoQueSeEnviaUnComandoEnMayuscula(self):
+		administrador =  AdministradorDeMensajes(['MOSTRAR ','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
+
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
 
@@ -220,6 +231,9 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoEliminar == True
 
 	def seVerficaQueSeLlamaALaFuncionMostrar(self):
+		assert self.seEjecutoMostrar == True
+
+	def seVerificaQueSeEjecutaIgual(self):
 		assert self.seEjecutoMostrar == True
 
 class AdministradorDeMensajes(object):

@@ -23,7 +23,7 @@ class ContextoConsolaManiac(object):
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
 		try:
-			comando = self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])	
+			comando = self.consola.operacionesConsola(valoresEntrada[0].lower(),valoresEntrada[1:])	
 			resultado = comando.ejecutar()
 			if(resultado != None):
 				self.escribirEnConsola(resultado)
