@@ -80,6 +80,8 @@ class ConsolaEncryptoManiac():
 			return ComandoModificar(argumentos)
 		elif operacion == 'eliminar':
 			return ComandoEliminar(argumentos)
+		elif operacion == 'mostrar':
+			return ComandoMostrar(argumentos)
 
 class ComandoConParametro(object):
 
@@ -128,6 +130,10 @@ class ComandoEliminar(ComandoConParametro):
 	def ejecutar(self):
 		super().ejecutar()
 
+class ComandoMostrar(ComandoConParametro):
+
+	def ejecutar(self):
+		super().ejecutar()
 
 class ConstanteConsola:
 
