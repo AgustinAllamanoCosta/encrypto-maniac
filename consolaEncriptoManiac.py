@@ -7,7 +7,7 @@ import re
 class ContextoConsolaManiac(object):
 
 	def __init__(self):
-		self.consola = ConsolaEncryptoManiac()
+		self.consola = ConsolaEncryptoManiacWin()
 		self.historial = HistorialConsola()
 		self.patronConsola = re.compile('\S+')
 
@@ -25,6 +25,7 @@ class ContextoConsolaManiac(object):
 		try:
 			comando = self.consola.operacionesConsola(valoresEntrada[0].lower(),valoresEntrada[1:])	
 			resultado = comando.ejecutar()
+
 			if(resultado != None):
 				self.escribirEnConsola(resultado)
 
@@ -81,6 +82,9 @@ class ConsolaEncryptoManiac():
 			return ComandoMostrar(argumentos)
 		else:
 			raise ce.ComandoNoEncontradoExcepcion()
+
+class ConsolaEncryptoManiacWin(ConsolaEncryptoManiac):
+	pass
 
 class ComandoConParametro(object):
 
