@@ -7,7 +7,7 @@ import re
 class ContextoConsolaManiac(object):
 
 	def __init__(self):
-		self.consola = ConsolaEncryptoManiac(self)
+		self.consola = ConsolaEncryptoManiac()
 		self.historial = HistorialConsola()
 		self.patronConsola = re.compile('\S+')
 
@@ -61,9 +61,8 @@ class HistorialConsola(object):
 
 class ConsolaEncryptoManiac():
 
-	def __init__(self,contexto):
+	def __init__(self):
 		self.correrLoop = True
-		self.contexto = contexto
 
 	def operacionesConsola(self,operacion,argumentos=[]):
 		if operacion == 'exit':
@@ -91,12 +90,6 @@ class ComandoConParametro(object):
 	def ejecutar(self):
 		if(self.parametroComadno == []):
 			raise ce.ParametrosComandosNullos()
-		return None
-
-class ComandoConsola(object):
-
-	def ejecutar(self):
-		return None
 
 class ComandoAgregar(ComandoConParametro):
 	
@@ -107,12 +100,18 @@ class ComandoAgregar(ComandoConParametro):
 		return None
 
 class ComandoModificar(ComandoConParametro):
+	pass
+
+class ComandoEliminar(ComandoConParametro):
+	pass
+
+class ComandoMostrar(ComandoConParametro):
+	pass
+
+class ComandoConsola(object):
 
 	def ejecutar(self):
-		super().ejecutar()
-
-class ComandoListar(ComandoConsola):
-	pass
+		return None
 
 class ComandoVerMas(ComandoConsola):
 
@@ -123,22 +122,14 @@ class ComandoExit(ComandoConsola):
 
 	def ejecutar(self):
 		raise ce.InterrumpirConsola()
-		return None
 
-class ComandoEliminar(ComandoConParametro):
-
-	def ejecutar(self):
-		super().ejecutar()
-
-class ComandoMostrar(ComandoConParametro):
-
-	def ejecutar(self):
-		super().ejecutar()
+class ComandoListar(ComandoConsola):
+	pass
 
 class ConstanteConsola:
 
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
-	mensajeComandosBasicos = '''Para agregar una contraseña escribi agregar.\nPara ver las cuentas escribi listar.'''
+	mensajeComandosBasicos = '''Para agregar una contraseña escribi agregar.\nPara ver las cuentas escribi listar.\nPara ver la lista completa de comandos escribi vermas'''
 	mensajeComandosAvanzados = '''Escribi: 
 	modificar -> para cambiar la clave de una cuenta
 	eliminar  -> para borrar una cuenta
