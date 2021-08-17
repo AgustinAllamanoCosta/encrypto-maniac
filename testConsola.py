@@ -7,14 +7,6 @@ from os import system
 
 class TestConsolaManiac(unittest.TestCase):
 
-	#Test de interfaz de consola
-	#Agregar ok
-	#Listar ok
-	#VerMas ok
-	#Modificar ok
-	#Eliminar ok
-	#Mostrar 
-
 	def setUp(self):
 		self.funcionesOriginales = {
 			'ComandoModificar': ComandoModificar.ejecutar,
@@ -104,6 +96,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
+	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueIngresaUnComandoQueNoExiste()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeListanElRestoDeLosComandos()
+
 	def tearDown(self):
 		ComandoModificar.ejecutar = self.funcionesOriginales['ComandoModificar']
 		ComandoAgregar.ejecutar = self.funcionesOriginales['ComandoAgregar']
@@ -111,8 +109,7 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoVerMas.ejecutar = self.funcionesOriginales['ComandoVerMas']
 		ComandoExit.ejecutar = self.funcionesOriginales['ComandoExit']
 		ComandoEliminar.ejecutar = self.funcionesOriginales['ComandoEliminar']
-		ComandoMostrar.ejecutar = self.funcionesOriginales['ComandoMostrar']
-		
+		ComandoMostrar.ejecutar = self.funcionesOriginales['ComandoMostrar']	
 
 	def dadoQueSeTieneUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
@@ -171,6 +168,10 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueSeEjecutaElComandoMostrarSinParametro(self):		
 		administrador =  AdministradorDeMensajes(['mostrar ','exit'])
+		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+
+	def dadoQueIngresaUnComandoQueNoExiste(self):		
+		administrador =  AdministradorDeMensajes(['asdasdasdsa ','exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 
 	def observadorFuncionListar(self):

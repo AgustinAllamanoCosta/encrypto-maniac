@@ -22,23 +22,21 @@ class ContextoConsolaManiac(object):
 
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
-		comando = self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])	
 		try:
+			comando = self.consola.operacionesConsola(valoresEntrada[0],valoresEntrada[1:])	
 			resultado = comando.ejecutar()
 			if(resultado != None):
 				self.escribirEnConsola(resultado)
 
 		except ce.ParametrosComandoIncompletos as expt:
-			print('Comando incompleto')
 			self.escribirEnConsola(expt.mensaje)
 		except ce.ParametrosComandosNullos:
-			print('Mensaje de error')
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
 		except ce.InterrumpirConsola:
-			print('Interrupir consola')
 			self.consola.correrLoop = False
+		except ce.ComandoNoEncontradoExcepcion:
+			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 		except IndexError:
-			print('Index error')
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
 
 		self.historial.agregarEntrada(entrada)
@@ -82,6 +80,8 @@ class ConsolaEncryptoManiac():
 			return ComandoEliminar(argumentos)
 		elif operacion == 'mostrar':
 			return ComandoMostrar(argumentos)
+		else:
+			raise ce.ComandoNoEncontradoExcepcion()
 
 class ComandoConParametro(object):
 
