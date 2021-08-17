@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-import threading 
 from consolaEncriptoManiac import *
 from os import system
 
@@ -18,91 +17,91 @@ class TestConsolaManiac(unittest.TestCase):
 			'ComandoMostrar' : ComandoMostrar.ejecutar
 		}
 
-	def test_dadoQueSeIniciaElContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
+	def test_dadoQueTengoUnContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeSaleDelContextoAlIniciar();
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeBienvenida()
 
-	def test_dadoQueSeIniciaElContextoCuadnoSeIniciaLaConsolaSeVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
+	def test_dadoQueTengoUnContextoCuadnoSeIniciaLaConsolaSeVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeSaleDelContextoAlIniciar();
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestrasLaListaDeComandosbasicos()
 
-	def test_dadoQueSeIniciaElContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
+	def test_dadoQueTengoUnContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoAgregar()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
-	def test_dadoQueSeIniciaElContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoAgregarSinParametros()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueSeIniciaElContextoCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
+	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoAgregarConUnParametro()
 		self.cuandoSeInicia()
 		self.seVerificaMuestraElMensajeDeAyudaDelComando()
 
-	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoListar()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeLlamaALaFuncionListar()
 
-	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoVerMas()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 	
-	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutarElComandoModificarSinElParametro()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueSeIniciaElContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutarElComandoModificar()
 		self.cuandoSeInicia()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
 
-	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSeVerirficaQueSeLlamaALaFuncion(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSeVerirficaQueSeLlamaALaFuncion(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutarElComandoEliminar()
 		self.cuandoSeInicia()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoEliminar()
 
-	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
+	def test_dadoQueTengoUnContextoCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutarElComandoEliminarSinParametros()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoMostrar()
 		self.cuandoSeInicia()
 		self.seVerficaQueSeLlamaALaFuncionMostrar()
 
-	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoMostrarSinParametro()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueSeIniciarElContestoConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueIngresaUnComandoQueNoExiste()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 
-	def test_dadoQueSeIniciarElContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
+	def test_dadoQueTengoUnContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEnviaUnComandoEnMayuscula()
 		self.cuandoSeInicia()
