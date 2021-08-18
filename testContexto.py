@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from consolaEncriptoManiac import *
+import threading as t
 
 class TestContextoManiac(unittest.TestCase):
 	
@@ -26,25 +27,25 @@ class TestContextoManiac(unittest.TestCase):
 		self.contexto = ContextoConsolaManiac()	
 
 	def dadoQueSeIngresaUnaFrase(self):
-		self.frase = 'exit'
-		administrador =  AdministradorDeMensajes([self.frase])
-		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
-
-	def dadoQueSeIniciaEnWindowsYSeSale(self):
-		self.contexto.plataformaActual = 'win32'
 		administrador =  AdministradorDeMensajes(['exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
+
+	def dadoQueSeIniciaEnWindowsYSeSale(self):
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def cuandoSeInicia(self):
-		self.contexto.bucleDeConsola()
+		self.consolaEnParalelo.start()
 
 	def seVerificaQueSeGuardoLaFraseEnHistorial(self):
-		assert self.frase == self.contexto.obtenerHistorial()[2]
+		self.consolaEnParalelo.join()
+		assert 'exit' == self.contexto.obtenerHistorial()[2]
 
 	def seVerificaQueSeConfiguroLosComandosDeSystemasWindows(self):
 		assert(isinstance(self.contexto.consola,ConsolaEncryptoManiacWin)) 
 
-	def tearDown(self): 
+	def tearDown(self):
+		self.consolaEnParalelo.stop()
 		ContextoConsolaManiac.ingresarEntradas = self.funcionesOriginales['ingresarEntradas']
 
 class AdministradorDeMensajes(object):
@@ -59,6 +60,17 @@ class AdministradorDeMensajes(object):
 			self.cantidadDeMensajesEnviados+=1
 		return mensaje;
 
+class HiloQueSePuedeDetener(t.Thread):
+
+    def __init__(self,  *args, **kwargs):
+        super(HiloQueSePuedeDetener, self).__init__(*args, **kwargs)
+        self.frenarHilo = t.Event()
+
+    def stop(self):
+        self.frenarHilo.set()
+
+    def stopped(self):
+        return self.frenarHilo.is_set()
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestContextoManiac)
