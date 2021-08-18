@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from consolaEncriptoManiac import *
+import threading as t
 from os import system
 
 class TestConsolaManiac(unittest.TestCase):
@@ -108,6 +109,7 @@ class TestConsolaManiac(unittest.TestCase):
 		self.seVerificaQueSeEjecutaIgual()
 
 	def tearDown(self):
+		self.consolaEnParalelo.stop()
 		ComandoModificar.ejecutar = self.funcionesOriginales['ComandoModificar']
 		ComandoAgregar.ejecutar = self.funcionesOriginales['ComandoAgregar']
 		ComandoListar.ejecutar = self.funcionesOriginales['ComandoListar']
@@ -122,67 +124,81 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeSaleDelContextoAlIniciar(self):
 		administrador =  AdministradorDeMensajes(['exit'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoAgregar(self):
 		self.seEjecutoAgregar = False
-		administrador =  AdministradorDeMensajes(['agregar slack 1234','exit'])
+		administrador =  AdministradorDeMensajes(['agregar slack 1234'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ComandoAgregar.ejecutar = self.observadorFuncionAgregar
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoAgregarSinParametros(self):
-		administrador =  AdministradorDeMensajes(['agregar','exit'])
+		administrador =  AdministradorDeMensajes(['agregar'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoListar(self):
 		self.seEjecutoListar = False
-		administrador =  AdministradorDeMensajes(['listar','exit'])
+		administrador =  AdministradorDeMensajes(['listar'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ComandoListar.ejecutar = self.observadorFuncionListar	
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoVerMas(self):
-		administrador =  AdministradorDeMensajes(['vermas','exit'])
+		administrador =  AdministradorDeMensajes(['vermas'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutarElComandoModificar(self):
 		self.seEjecutoModificar = False
-		administrador =  AdministradorDeMensajes(['modificar slack','exit'])
+		administrador =  AdministradorDeMensajes(['modificar slack'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ComandoModificar.ejecutar = self.observadorFuncionModificar
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoAgregarConUnParametro(self):
-		administrador =  AdministradorDeMensajes(['agregar slack','exit'])
+		administrador =  AdministradorDeMensajes(['agregar slack'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutarElComandoModificarSinElParametro(self):		
-		administrador =  AdministradorDeMensajes(['modificar','exit'])
+		administrador =  AdministradorDeMensajes(['modificar'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutarElComandoEliminar(self):		
-		administrador =  AdministradorDeMensajes(['eliminar slack','exit'])
+		administrador =  AdministradorDeMensajes(['eliminar slack'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ComandoEliminar.ejecutar = self.observadorFuncionEliminar
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 	
 	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):		
-		administrador =  AdministradorDeMensajes(['eliminar ','exit'])
+		administrador =  AdministradorDeMensajes(['eliminar '])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoMostrar(self):		
-		administrador =  AdministradorDeMensajes(['mostrar slack','exit'])
+		administrador =  AdministradorDeMensajes(['mostrar slack'])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoMostrarSinParametro(self):		
-		administrador =  AdministradorDeMensajes(['mostrar ','exit'])
+		administrador =  AdministradorDeMensajes(['mostrar '])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueIngresaUnComandoQueNoExiste(self):		
-		administrador =  AdministradorDeMensajes(['asdasdasdsa ','exit'])
+		administrador =  AdministradorDeMensajes(['asdasdasdsa '])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEnviaUnComandoEnMayuscula(self):
-		administrador =  AdministradorDeMensajes(['MOSTRAR ','exit'])
+		administrador =  AdministradorDeMensajes(['MOSTRAR '])
 		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
@@ -200,39 +216,50 @@ class TestConsolaManiac(unittest.TestCase):
 		self.seEjecutoMostrar = True
 
 	def cuandoSeInicia(self):
-		self.contexto.bucleDeConsola()
+		self.consolaEnParalelo.start()
 
 	def seVerificaQueSeMuestraElMensajeDeBienvenida(self):
+		self.consolaEnParalelo.join()
 		assert self.contexto.obtenerHistorial()[0] == ConstanteConsola.mensajeBienvenida
 
 	def seVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
+		self.consolaEnParalelo.join()
 		assert self.contexto.obtenerHistorial()[1] == ConstanteConsola.mensajeComandosBasicos
 
 	def seVerificaQueSeLlamaALaFuncionListar(self):
+		self.consolaEnParalelo.join()
 		assert self.seEjecutoListar == True
 
 	def seVerificaQueSeListanElRestoDeLosComandos(self):
+		self.consolaEnParalelo.join()
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeComandosAvanzados
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):
+		self.consolaEnParalelo.join()
 		assert self.seEjecutoModificar == True
 
 	def seVerificaQueSeLlamaALaFuncionAgregar(self):
+		self.consolaEnParalelo.join()
 		assert self.seEjecutoAgregar == True
 
 	def seVerificaQueSeMuestraElMensajeDeError(self):
+		self.consolaEnParalelo.join()
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeErrorComandoParametros
 
 	def seVerificaMuestraElMensajeDeAyudaDelComando(self):
+		self.consolaEnParalelo.join()
 		assert self.contexto.obtenerHistorial()[2] == ConstanteConsola.mensajeAyudaComandoAgregar		
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoEliminar(self):
+		self.consolaEnParalelo.join()
 		assert self.seEjecutoEliminar == True
 
 	def seVerficaQueSeLlamaALaFuncionMostrar(self):
+		self.consolaEnParalelo.join()
 		assert self.seEjecutoMostrar == True
 
 	def seVerificaQueSeEjecutaIgual(self):
+		self.consolaEnParalelo.join()
 		assert self.seEjecutoMostrar == True
 
 class AdministradorDeMensajes(object):
@@ -246,6 +273,18 @@ class AdministradorDeMensajes(object):
 			mensaje = self.mensajes[self.cantidadDeMensajesEnviados]
 			self.cantidadDeMensajesEnviados+=1
 		return mensaje;
+
+class HiloQueSePuedeDetener(t.Thread):
+
+    def __init__(self,  *args, **kwargs):
+        super(HiloQueSePuedeDetener, self).__init__(*args, **kwargs)
+        self.frenarHilo = t.Event()
+
+    def stop(self):
+        self.frenarHilo.set()
+
+    def stopped(self):
+        return self.frenarHilo.is_set()
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestConsolaManiac)
