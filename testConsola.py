@@ -85,10 +85,10 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoEliminar()
 
-	def _dadoQueTengoUnContextoCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
+	def test_dadoQueTengoUnContextoCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutarElComandoEliminarSinParametros()
-		self.cuandoSeInicia()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
 	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
@@ -147,7 +147,6 @@ class TestConsolaManiac(unittest.TestCase):
 	
 	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'eliminar '
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoMostrar(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar slack'
