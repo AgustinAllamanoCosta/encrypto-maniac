@@ -41,7 +41,8 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def test_dadoQueTengoUnContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
 		self.dadoQueSeTieneUnContexto()
-		self.cuandoSeLlamaALaFuncionOperacionesConsola('agregar', ['slack', '1234'])
+		self.dadoQueSeEjecutaElComandoAgregar()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
 	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
@@ -58,7 +59,8 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
 		self.dadoQueSeTieneUnContexto()
-		self.cuandoSeLlamaALaFuncionOperacionesConsola('listar')
+		self.dadoQueSeEjecutaElComandoListar()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeLlamaALaFuncionListar()
 
 	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
@@ -128,8 +130,13 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeEjecutaElComandoAgregarConUnParametro(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack'
 
+	def dadoQueSeEjecutaElComandoAgregar(self):
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
+		ComandoAgregar.ejecutar = self.observadorFuncionAgregar
+
 	def dadoQueSeEjecutaElComandoListar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'listar'
+		ComandoListar.ejecutar = self.observadorFuncionListar
 
 	def dadoQueSeEjecutaElComandoVerMas(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'vermas'
@@ -174,15 +181,15 @@ class TestConsolaManiac(unittest.TestCase):
 	def observadorFuncionModificar(self):
 		self.seEjecutoModificar = True
 
+	def observadorFuncionAgregar(self):
+		self.seEjecutoAgregar = True
+
 	def cuandoSeInicia(self):
 		self.consolaEnParalelo.start()
 
 	def cuandoSeLlamaALaFuncionAnalizarEntrada(self):
 		self.consola.analizarEntrada(self.consola.ingresarEntradas())
-
-	def cuandoSeLlamaALaFuncionOperacionesConsola(self,comando,argumentos=[]):
-		self.respuestaACompararConsola = self.consola.operacionesConsola(comando,argumentos)
-
+	
 	def seVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.consolaEnParalelo.stop()
 		self.consolaEnParalelo.join()
@@ -194,7 +201,7 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeComandosBasicos
 
 	def seVerificaQueSeLlamaALaFuncionListar(self):
-		assert(isinstance(self.respuestaACompararConsola,ComandoListar)) 
+		assert self.seEjecutoListar == True 
 
 	def seVerificaQueSeListanElRestoDeLosComandos(self):
 		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeComandosAvanzados
@@ -203,7 +210,7 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoModificar == True
 
 	def seVerificaQueSeLlamaALaFuncionAgregar(self):
-		assert(isinstance(self.respuestaACompararConsola,ComandoAgregar)) 
+		assert self.seEjecutoAgregar == True
 
 	def seVerificaQueSeMuestraElMensajeDeError(self):
 		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeErrorComandoParametros
