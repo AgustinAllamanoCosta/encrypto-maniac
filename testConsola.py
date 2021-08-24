@@ -109,10 +109,10 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 
-	def _dadoQueTengoUnContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
+	def test_dadoQueTengoUnContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEnviaUnComandoEnMayuscula()
-		self.cuandoSeInicia()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeEjecutaIgual()	
 
 	def dadoQueSeTieneUnContexto(self):
@@ -161,7 +161,6 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeEnviaUnComandoEnMayuscula(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'MOSTRAR '
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
@@ -219,8 +218,6 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoMostrar == True
 
 	def seVerificaQueSeEjecutaIgual(self):
-		self.consolaEnParalelo.stop()
-		self.consolaEnParalelo.join()
 		assert self.seEjecutoMostrar == True
 
 class HiloQueSePuedeDetener(t.Thread):
