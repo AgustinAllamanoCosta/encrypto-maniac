@@ -47,13 +47,13 @@ class TestConsolaManiac(unittest.TestCase):
 	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoAgregarSinParametros()
-		self.cunadoSeLlamaALaFuncionAnalizarEntrada()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
 	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoAgregarConUnParametro()
-		self.cunadoSeLlamaALaFuncionAnalizarEntrada()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaMuestraElMensajeDeAyudaDelComando()
 
 	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
@@ -64,20 +64,21 @@ class TestConsolaManiac(unittest.TestCase):
 	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoVerMas()
-		self.cunadoSeLlamaALaFuncionAnalizarEntrada()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 	
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutarElComandoModificar()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
+		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
+
+
 	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutarElComandoModificarSinElParametro()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeError()
-
-	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
-		self.dadoQueSeTieneUnContexto()
-		self.dadoQueSeEjecutarElComandoModificar()
-		self.cuandoSeInicia()
-		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
 
 	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSeVerirficaQueSeLlamaALaFuncion(self):
 		self.dadoQueSeTieneUnContexto()
@@ -135,10 +136,8 @@ class TestConsolaManiac(unittest.TestCase):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'vermas'
 
 	def dadoQueSeEjecutarElComandoModificar(self):
-		self.seEjecutoModificar = False
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'modificar slack'
 		ComandoModificar.ejecutar = self.observadorFuncionModificar
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutarElComandoModificarSinElParametro(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'modificar'
@@ -174,19 +173,19 @@ class TestConsolaManiac(unittest.TestCase):
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
 
-	def observadorFuncionModificar(self):
-		self.seEjecutoModificar = True
-
 	def observadorFuncionEliminar(self):
 		self.seEjecutoEliminar = True
 
 	def observadorFuncionMostrar(self):
 		self.seEjecutoMostrar = True
 
+	def observadorFuncionModificar(self):
+		self.seEjecutoModificar = True
+
 	def cuandoSeInicia(self):
 		self.consolaEnParalelo.start()
 
-	def cunadoSeLlamaALaFuncionAnalizarEntrada(self):
+	def cuandoSeLlamaALaFuncionAnalizarEntrada(self):
 		self.consola.analizarEntrada(self.consola.ingresarEntradas())
 
 	def cuandoSeLlamaALaFuncionOperacionesConsola(self,comando,argumentos=[]):
@@ -209,8 +208,6 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeComandosAvanzados
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):
-		self.consolaEnParalelo.stop()
-		self.consolaEnParalelo.join()
 		assert self.seEjecutoModificar == True
 
 	def seVerificaQueSeLlamaALaFuncionAgregar(self):
