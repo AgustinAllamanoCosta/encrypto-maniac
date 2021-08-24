@@ -103,10 +103,10 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueIngresaUnComandoQueNoExiste()
-		self.cuandoSeInicia()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 
 	def _dadoQueTengoUnContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
@@ -157,7 +157,6 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueIngresaUnComandoQueNoExiste(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'asdasdasdsa '
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEnviaUnComandoEnMayuscula(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'MOSTRAR '
