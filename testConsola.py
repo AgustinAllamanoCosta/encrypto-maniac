@@ -61,10 +61,10 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionOperacionesConsola('listar')
 		self.seVerificaQueSeLlamaALaFuncionListar()
 
-	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoVerMas()
-		self.cuandoSeInicia()
+		self.cunadoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 	
 	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
@@ -133,7 +133,6 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueSeEjecutaElComandoVerMas(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'vermas'
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutarElComandoModificar(self):
 		self.seEjecutoModificar = False
@@ -207,9 +206,7 @@ class TestConsolaManiac(unittest.TestCase):
 		assert(isinstance(self.respuestaACompararConsola,ComandoListar)) 
 
 	def seVerificaQueSeListanElRestoDeLosComandos(self):
-		self.consolaEnParalelo.stop()
-		self.consolaEnParalelo.join()
-		assert self.consola.obtenerHistorial()[2] == ConstanteConsola.mensajeComandosAvanzados
+		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeComandosAvanzados
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):
 		self.consolaEnParalelo.stop()
