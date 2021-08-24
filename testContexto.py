@@ -8,7 +8,7 @@ class TestContextoManiac(unittest.TestCase):
 	
 	def setUp(self):
 		self.funcionesOriginales = {
-			'ingresarEntradas': ContextoConsolaManiac.ingresarEntradas
+			'ingresarEntradas': ConsolaEncryptoManiac.ingresarEntradas
 		}
 
 	def test_dadoQueTengoUnContextoConUnaConsolaCuandoSeIngresaUnaFraseSeVerificaQueSeGuardaEnElHistorial(self):
@@ -19,34 +19,47 @@ class TestContextoManiac(unittest.TestCase):
 
 	def test_dadoQueTengoUnContextoConUnaConsolaQueSeIniciaEnWindowsSeVerificaQueSeConfiguroLosComandosDeSystemasWindows(self):
 		self.dadoQueTengoUnContexto()
-		self.dadoQueSeIniciaEnWindowsYSeSale()
+		self.dadoQueSeIniciaEnWindows()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeConfiguroLosComandosDeSystemasWindows()
+
+	def test_dadoQueTengoUnContextoConUnaConsolaQueSeIniciaEnLinuxSeVerificaQueSeConfiguroLosComandosDeSystemasLinux(self):
+		self.dadoQueTengoUnContexto()
+		self.dadoQueSeIniciaEnLinux()
+		self.cuandoSeInicia()
+		self.seVerificaQueSeConfiguroLosComandosDeSystemasLinux()
 
 	def dadoQueTengoUnContexto(self):
 		self.contexto = ContextoConsolaManiac()	
 
 	def dadoQueSeIngresaUnaFrase(self):
 		administrador =  AdministradorDeMensajes(['exit'])
-		ContextoConsolaManiac.ingresarEntradas = administrador.enviarMensajes
+		ConsolaEncryptoManiac.ingresarEntradas = administrador.enviarMensajes
 		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
 
-	def dadoQueSeIniciaEnWindowsYSeSale(self):
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
+	def dadoQueSeIniciaEnWindows(self):
+		self.consolaEnParalelo = HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)
+
+	def dadoQueSeIniciaEnLinux(self):
+		self.contexto.plataforma = 'Linux'
+		self.consolaEnParalelo = HiloQueSePuedeDetener(target=self.contexto.bucleDeConsola,daemon=True)		
 
 	def cuandoSeInicia(self):
 		self.consolaEnParalelo.start()
 
 	def seVerificaQueSeGuardoLaFraseEnHistorial(self):
 		self.consolaEnParalelo.join()
-		assert 'exit' == self.contexto.obtenerHistorial()[2]
+		assert 'exit' == self.contexto.consola.obtenerHistorial()[2]
 
 	def seVerificaQueSeConfiguroLosComandosDeSystemasWindows(self):
-		assert(isinstance(self.contexto.consola,ConsolaEncryptoManiacWin)) 
+		assert(isinstance(self.contexto.consola,ConsolaEncryptoManiacWin))
+
+	def seVerificaQueSeConfiguroLosComandosDeSystemasLinux(self):
+		assert(isinstance(self.contexto.consola,ConsolaEncryptoManiacLinux)) 
 
 	def tearDown(self):
 		self.consolaEnParalelo.stop()
-		ContextoConsolaManiac.ingresarEntradas = self.funcionesOriginales['ingresarEntradas']
+		ConsolaEncryptoManiac.ingresarEntradas = self.funcionesOriginales['ingresarEntradas']
 
 class AdministradorDeMensajes(object):
 
