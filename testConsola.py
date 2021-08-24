@@ -91,10 +91,10 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
+	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoMostrar()
-		self.cuandoSeInicia()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerficaQueSeLlamaALaFuncionMostrar()
 
 	def _dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
@@ -151,7 +151,6 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeEjecutaElComandoMostrar(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar slack'
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoMostrarSinParametro(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar '
@@ -219,8 +218,6 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoEliminar == True
 
 	def seVerficaQueSeLlamaALaFuncionMostrar(self):
-		self.consolaEnParalelo.stop()
-		self.consolaEnParalelo.join()
 		assert self.seEjecutoMostrar == True
 
 	def seVerificaQueSeEjecutaIgual(self):
