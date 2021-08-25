@@ -122,6 +122,11 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaUnix()
 
+	def test_dadoQueEstoyTrabajandoEnSistemaWinCuandoSeInstanciaUnaConsolaDesdeElFactorySeVerificaQueSeCarganLosComandosDeUnixDeSystema(self):
+		self.dadoQueEstoyTrabajandoiEnSistemasWin()
+		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
+		self.seVerificaQueSeCarganLosComandosDeSystemaWin()
+
 	def dadoQueSeTieneUnContexto(self):
 		self.consola = ConsolaEncryptoManiac()	
 
@@ -176,6 +181,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueEstoyTrabajandoiEnSistemasUnix(self):
 		self.plataform = 'Unix'
+
+	def dadoQueEstoyTrabajandoiEnSistemasWin(self):
+		self.plataform = 'Win32'
 
 	def dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(self.plataform)
@@ -240,6 +248,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeCarganLosComandosDeSystemaUnix(self):
 		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoUnix)
+
+	def seVerificaQueSeCarganLosComandosDeSystemaWin(self):
+		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoWin)
 
 class HiloQueSePuedeDetener(t.Thread):
 

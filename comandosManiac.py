@@ -59,3 +59,6 @@ class ComandoListar(ComandoConsola):
 
 class ComandoUnix(ComandoConsola):
 	pass
+
+class ComandoWin(ComandoConsola):
+	pass
