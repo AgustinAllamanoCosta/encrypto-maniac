@@ -72,7 +72,7 @@ class ConsolaEncryptoManiac():
 		return self.comandosEstandar
 
 class ConsolaEncryptoManiacWin(ConsolaEncryptoManiac):
-	
+
 	def __init__(self):
 		super().__init__()
 		self.comandosEstandar['systema'] = ComandoWin()
@@ -85,12 +85,14 @@ class ConsolaEncryptoManiacLinux(ConsolaEncryptoManiac):
 
 class FactoryConsolaEncriptoManiac(object):
 
-	def obtenerConsola(self,plataforma):
+	def __init__(self):
+		self.tipoDeConsolas = {
+		'Unix':ConsolaEncryptoManiacLinux(),
+		'Win32':ConsolaEncryptoManiacWin()
+		}
 
-		if plataforma == 'Unix':
-			return ConsolaEncryptoManiacLinux()
-		elif plataforma == 'Win32':
-			return ConsolaEncryptoManiacWin()
+	def obtenerConsola(self,plataforma):
+		return self.tipoDeConsolas[plataforma]
 
 class HistorialConsola(object):
 	
