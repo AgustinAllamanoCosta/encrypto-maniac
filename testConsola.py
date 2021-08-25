@@ -42,7 +42,7 @@ class TestConsolaManiac(unittest.TestCase):
 	def test_dadoQueTengoUnContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
 		self.dadoQueSeTieneUnContexto()
 		self.dadoQueSeEjecutaElComandoAgregar()
-		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
 		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
 	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
@@ -153,35 +153,35 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoEliminar.ejecutar = self.observadorFuncionEliminar
 	
 	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'eliminar '
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'eliminar'
 
 	def dadoQueSeEjecutaElComandoMostrar(self):		
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar slack'
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
 
 	def dadoQueSeEjecutaElComandoMostrarSinParametro(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar '
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar'
 
 	def dadoQueIngresaUnComandoQueNoExiste(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'asdasdasdsa '
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'asdasdasdsa'
 
 	def dadoQueSeEnviaUnComandoEnMayuscula(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'MOSTRAR '
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'MOSTRAR'
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
 
-	def observadorFuncionListar(self):
+	def observadorFuncionListar(self,arg):
 		self.seEjecutoListar = True
 
-	def observadorFuncionEliminar(self):
+	def observadorFuncionEliminar(self,arg):
 		self.seEjecutoEliminar = True
 
-	def observadorFuncionMostrar(self):
+	def observadorFuncionMostrar(self,arg):
 		self.seEjecutoMostrar = True
 
-	def observadorFuncionModificar(self):
+	def observadorFuncionModificar(self,arg):
 		self.seEjecutoModificar = True
 
-	def observadorFuncionAgregar(self):
+	def observadorFuncionAgregar(self,arg):
 		self.seEjecutoAgregar = True
 
 	def cuandoSeInicia(self):
@@ -189,7 +189,7 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def cuandoSeLlamaALaFuncionAnalizarEntrada(self):
 		self.consola.analizarEntrada(self.consola.ingresarEntradas())
-	
+
 	def seVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.consolaEnParalelo.stop()
 		self.consolaEnParalelo.join()
@@ -204,7 +204,7 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoListar == True 
 
 	def seVerificaQueSeListanElRestoDeLosComandos(self):
-		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeComandosAvanzados
+		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeComandosAvanzados
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):
 		assert self.seEjecutoModificar == True
@@ -213,10 +213,10 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoAgregar == True
 
 	def seVerificaQueSeMuestraElMensajeDeError(self):
-		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeErrorComandoParametros
+		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeErrorComandoParametros
 
 	def seVerificaMuestraElMensajeDeAyudaDelComando(self):
-		assert self.consola.obtenerHistorial()[0] == ConstanteConsola.mensajeAyudaComandoAgregar		
+		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeAyudaComandoAgregar		
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoEliminar(self):
 		assert self.seEjecutoEliminar == True

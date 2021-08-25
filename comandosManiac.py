@@ -2,46 +2,57 @@
 # -*- coding: utf-8 -*
 from CustomException import *
 from constantesEncriptoManiac import *
-class ComandoConParametro(object):
-
-	def __init__(self,parametros):
-		self.parametroComadno = parametros
-
-	def ejecutar(self):
-		if(self.parametroComadno == []):
-			raise ParametrosComandosNullos()
-
-class ComandoAgregar(ComandoConParametro):
-	
-	def ejecutar(self):
-		super().ejecutar()
-		if(len(self.parametroComadno)==1):
-			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
-		return None
-
-class ComandoModificar(ComandoConParametro):
-	pass
-
-class ComandoEliminar(ComandoConParametro):
-	pass
-
-class ComandoMostrar(ComandoConParametro):
-	pass
 
 class ComandoConsola(object):
 
-	def ejecutar(self):
+	def ejecutar(self,parametros):
+		return None
+
+	def validarParametros(self,parametros):
+		if(parametros == []):
+			raise ParametrosComandosNullos()
+
+class ComandoAgregar(ComandoConsola):
+	
+	def ejecutar(self,parametros):
+		super().validarParametros(parametros)
+		if(len(parametros)==1):
+			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		return None
 
 class ComandoVerMas(ComandoConsola):
 
-	def ejecutar(self):
+	def ejecutar(self,parametros):
 		return ConstanteConsola.mensajeComandosAvanzados
 
 class ComandoExit(ComandoConsola):
 
-	def ejecutar(self):
+	def ejecutar(self,parametros):
 		raise InterrumpirConsola()
+
+class ComandoModificar(ComandoConsola):
+	
+	def ejecutar(self,parametros):
+		super().validarParametros(parametros)
+		if(len(parametros)==1):
+			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		return None
+
+class ComandoEliminar(ComandoConsola):
+	
+	def ejecutar(self,parametros):
+		super().validarParametros(parametros)
+		if(len(parametros)==1):
+			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		return None
+
+class ComandoMostrar(ComandoConsola):
+	
+	def ejecutar(self,parametros):
+		super().validarParametros(parametros)
+		if(len(parametros)==1):
+			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		return None
 
 class ComandoListar(ComandoConsola):
 	pass

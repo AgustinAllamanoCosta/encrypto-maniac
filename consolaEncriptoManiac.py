@@ -11,7 +11,17 @@ class ConsolaEncryptoManiac():
 	def __init__(self):
 		self.historial = HistorialConsola()
 		self.patronConsola = re.compile('\S+')
-		self.correrConsola = True		
+		self.correrConsola = True
+
+		self.comandosEstandar = {
+		'exit':ComandoExit(),
+		'listar':ComandoListar(),
+		'vermas':ComandoVerMas(),
+		'agregar':ComandoAgregar(),
+		'modificar':ComandoModificar(),
+		'eliminar':ComandoEliminar(),
+		'mostrar':ComandoMostrar()
+		}
 
 	def bucleDeConsola(self):
 		self.escribirCabeceraDeConsola()
@@ -25,11 +35,17 @@ class ConsolaEncryptoManiac():
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
 		try:
-			comando = self.operacionesConsola(valoresEntrada[0].lower(),valoresEntrada[1:])	
-			resultado = comando.ejecutar()
+			
+			self.historial.agregarEntrada(entrada)
+			comando = self.comandosEstandar.get(valoresEntrada[0].lower())
 
-			if(resultado != None):
-				self.escribirEnConsola(resultado)
+			if(comando != None):
+				resultado = comando.ejecutar(valoresEntrada[1:])
+
+				if(resultado != None):
+					self.escribirEnConsola(resultado)
+			else:
+				self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 
 		except ParametrosComandoIncompletos as expt:
 			self.escribirEnConsola(expt.mensaje)
@@ -37,30 +53,10 @@ class ConsolaEncryptoManiac():
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
 		except InterrumpirConsola:
 			self.correrConsola = False
-		except ComandoNoEncontradoExcepcion:
-			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 		except IndexError:
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
-
-		self.historial.agregarEntrada(entrada)
-
-	def operacionesConsola(self,operacion,argumentos=[]):
-		if operacion == 'exit':
-			return ComandoExit()
-		elif operacion == 'listar':
-			return ComandoListar()
-		elif operacion == 'vermas':
-			return ComandoVerMas()
-		elif operacion == 'agregar':
-			return ComandoAgregar(argumentos)		
-		elif operacion  == 'modificar':
-			return ComandoModificar(argumentos)
-		elif operacion == 'eliminar':
-			return ComandoEliminar(argumentos)
-		elif operacion == 'mostrar':
-			return ComandoMostrar(argumentos)
-		else:
-			raise ComandoNoEncontradoExcepcion()
+		except ComandoNoEncontradoExcepcion:
+			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 
 	def ingresarEntradas(self):
 		return input()
