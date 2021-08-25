@@ -56,3 +56,6 @@ class ComandoMostrar(ComandoConsola):
 
 class ComandoListar(ComandoConsola):
 	pass
+
+class ComandoUnix(ComandoConsola):
+	pass

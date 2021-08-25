@@ -68,11 +68,24 @@ class ConsolaEncryptoManiac():
 	def obtenerHistorial(self):
 		return self.historial.obtener()
 
+	def obtenerComandos(self):
+		return self.comandosEstandar
+
 class ConsolaEncryptoManiacWin(ConsolaEncryptoManiac):
 	pass
 
 class ConsolaEncryptoManiacLinux(ConsolaEncryptoManiac):
-	pass
+
+	def __init__(self):
+		super().__init__()
+		self.comandosEstandar['systema'] = ComandoUnix()
+
+class FactoryConsolaEncriptoManiac(object):
+
+	def obtenerConsola(self,plataforma):
+
+		if plataforma == 'Unix':
+			return ConsolaEncryptoManiacLinux()
 
 class HistorialConsola(object):
 	

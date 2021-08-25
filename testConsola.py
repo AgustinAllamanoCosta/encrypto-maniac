@@ -117,6 +117,11 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeEjecutaIgual()	
 
+	def test_dadoQueEstoyTrabajandoEnSistemaUnixCuandoSeInstanciaUnaConsolaDesdeElFactorySeVerificaQueSeCarganLosComandosDeUnixDeSystema(self):
+		self.dadoQueEstoyTrabajandoiEnSistemasUnix()
+		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
+		self.seVerificaQueSeCarganLosComandosDeSystemaUnix()
+
 	def dadoQueSeTieneUnContexto(self):
 		self.consola = ConsolaEncryptoManiac()	
 
@@ -168,6 +173,12 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeEnviaUnComandoEnMayuscula(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'MOSTRAR'
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
+
+	def dadoQueEstoyTrabajandoiEnSistemasUnix(self):
+		self.plataform = 'Unix'
+
+	def dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas(self):
+		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(self.plataform)
 
 	def observadorFuncionListar(self,arg):
 		self.seEjecutoListar = True
@@ -226,6 +237,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeEjecutaIgual(self):
 		assert self.seEjecutoMostrar == True
+
+	def seVerificaQueSeCarganLosComandosDeSystemaUnix(self):
+		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoUnix)
 
 class HiloQueSePuedeDetener(t.Thread):
 
