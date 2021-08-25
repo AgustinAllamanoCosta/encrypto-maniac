@@ -55,8 +55,6 @@ class ConsolaEncryptoManiac():
 			self.correrConsola = False
 		except IndexError:
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
-		except ComandoNoEncontradoExcepcion:
-			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 
 	def ingresarEntradas(self):
 		return input()

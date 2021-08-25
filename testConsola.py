@@ -3,7 +3,6 @@
 import unittest
 from consolaEncriptoManiac import *
 import threading as t
-from os import system
 
 class TestConsolaManiac(unittest.TestCase):
 
