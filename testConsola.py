@@ -187,7 +187,7 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(self.plataform)
 
-	def observadorFuncionListar(self,arg):
+	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
 
 	def observadorFuncionEliminar(self,arg):

@@ -38,21 +38,24 @@ class ConsolaEncryptoManiac():
 			
 			self.historial.agregarEntrada(entrada)
 			comando = self.comandosEstandar.get(valoresEntrada[0].lower())
-
-			if(comando != None):
+			resultado = None
+			if isinstance(comando,ComandoConsolaSinParametros):
+				resultado = comando.ejecutar()
+			elif isinstance(comando,ComandoConsola):
 				resultado = comando.ejecutar(valoresEntrada[1:])
-
-				if(resultado != None):
-					self.escribirEnConsola(resultado)
 			else:
-				self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
+				raise ComandoNoEncontradoExcepcion()
 
+			self.escribirEnConsola(resultado)
+
+		except InterrumpirConsola:
+			self.correrConsola = False
+		except ComandoNoEncontradoExcepcion:
+			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 		except ParametrosComandoIncompletos as expt:
 			self.escribirEnConsola(expt.mensaje)
 		except ParametrosComandosNullos:
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
-		except InterrumpirConsola:
-			self.correrConsola = False
 		except IndexError:
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
 
@@ -60,8 +63,9 @@ class ConsolaEncryptoManiac():
 		return input()
 
 	def escribirEnConsola(self,mensaje):
-		print(mensaje)
-		self.historial.agregarEntrada(mensaje)
+		if(mensaje != None):
+			print(mensaje)
+			self.historial.agregarEntrada(mensaje)
  
 	def obtenerHistorial(self):
 		return self.historial.obtener()

@@ -33,16 +33,6 @@ class ComandoAgregar(ComandoConsola):
 			self.encriptoManiac.ingresarClave(parametros[0],parametros[1])
 		return None
 
-class ComandoVerMas(ComandoConsola):
-
-	def ejecutar(self,parametros):
-		return ConstanteConsola.mensajeComandosAvanzados
-
-class ComandoExit(ComandoConsola):
-
-	def ejecutar(self,parametros):
-		raise InterrumpirConsola()
-
 class ComandoModificar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
@@ -72,6 +62,16 @@ class ComandoListar(ComandoConsolaSinParametros):
 	def ejecutar(self):
 		self.encriptoManiac.listarCuentas()
 		return None
+
+class ComandoExit(ComandoConsolaSinParametros):
+
+	def ejecutar(self):
+		raise InterrumpirConsola()
+
+class ComandoVerMas(ComandoConsolaSinParametros):
+
+	def ejecutar(self):
+		return ConstanteConsola.mensajeComandosAvanzados
 
 class ComandoUnix(ComandoConsolaSinParametros):
 	pass
