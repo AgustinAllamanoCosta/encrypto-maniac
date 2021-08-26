@@ -10,13 +10,15 @@ class TestComandosManiac(unittest.TestCase):
 		self.funcionesOriginales = {
 			'ingresarClave': EncriptoManiac.ingresarClave,
 			'actualizarClave': EncriptoManiac.actualizarClave,
-			'eliminarClave': EncriptoManiac.eliminarClave
+			'eliminarClave': EncriptoManiac.eliminarClave,
+			'buscarClave': EncriptoManiac.buscarClave
 		}
 
 	def tearDown(self):
 		EncriptoManiac.ingresarClave = self.funcionesOriginales['ingresarClave']
 		EncriptoManiac.actualizarClave = self.funcionesOriginales['actualizarClave']
 		EncriptoManiac.eliminarClave = self.funcionesOriginales['eliminarClave']
+		EncriptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
 
 	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
