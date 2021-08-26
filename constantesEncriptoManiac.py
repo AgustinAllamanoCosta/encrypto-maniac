@@ -17,4 +17,15 @@ class ConstanteConsola:
 	parametro1: es el nombre de la cuenta a agregar
 	parametro2: es la contraseña de la cuenta
 	LOS DOS PARAMETROS SON OBLIGATORIOS'''
-	
+
+class ConstantesEncryptoManiac:
+	baseEncriptoManiac = "manicaDB.db"
+	nombreArchivoKey = 'encriptoKey.key'
+
+class ConsultaDB:
+	actualizarClave = 'UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?'
+	listarCuentas = 'SELECT nombreApp FROM clavesYAplicaciones'
+	buscarClave = 'SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?'
+	ingresarClave = 'INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)'
+
+	crearTabla = 'CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text)'

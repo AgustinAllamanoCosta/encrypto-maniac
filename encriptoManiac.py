@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sqlite3
 from cryptography.fernet import Fernet as ft
+from constantesEncriptoManiac import *
 import os
 
 class EncriptoManiac(object):
@@ -75,14 +76,3 @@ class EncriptoManiac(object):
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
-class ConstantesEncryptoManiac:
-	baseEncriptoManiac = "manicaDB.db"
-	nombreArchivoKey = 'encriptoKey.key'
-
-class ConsultaDB:
-	actualizarClave = 'UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?'
-	listarCuentas = 'SELECT nombreApp FROM clavesYAplicaciones'
-	buscarClave = 'SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?'
-	ingresarClave = 'INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)'
-
-	crearTabla = 'CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text)'
