@@ -57,8 +57,7 @@ class ComandoMostrar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
-		if(len(parametros)==1):
-			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		self.encriptoManiac.buscarClave(parametros[0])
 		return None
 
 class ComandoListar(ComandoConsola):

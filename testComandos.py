@@ -33,6 +33,11 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamanALaFuncionEjecutarDelComandoEliminarClave()
 		self.seVerificaQueSeLlamaALaFuncionEliminarClave()
 
+	def test_dadoQueSeLlamaComandoMostrarConParametroNombreDeCuentaSeVerifiacaQueSeLlamanALaFuncionBuscarClave(self):
+		self.dadoQueSeLlamaAlComandoBuscarClave().conParametros(['slack'])
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoBuscarClave()
+		self.seVerificaQueSeLlamaALaFuncionBuscarClave()
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
 		return self
@@ -43,6 +48,10 @@ class TestComandosManiac(unittest.TestCase):
 
 	def dadoQueSeLlamaAlComandoEliminarClave(self):
 		self.comando = ComandoEliminar()
+		return self
+
+	def dadoQueSeLlamaAlComandoBuscarClave(self):
+		self.comando = ComandoMostrar()
 		return self
 
 	def conParametros(self,parametros):
@@ -63,6 +72,11 @@ class TestComandosManiac(unittest.TestCase):
 		EncriptoManiac.eliminarClave = self.observadorEliminarClave
 		self.comando.ejecutar(self.parametroComando)
 
+	def cuandoSeLlamanALaFuncionEjecutarDelComandoBuscarClave(self):
+		self.seEjecutoBuscarClave = False
+		EncriptoManiac.buscarClave = self.observadorBuscarClave
+		self.comando.ejecutar(self.parametroComando)
+
 	def observadorActualizarClave(self,param1,param2):
 		self.seEjecutoActualizarClave = True
 
@@ -72,6 +86,9 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorEliminarClave(self,parametro):
 		self.seEjecutoEliminarClave = True
 
+	def observadorBuscarClave(self,parametro):
+		self.seEjecutoBuscarClave = True
+
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		assert self.seEjecutoIngresarClave == True
 
@@ -80,6 +97,9 @@ class TestComandosManiac(unittest.TestCase):
 
 	def seVerificaQueSeLlamaALaFuncionEliminarClave(self):
 		assert self.seEjecutoEliminarClave == True
+
+	def seVerificaQueSeLlamaALaFuncionBuscarClave(self):
+		assert self.seEjecutoBuscarClave == True
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)
