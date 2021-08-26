@@ -92,7 +92,7 @@ class TestComandosManiac(unittest.TestCase):
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoListar(self):
 		self.seEjecutoListarCuentas = False
 		EncriptoManiac.listarCuentas = self.observadorListarCuentas
-		self.comando.ejecutar(None)
+		self.comando.ejecutar()
 
 	def observadorActualizarClave(self,param1,param2):
 		self.seEjecutoActualizarClave = True

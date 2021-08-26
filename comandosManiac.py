@@ -4,10 +4,12 @@ from CustomException import *
 from constantesEncriptoManiac import *
 from encriptoManiac import *
 
-class ComandoConsola(object):
+class Comando(object):
 
 	def __init__(self):
 		self.encriptoManiac = EncriptoManiac()
+
+class ComandoConsola(Comando):
 
 	def ejecutar(self,parametros):
 		return None
@@ -15,6 +17,11 @@ class ComandoConsola(object):
 	def validarParametros(self,parametros):
 		if(parametros == []):
 			raise ParametrosComandosNullos()
+
+class ComandoConsolaSinParametros(Comando):
+	
+	def ejecutar(self):
+		return None
 
 class ComandoAgregar(ComandoConsola):
 
@@ -60,14 +67,14 @@ class ComandoMostrar(ComandoConsola):
 		self.encriptoManiac.buscarClave(parametros[0])
 		return None
 
-class ComandoListar(ComandoConsola):
+class ComandoListar(ComandoConsolaSinParametros):
 	
-	def ejecutar(self,parametros):
+	def ejecutar(self):
 		self.encriptoManiac.listarCuentas()
 		return None
 
-class ComandoUnix(ComandoConsola):
+class ComandoUnix(ComandoConsolaSinParametros):
 	pass
 
-class ComandoWin(ComandoConsola):
+class ComandoWin(ComandoConsolaSinParametros):
 	pass
