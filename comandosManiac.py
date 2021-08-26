@@ -50,8 +50,7 @@ class ComandoEliminar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
-		if(len(parametros)==1):
-			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		self.encriptoManiac.eliminarClave(parametros[0])
 		return None
 
 class ComandoMostrar(ComandoConsola):
