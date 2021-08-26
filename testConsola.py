@@ -128,12 +128,6 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaWin()
 
-	def test_dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametroSeVerificaQueSeMuestraLaAyudaDelComandoListar(self):
-		self.dadoQueSeTieneUnContexto()
-		self.dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro()
-		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
-		self.seVerificaQueSeMuestraLaAyudaDelComandoListar()
-
 	def dadoQueSeTieneUnContexto(self):
 		self.consola = ConsolaEncryptoManiac()	
 
@@ -195,9 +189,6 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(self.plataform)
 
-	def dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'ayuda listar'
-
 	def cuandoSeInicia(self):
 		self.consolaEnParalelo.start()
 
@@ -246,9 +237,6 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeCarganLosComandosDeSystemaWin(self):
 		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoWin)
-
-	def seVerificaQueSeMuestraLaAyudaDelComandoListar(self):
-		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeAyudaComandoListar
 
 #Utilidades 
 	def observadorFuncionListar(self):

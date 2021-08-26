@@ -61,7 +61,13 @@ class ComandoAyuda(ComandoConsola):
 
 	def __init__(self):
 		self.mensajeAyuda = {
-		'listar': ConstanteConsola.mensajeAyudaComandoListar
+		'listar': ConstanteConsola.mensajeAyudaComandoListar,
+		'agregar':ConstanteConsola.mensajeAyudaComandoAgregar,
+		'exit':ConstanteConsola.mensajeAyudaComandoExit,
+		'mostrar':ConstanteConsola.mensajeAyudaComandoMostrar,
+		'vermas':ConstanteConsola.mensajeAyudaComandoVerMas,
+		'eliminar':ConstanteConsola.mensajeAyudaComandoEliminar,
+		'modificar':ConstanteConsola.mensajeAyudaComandoModificar
 		}
 
 	def ejecutar(self,parametros):

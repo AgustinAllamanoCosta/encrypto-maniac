@@ -12,12 +12,20 @@ class ConstanteConsola:
 	agregar   -> para agregar una nueva cuenta y contraseña en la base
 	vermas    -> para ver este mensaje :D
 	Pd: para ver como usar un comando escribi -> ayuda nombreComando <- ej: ayuda modificar'''
-	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
+	
+	
 	mensajeAyudaComandoAgregar = '''Comando agregar-> agregar parametro1 parametro2 
 	parametro1: es el nombre de la cuenta a agregar
 	parametro2: es la contraseña de la cuenta
 	LOS DOS PARAMETROS SON OBLIGATORIOS'''
-	mensajeAyudaComandoListar= '''Comando que se utiliza para listar todo el contenido de la base, no utiliza parametros para hacerlo :D'''
+	mensajeAyudaComandoListar= '''Comando listar-> se utiliza para listar todo el contenido de la base, no utiliza parametros para hacerlo :D'''
+	mensajeAyudaComandoExit='''Comando exit-> se utiliza para salir del sistema, todas las contraseñas quedaran guardades en la base de datos, asi que cundo vuelvas todo estara como si nunca te hubieras ido :D'''
+	mensajeAyudaComandoMostrar = '''Comando mostrar-> mostrar parametro1 \n parametro1: el nombre de la cuenta a mostrar la clave, si no existe la cuenta no se mostrara nada :D'''
+	mensajeAyudaComandoVerMas = '''Comando vermas-> muestra la lista de comando disponibles :D'''
+	mensajeAyudaComandoEliminar = '''Comando eliminar-> eliminar parametro1 \n parametro1: nombre de la cuenta a elimnar de la base, la misma despues no se puede recuperar :D'''
+	mensajeAyudaComandoModificar = '''Comando modificar-> modificar parametro1 parametro2 \n parametro1: nombre de la cuenta a modificar \n parametro2 nueva calve a ingresar'''
+
+	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
 
 class ConstantesEncryptoManiac:
 	baseEncriptoManiac = "manicaDB.db"
