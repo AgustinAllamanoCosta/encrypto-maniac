@@ -32,4 +32,6 @@ jobs:
         run: python testConsola.py
       - name: Correr test de consola
         run: python testConsola.py
+      - name: Correr test de Encrypto Maniac
+        run: python testEncriptoManiac.py
         
