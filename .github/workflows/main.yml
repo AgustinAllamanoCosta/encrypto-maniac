@@ -28,5 +28,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install cryptography
-      - name: Corriendo comandos de consola
+      - name: Corriendo test de comandos de consola
+        run: python testConsola.py
+      - name: Correindo test de consola
         run: python testConsola.py
