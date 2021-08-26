@@ -61,7 +61,10 @@ class ComandoMostrar(ComandoConsola):
 		return None
 
 class ComandoListar(ComandoConsola):
-	pass
+	
+	def ejecutar(self,parametros):
+		self.encriptoManiac.listarCuentas()
+		return None
 
 class ComandoUnix(ComandoConsola):
 	pass

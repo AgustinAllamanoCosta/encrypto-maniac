@@ -11,7 +11,8 @@ class TestComandosManiac(unittest.TestCase):
 			'ingresarClave': EncriptoManiac.ingresarClave,
 			'actualizarClave': EncriptoManiac.actualizarClave,
 			'eliminarClave': EncriptoManiac.eliminarClave,
-			'buscarClave': EncriptoManiac.buscarClave
+			'buscarClave': EncriptoManiac.buscarClave,
+			'listarCuentas': EncriptoManiac.listarCuentas
 		}
 
 	def tearDown(self):
@@ -19,6 +20,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncriptoManiac.actualizarClave = self.funcionesOriginales['actualizarClave']
 		EncriptoManiac.eliminarClave = self.funcionesOriginales['eliminarClave']
 		EncriptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
+		EncriptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
 
 	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
@@ -40,6 +42,11 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamanALaFuncionEjecutarDelComandoBuscarClave()
 		self.seVerificaQueSeLlamaALaFuncionBuscarClave()
 
+	def test_dadoQueSeLlamaComandoListarSeVerifiacaQueSeLlamanALaFuncionListarCuentas(self):
+		self.dadoQueSeLlamaAlComandoListar()
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoListar()
+		self.seVerificaQueSeLlamaALaFuncionListarCuentas()
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
 		return self
@@ -55,6 +62,9 @@ class TestComandosManiac(unittest.TestCase):
 	def dadoQueSeLlamaAlComandoBuscarClave(self):
 		self.comando = ComandoMostrar()
 		return self
+
+	def dadoQueSeLlamaAlComandoListar(self):
+		self.comando = ComandoListar()
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
@@ -77,7 +87,12 @@ class TestComandosManiac(unittest.TestCase):
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoBuscarClave(self):
 		self.seEjecutoBuscarClave = False
 		EncriptoManiac.buscarClave = self.observadorBuscarClave
-		self.comando.ejecutar(self.parametroComando)
+		self.comando.ejecutar(self.parametroComando)	
+
+	def cuandoSeLlamanALaFuncionEjecutarDelComandoListar(self):
+		self.seEjecutoListarCuentas = False
+		EncriptoManiac.listarCuentas = self.observadorListarCuentas
+		self.comando.ejecutar(None)
 
 	def observadorActualizarClave(self,param1,param2):
 		self.seEjecutoActualizarClave = True
@@ -91,6 +106,9 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorBuscarClave(self,parametro):
 		self.seEjecutoBuscarClave = True
 
+	def observadorListarCuentas(self):
+		self.seEjecutoListarCuentas = True
+
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		assert self.seEjecutoIngresarClave == True
 
@@ -102,6 +120,9 @@ class TestComandosManiac(unittest.TestCase):
 
 	def seVerificaQueSeLlamaALaFuncionBuscarClave(self):
 		assert self.seEjecutoBuscarClave == True
+
+	def seVerificaQueSeLlamaALaFuncionListarCuentas(self):
+		assert self.seEjecutoListarCuentas == True
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)

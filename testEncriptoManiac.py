@@ -27,7 +27,7 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.cuandoSeEncryptaLaPalabra("holaMundoCripto123")
 		self.seVerificaQueSeEncryptoExitosamente()
 			
-	# Test de integracion con base de datos mejorar 
+# Test de integracion con base de datos mejorar 
 	def test_DadoQueSeEjecutaLaFuncionIngresarClaveSeEncriptaYSeInsertaEnLaBaseDeDatos(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
