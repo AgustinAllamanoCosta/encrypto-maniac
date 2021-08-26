@@ -42,6 +42,8 @@ class ComandoModificar(ComandoConsola):
 		super().validarParametros(parametros)
 		if(len(parametros)==1):
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		else:
+			self.encriptoManiac.actualizarClave(parametros[0],parametros[1])
 		return None
 
 class ComandoEliminar(ComandoConsola):

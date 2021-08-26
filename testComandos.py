@@ -8,34 +8,56 @@ class TestComandosManiac(unittest.TestCase):
 
 	def setUp(self):
 		self.funcionesOriginales = {
-			'ingresarClave': EncriptoManiac.ingresarClave
+			'ingresarClave': EncriptoManiac.ingresarClave,
+			'actualizarClave': EncriptoManiac.actualizarClave
 		}
 
 	def tearDown(self):
 		EncriptoManiac.ingresarClave = self.funcionesOriginales['ingresarClave']
+		EncriptoManiac.actualizarClave = self.funcionesOriginales['actualizarClave']
 
 	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
-		self.cuandoSeLlamanALaFuncionEjecutarDelComando()
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
 		self.seVerificaQueSeLlamaALaFuncionIngresarClave()
+
+	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
+		self.dadoQueSeLlamaAlComandoActualizarClave().conParametros(['slack','456'])
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoActualizarClave()
+		self.seVerificaQueSeLlamaALaFuncionActualizarClave()
 
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
 		return self
 
+	def dadoQueSeLlamaAlComandoActualizarClave(self):
+		self.comando = ComandoModificar()
+		return self
+
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
 
-	def cuandoSeLlamanALaFuncionEjecutarDelComando(self):
+	def cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar(self):
 		self.seEjecutoIngresarClave = False
 		EncriptoManiac.ingresarClave = self.observadorIngresarClave
 		self.comando.ejecutar(self.parametroComando)
+
+	def cuandoSeLlamanALaFuncionEjecutarDelComandoActualizarClave(self):
+		self.seEjecutoActualizarClave = False
+		EncriptoManiac.actualizarClave = self.observadorActualizarClave
+		self.comando.ejecutar(self.parametroComando)
+
+	def observadorActualizarClave(self,param1,param2):
+		self.seEjecutoActualizarClave = True
 
 	def observadorIngresarClave(self,param1,param2):
 		self.seEjecutoIngresarClave = True
 
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		assert self.seEjecutoIngresarClave == True
+
+	def seVerificaQueSeLlamaALaFuncionActualizarClave(self):
+		assert self.seEjecutoActualizarClave == True
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)
