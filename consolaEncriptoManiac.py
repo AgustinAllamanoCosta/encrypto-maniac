@@ -20,7 +20,8 @@ class ConsolaEncryptoManiac():
 		'agregar':ComandoAgregar(),
 		'modificar':ComandoModificar(),
 		'eliminar':ComandoEliminar(),
-		'mostrar':ComandoMostrar()
+		'mostrar':ComandoMostrar(),
+		'ayuda':ComandoAyuda()
 		}
 
 	def bucleDeConsola(self):
@@ -35,10 +36,10 @@ class ConsolaEncryptoManiac():
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
 		try:
-			
 			self.historial.agregarEntrada(entrada)
 			comando = self.comandosEstandar.get(valoresEntrada[0].lower())
 			resultado = None
+
 			if isinstance(comando,ComandoConsolaSinParametros):
 				resultado = comando.ejecutar()
 			elif isinstance(comando,ComandoConsola):

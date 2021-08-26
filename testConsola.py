@@ -14,7 +14,8 @@ class TestConsolaManiac(unittest.TestCase):
 			'ComandoVerMas': ComandoVerMas.ejecutar,
 			'ComandoExit' : ComandoExit.ejecutar,
 			'ComandoEliminar' : ComandoEliminar.ejecutar,
-			'ComandoMostrar' : ComandoMostrar.ejecutar
+			'ComandoMostrar' : ComandoMostrar.ejecutar,
+			'ComandoAyuda' : ComandoAyuda.ejecutar
 		}
 
 	def tearDown(self):
@@ -25,6 +26,7 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoExit.ejecutar = self.funcionesOriginales['ComandoExit']
 		ComandoEliminar.ejecutar = self.funcionesOriginales['ComandoEliminar']
 		ComandoMostrar.ejecutar = self.funcionesOriginales['ComandoMostrar']
+		ComandoAyuda.ejecutar = self.funcionesOriginales['ComandoAyuda']
 
 	def test_dadoQueTengoUnContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueSeTieneUnContexto()
@@ -121,10 +123,16 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaUnix()
 
-	def test_dadoQueEstoyTrabajandoEnSistemaWinCuandoSeInstanciaUnaConsolaDesdeElFactorySeVerificaQueSeCarganLosComandosDeUnixDeSystema(self):
+	def test_dadoQueEstoyTrabajandoEnSistemaWinCuandoSeInstanciaUnaConsolaDesdeElFactorySeVerificaQueSeCarganLosComandosDeWin32DeSystema(self):
 		self.dadoQueEstoyTrabajandoiEnSistemasWin()
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaWin()
+
+	def test_dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametroSeVerificaQueSeMuestraLaAyudaDelComandoListar(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
+		self.seVerificaQueSeMuestraLaAyudaDelComandoListar()
 
 	def dadoQueSeTieneUnContexto(self):
 		self.consola = ConsolaEncryptoManiac()	
@@ -187,20 +195,8 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(self.plataform)
 
-	def observadorFuncionListar(self):
-		self.seEjecutoListar = True
-
-	def observadorFuncionEliminar(self,arg):
-		self.seEjecutoEliminar = True
-
-	def observadorFuncionMostrar(self,arg):
-		self.seEjecutoMostrar = True
-
-	def observadorFuncionModificar(self,arg):
-		self.seEjecutoModificar = True
-
-	def observadorFuncionAgregar(self,arg):
-		self.seEjecutoAgregar = True
+	def dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro(self):
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'ayuda listar'
 
 	def cuandoSeInicia(self):
 		self.consolaEnParalelo.start()
@@ -250,6 +246,25 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeCarganLosComandosDeSystemaWin(self):
 		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoWin)
+
+	def seVerificaQueSeMuestraLaAyudaDelComandoListar(self):
+		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeAyudaComandoListar
+
+#Utilidades 
+	def observadorFuncionListar(self):
+		self.seEjecutoListar = True
+
+	def observadorFuncionEliminar(self,arg):
+		self.seEjecutoEliminar = True
+
+	def observadorFuncionMostrar(self,arg):
+		self.seEjecutoMostrar = True
+
+	def observadorFuncionModificar(self,arg):
+		self.seEjecutoModificar = True
+
+	def observadorFuncionAgregar(self,arg):
+		self.seEjecutoAgregar = True
 
 class HiloQueSePuedeDetener(t.Thread):
 

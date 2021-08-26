@@ -57,8 +57,19 @@ class ComandoMostrar(ComandoConsola):
 		self.encriptoManiac.buscarClave(parametros[0])
 		return None
 
+class ComandoAyuda(ComandoConsola):
+
+	def __init__(self):
+		self.mensajeAyuda = {
+		'listar': ConstanteConsola.mensajeAyudaComandoListar
+		}
+
+	def ejecutar(self,parametros):
+		super().validarParametros(parametros)
+		return self.mensajeAyuda[parametros[0]]
+
 class ComandoListar(ComandoConsolaSinParametros):
-	
+
 	def ejecutar(self):
 		self.encriptoManiac.listarCuentas()
 		return None
@@ -69,6 +80,9 @@ class ComandoExit(ComandoConsolaSinParametros):
 		raise InterrumpirConsola()
 
 class ComandoVerMas(ComandoConsolaSinParametros):
+
+	def __init__(self):
+		pass
 
 	def ejecutar(self):
 		return ConstanteConsola.mensajeComandosAvanzados

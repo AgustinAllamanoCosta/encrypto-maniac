@@ -17,6 +17,7 @@ class ConstanteConsola:
 	parametro1: es el nombre de la cuenta a agregar
 	parametro2: es la contraseña de la cuenta
 	LOS DOS PARAMETROS SON OBLIGATORIOS'''
+	mensajeAyudaComandoListar= '''Comando que se utiliza para listar todo el contenido de la base, no utiliza parametros para hacerlo :D'''
 
 class ConstantesEncryptoManiac:
 	baseEncriptoManiac = "manicaDB.db"
