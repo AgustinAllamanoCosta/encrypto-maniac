@@ -24,5 +24,7 @@ jobs:
         with:
           python-version: '3.x'
           architecture: 'x64'
+      - name: Preparar dependencias para test
+        run: python pip install cryptography
       - name: Corriendo comandos de consola
         run: python testConsola.py
