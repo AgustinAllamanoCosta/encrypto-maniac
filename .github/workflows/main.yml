@@ -33,7 +33,9 @@ jobs:
           python testConsola.py
           python subTetConsolaEncriptoManiac.py
       - name: Correr test de consola
-        run: python testConsola.py
+        run: | 
+          python testConsola.py
       - name: Correr test de Encrypto Maniac
-        run: python testEncriptoManiac.py
+        run: |
+          python testEncriptoManiac.py
         
