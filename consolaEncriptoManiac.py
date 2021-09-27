@@ -90,8 +90,8 @@ class FactoryConsolaEncriptoManiac(object):
 
 	def __init__(self):
 		self.tipoDeConsolas = {
-		'Unix':ConsolaEncryptoManiacLinux(),
-		'Win32':ConsolaEncryptoManiacWin()
+		'unix':ConsolaEncryptoManiacLinux(),
+		'win32':ConsolaEncryptoManiacWin()
 		}
 
 	def obtenerConsola(self,plataforma):
