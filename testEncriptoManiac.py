@@ -66,6 +66,14 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.seVerificaQueSeActualizo()
 		self.limpiarBase()		
 
+	def test_DadoQueSeEjecutaLaFuncionEliminarYQueExisteUnRegistroEnLaBBDDQueCoincideConElValorAEliminarSeVerificaQueSeEliminaDeLaBase(self):
+		self.limpiarBase()
+		self.dadoQueInicioCryptoManiac()
+		self.cuandoSeIngresaLaCuenta('slack').conlaClave('1234Admin')
+		self.cuandoQueSeEjecutaLaFuncionEliminar()
+		self.seVerficaQueSeEliminoLaCuentaSlack()
+		self.limpiarBase()
+
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
@@ -104,6 +112,9 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.claveAIngresar = clave
 		self.encriptoManiac.ingresarClave(self.nombreAPP,self.claveAIngresar)
 
+	def cuandoQueSeEjecutaLaFuncionEliminar(self):
+		self.encriptoManiac.eliminarClave('slack')
+
 	def serVerificaQueSeIniciaLaBase(self):
 		self.assertEqual(self.encriptoManiac.baseIniciada, True)
 
@@ -134,6 +145,12 @@ class TestEncriptoManiac(unittest.TestCase):
 
 	def seVerificaQueSeActualizo(self):
 		self.assertEqual(self.encriptoManiac.buscarClave(self.nombreAPP),self.nuevaClave)
+
+	def seVerficaQueSeEliminoLaCuentaSlack(self):
+		baseDeDatos = sqlite3.connect(cem.baseEncriptoManiac)
+		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',('slack',))
+		self.assertEqual(len(cursor.fetchall()),0)
+		baseDeDatos.close()
 
 	def limpiarBase(self):
 		baseDeDatos = sqlite3.connect(cem.baseEncriptoManiac)

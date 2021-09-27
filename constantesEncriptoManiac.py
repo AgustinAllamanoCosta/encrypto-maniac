@@ -36,5 +36,5 @@ class ConsultaDB:
 	listarCuentas = 'SELECT nombreApp FROM clavesYAplicaciones'
 	buscarClave = 'SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?'
 	ingresarClave = 'INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)'
-
+	eliminarClave = 'DELETE FROM clavesYAplicaciones WHERE nombreApp = ?'
 	crearTabla = 'CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text)'

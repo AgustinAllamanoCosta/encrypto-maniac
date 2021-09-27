@@ -71,7 +71,10 @@ class EncriptoManiac(object):
 			return None
 
 	def eliminarClave(self,parametro):
-		pass
+		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
+		baseDeDatos.execute(ConsultaDB.eliminarClave,(parametro,))
+		baseDeDatos.commit()
+		baseDeDatos.close()
 			
 	def actualizarClave(self,nombreApp,calveNueva):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
