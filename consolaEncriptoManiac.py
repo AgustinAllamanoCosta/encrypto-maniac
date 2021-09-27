@@ -95,7 +95,7 @@ class FactoryConsolaEncriptoManiac(object):
 		}
 
 	def obtenerConsola(self,plataforma):
-		return self.tipoDeConsolas[plataforma]
+		return self.tipoDeConsolas[plataforma.lower()]
 
 class HistorialConsola(object):
 	
