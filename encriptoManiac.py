@@ -71,7 +71,19 @@ class EncriptoManiac(object):
 			return None
 
 	def existeCuentaEnBase(self,nombreCuenta):
+<<<<<<< Updated upstream
 		pass
+=======
+
+		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
+		cursor = baseDeDatos.execute(ConsultaDB.buscarCuenta,(nombreCuenta,))
+		respuesta = cursor.fetchall()
+		baseDeDatos.close()
+		if(len(respuesta)>0):
+			return True
+		else:
+			return False
+>>>>>>> Stashed changes
 
 	def eliminarClave(self,parametro):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
