@@ -12,7 +12,8 @@ class TestComandosManiac(unittest.TestCase):
 			'actualizarClave': EncriptoManiac.actualizarClave,
 			'eliminarClave': EncriptoManiac.eliminarClave,
 			'buscarClave': EncriptoManiac.buscarClave,
-			'listarCuentas': EncriptoManiac.listarCuentas
+			'listarCuentas': EncriptoManiac.listarCuentas,
+			'existeCuentaEnBase': EncriptoManiac.existeCuentaEnBase
 		}
 
 	def tearDown(self):
@@ -21,11 +22,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncriptoManiac.eliminarClave = self.funcionesOriginales['eliminarClave']
 		EncriptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
 		EncriptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
-
-	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaQueSeLlamaALaFuncionIngresarClave(self):
-		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
-		self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
-		self.seVerificaQueSeLlamaALaFuncionIngresarClave()
+		EncriptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
 		self.dadoQueSeLlamaAlComandoActualizarClave().conParametros(['slack','456'])
@@ -47,6 +44,19 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamanALaFuncionEjecutarDelComandoListar()
 		self.seVerificaQueSeLlamaALaFuncionListarCuentas()
 
+	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaQueSeLlamaALaFuncionIngresarClave(self):
+		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
+		self.dadoQueNoExisteLaCuentaEnLaBase()
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
+		self.seVerificaQueSeLlamaALaFuncionIngresarClave()
+
+	def test_dadoQueExisteUnaCuentaLaBaseCuandoSeVaAIngresarUnaCuentaConElMismoNombreSeVerificaQueSeLanzaUnaExcepcion(self):
+		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
+		self.dadoQueExisteUnaCuentaEnLaBase()
+		with self.assertRaises(CuentaEnBaseDuplicadaException):
+			self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
+		self.seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada()
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
 		return self
@@ -65,6 +75,14 @@ class TestComandosManiac(unittest.TestCase):
 
 	def dadoQueSeLlamaAlComandoListar(self):
 		self.comando = ComandoListar()
+
+	def dadoQueExisteUnaCuentaEnLaBase(self):
+		self.seEjecutoExisteCuentaEnBase = False
+		EncriptoManiac.existeCuentaEnBase = self.observadorExisteCuentaEnBase
+
+	def dadoQueNoExisteLaCuentaEnLaBase(self):
+		self.seEjecutoExisteCuentaEnBase = False
+		EncriptoManiac.existeCuentaEnBase = self.observadorNoExisteCuentaEnBase
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
@@ -109,8 +127,20 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorListarCuentas(self):
 		self.seEjecutoListarCuentas = True
 
+	def observadorExisteCuentaEnBase(self, nombreCuenta):
+		self.seEjecutoExisteCuentaEnBase = True
+		return True
+
+	def observadorNoExisteCuentaEnBase(self,nombreCuenta):
+		self.seEjecutoExisteCuentaEnBase = True
+		return False
+
+	def buscarClaveMock(self,nombre):
+		return ['slack','']
+
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		assert self.seEjecutoIngresarClave == True
+		assert self.seEjecutoExisteCuentaEnBase == True
 
 	def seVerificaQueSeLlamaALaFuncionActualizarClave(self):
 		assert self.seEjecutoActualizarClave == True
@@ -124,6 +154,11 @@ class TestComandosManiac(unittest.TestCase):
 	def seVerificaQueSeLlamaALaFuncionListarCuentas(self):
 		assert self.seEjecutoListarCuentas == True
 
+	def seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada(self):
+		assert self.seEjecutoExisteCuentaEnBase == True
+		assert self.seEjecutoIngresarClave == False
+
+		
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)
 	unittest.TextTestRunner(verbosity=2).run(suite)

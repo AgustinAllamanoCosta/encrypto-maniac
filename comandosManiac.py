@@ -31,7 +31,10 @@ class ComandoAgregar(ComandoConsola):
 		if(len(parametros)==1):
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
-			self.encriptoManiac.ingresarClave(parametros[0],parametros[1])
+			if(self.encriptoManiac.existeCuentaEnBase(parametros[0]) != True):
+				self.encriptoManiac.ingresarClave(parametros[0],parametros[1])
+			else:
+				raise CuentaEnBaseDuplicadaException(parametros[0])
 		return None
 
 class ComandoModificar(ComandoConsola):
@@ -41,7 +44,7 @@ class ComandoModificar(ComandoConsola):
 		if(len(parametros)==1):
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
-			self.encriptoManiac.actualizarClave(parametros[0],parametros[1])
+			self.encriptoManiac.actualizarClave(parametros[0],parametros[1])	
 		return None
 
 class ComandoEliminar(ComandoConsola):
