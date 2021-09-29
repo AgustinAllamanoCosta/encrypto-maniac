@@ -76,8 +76,7 @@ class ComandoAyuda(ComandoConsola):
 class ComandoListar(ComandoConsolaSinParametros):
 
 	def ejecutar(self):
-		self.encriptoManiac.listarCuentas()
-		return None
+		return self.encriptoManiac.listarCuentas()
 
 class ComandoExit(ComandoConsolaSinParametros):
 
