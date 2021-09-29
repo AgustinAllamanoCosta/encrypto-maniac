@@ -3,6 +3,7 @@
 from CustomException import *
 from constantesEncriptoManiac import *
 from encriptoManiac import *
+from os import system
 
 class Comando(object):
 
@@ -92,7 +93,15 @@ class ComandoVerMas(ComandoConsolaSinParametros):
 		return ConstanteConsola.mensajeComandosAvanzados
 
 class ComandoUnix(ComandoConsolaSinParametros):
-	pass
+	def __init__(self):
+		pass
+
+	def ejecutar(self):
+		system('clear')
 
 class ComandoWin(ComandoConsolaSinParametros):
-	pass
+	def __init__(self):
+		pass
+
+	def ejecutar(self):
+		system('cls')

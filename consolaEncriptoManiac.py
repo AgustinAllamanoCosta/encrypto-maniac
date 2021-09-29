@@ -42,8 +42,10 @@ class ConsolaEncryptoManiac():
 
 			if isinstance(comando,ComandoConsolaSinParametros):
 				resultado = comando.ejecutar()
+				self.comandosEstandar.get('systema').ejecutar()
 			elif isinstance(comando,ComandoConsola):
 				resultado = comando.ejecutar(valoresEntrada[1:])
+				self.comandosEstandar.get('systema').ejecutar()
 			else:
 				raise ComandoNoEncontradoExcepcion()
 
