@@ -15,7 +15,8 @@ class TestConsolaManiac(unittest.TestCase):
 			'ComandoExit' : ComandoExit.ejecutar,
 			'ComandoEliminar' : ComandoEliminar.ejecutar,
 			'ComandoMostrar' : ComandoMostrar.ejecutar,
-			'ComandoAyuda' : ComandoAyuda.ejecutar
+			'ComandoAyuda' : ComandoAyuda.ejecutar,
+			'existeCuentaEnBase' :EncriptoManiac.existeCuentaEnBase
 		}
 
 	def tearDown(self):
@@ -27,6 +28,7 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoEliminar.ejecutar = self.funcionesOriginales['ComandoEliminar']
 		ComandoMostrar.ejecutar = self.funcionesOriginales['ComandoMostrar']
 		ComandoAyuda.ejecutar = self.funcionesOriginales['ComandoAyuda']
+		EncriptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 
 	def test_dadoQueTengoUnContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueSeTieneUnContexto()
