@@ -192,7 +192,7 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
 
 	def dadoQueEstoyTrabajandoiEnSistemasUnix(self):
-		self.plataform = 'Unix'
+		self.plataform = 'Linux'
 
 	def dadoQueEstoyTrabajandoiEnSistemasWin(self):
 		self.plataform = 'Win32'
