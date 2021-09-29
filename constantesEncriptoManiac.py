@@ -35,6 +35,7 @@ class ConstantesEncryptoManiac:
 class ConsultaDB:
 	actualizarClave = 'UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?'
 	listarCuentas = 'SELECT nombreApp FROM clavesYAplicaciones'
+	buscarCuenta = 'SELECT nombreApp FROM clavesYAplicaciones WHERE nombreApp == ?'
 	buscarClave = 'SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?'
 	ingresarClave = 'INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)'
 	eliminarClave = 'DELETE FROM clavesYAplicaciones WHERE nombreApp = ?'

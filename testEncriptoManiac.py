@@ -82,6 +82,13 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.seVerficaQueLaFuncionRetornaTrue()
 		self.limpiarBase()
 
+	def test_DadoQueSeEjecutaLaFuncionExisteCuentaEnBaseYQueExisteLaCuentaBuscadaEnLaBaseSeVerificaQueLaFuncionRetornaFalse(self):
+		self.limpiarBase()
+		self.dadoQueInicioCryptoManiac()
+		self.cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase('slack')
+		self.seVerficaQueLaFuncionRetornaFalse()
+		self.limpiarBase()
+
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
@@ -169,6 +176,9 @@ class TestEncriptoManiac(unittest.TestCase):
 
 	def seVerficaQueLaFuncionRetornaTrue(self):
 		assert self.existeCuenta == True
+
+	def seVerficaQueLaFuncionRetornaFalse(self):
+		assert self.existeCuenta == False
 
 	def limpiarBase(self):
 		baseDeDatos = sqlite3.connect(cem.baseEncriptoManiac)
