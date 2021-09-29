@@ -61,6 +61,8 @@ class ConsolaEncryptoManiac():
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
 		except IndexError:
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
+		except CuentaEnBaseDuplicadaException as expt:
+			self.escribirEnConsola(expt.mensaje)
 
 	def ingresarEntradas(self):
 		return input()

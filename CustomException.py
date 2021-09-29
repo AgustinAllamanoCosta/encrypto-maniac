@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from constantesEncriptoManiac import *
 class InterrumpirConsola(Exception):
 	pass
 
@@ -11,8 +12,8 @@ class ComandoNoEncontradoExcepcion(Exception):
 
 class CuentaEnBaseDuplicadaException(Exception):
 	def __init__(self, nombreCuenta):
-		mensaje ='Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingres. Nombre de cuenta: '+ nombreCuenta
-		super().__init__(mensaje)
+		self.mensaje =ConstanteConsola.mensajeErrprComandoDuplicado + nombreCuenta
+		super().__init__(self.mensaje)
 
 class ParametrosComandoIncompletos(Exception):
 	def __init__(self, mensaje):

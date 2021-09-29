@@ -152,7 +152,7 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
-		ConsolaEncryptoManiac.encriptoManiac.existeCuentaEnBase = lambda x : True
+		EncriptoManiac.existeCuentaEnBase = self.existeCuentaEnBaseMock
 
 	def dadoQueSeEjecutaElComandoListar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'listar'
@@ -265,6 +265,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def observadorFuncionAgregar(self,arg):
 		self.seEjecutoAgregar = True
+
+	def existeCuentaEnBaseMock(self,arg):
+		return True
 
 class HiloQueSePuedeDetener(t.Thread):
 
