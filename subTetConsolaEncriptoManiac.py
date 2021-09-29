@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from consolaEncriptoManiac import *
+from os import sys
 
 class SubTestConsolaEncriptoManiac(unittest.TestCase):
 	
@@ -32,7 +33,7 @@ class SubTestConsolaEncriptoManiac(unittest.TestCase):
 				self.seVerificaQueSeMuestraLaAyudaDelComandoListar()
 
 	def dadoQueSeTieneUnContexto(self):
-		self.consola = ConsolaEncryptoManiac()
+		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
 
 	def dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro(self,comandoConParametro):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : comandoConParametro
