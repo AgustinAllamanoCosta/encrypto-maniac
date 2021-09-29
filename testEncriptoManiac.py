@@ -74,8 +74,6 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.seVerficaQueSeEliminoLaCuentaSlack()
 		self.limpiarBase()
 
-<<<<<<< Updated upstream
-=======
 	def test_DadoQueSeEjecutaLaFuncionExisteCuentaEnBaseYQueNoExisteLaCuentaBuscadaEnLaBaseSeVerificaQueLaFuncionRetornaFalse(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
@@ -91,7 +89,6 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.seVerficaQueLaFuncionRetornaFalse()
 		self.limpiarBase()
 
->>>>>>> Stashed changes
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
