@@ -71,7 +71,7 @@ class EncriptoManiac(object):
 			return None
 
 	def existeCuentaEnBase(self,nombreCuenta):
-		pass
+		return True
 
 	def eliminarClave(self,parametro):
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
