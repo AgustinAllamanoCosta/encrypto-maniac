@@ -26,6 +26,7 @@ class ConstanteConsola:
 	mensajeAyudaComandoModificar = '''Comando modificar-> modificar parametro1 parametro2 \n parametro1: nombre de la cuenta a modificar \n parametro2 nueva calve a ingresar'''
 
 	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
+	mensajeErrprComandoDuplicado = 'Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingres. Nombre de cuenta: '
 
 class ConstantesEncryptoManiac:
 	baseEncriptoManiac = "manicaDB.db"

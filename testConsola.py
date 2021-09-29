@@ -3,7 +3,7 @@
 import unittest
 from consolaEncriptoManiac import *
 import threading as t
-
+import sys
 class TestConsolaManiac(unittest.TestCase):
 
 	def setUp(self):
@@ -128,8 +128,13 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaWin()
 
+	def test_dadoQueTengoUnContextoCundoSeIngresaElComandoAgregarYLaCuentaExisteEnLaBaseSeVerificaQueSeVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
+		self.dadoQueSeTieneUnContexto()
+		self.dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase()
+		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
+
 	def dadoQueSeTieneUnContexto(self):
-		self.consola = ConsolaEncryptoManiac()	
+		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)	
 
 	def dadoQueSeSaleDelContextoAlIniciar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'exit'
@@ -144,6 +149,10 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeEjecutaElComandoAgregar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
 		ComandoAgregar.ejecutar = self.observadorFuncionAgregar
+
+	def dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase(self):
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
+		ConsolaEncryptoManiac.encriptoManiac.existeCuentaEnBase = lambda x : True
 
 	def dadoQueSeEjecutaElComandoListar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'listar'
@@ -237,6 +246,9 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaQueSeCarganLosComandosDeSystemaWin(self):
 		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoWin)
+
+	def seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
+		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeErrprComandoDuplicado + 'slack'
 
 #Utilidades 
 	def observadorFuncionListar(self):
