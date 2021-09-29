@@ -54,8 +54,7 @@ class ComandoMostrar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
-		self.encriptoManiac.buscarClave(parametros[0])
-		return None
+		return self.encriptoManiac.buscarClave(parametros[0])
 
 class ComandoAyuda(ComandoConsola):
 
