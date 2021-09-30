@@ -4,12 +4,27 @@
 
 Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que permiten ser recuperadas en cualquier momento con un simple comando. La consola se puede correr tanto en linux como en windows, mediante un script creado por cada uno.
 
-## Pendientes:
+## Comandos de la consola:
 
-* agregar un sistema de logue de error en la cosola
-* agregar que cuando el usuario ingresa una contraseña por primera vez no se muestre que es lo que ingresa
-* agregar que cuando se muestra una contraseña al apreta una tecla esta desaparece de la pantalla
-* agregar lista de comandos en el readme y con una ejemplo de cada uno
+* modificar -> para cambiar la clave de una cuenta
+* eliminar  -> para borrar una cuenta
+* mostrar   -> para ver la contraseña de una cuenta
+* listar    -> para ver todas las cuentas en la base
+* agregar   -> para agregar una nueva cuenta y contraseña en la base
+* vermas    -> para ver el lista de comandos en la consola
+* exit      -> para salir del terminal
+* Pd: para ver como usar un comando escribi -> ayuda nombreComando <- ej: ayuda modificar
+
+## Features:
+
+- [x] agregar una contraseña y poder mostrarla con un comando
+- [x] poder listar todas las cuentas que tienen una contraseña guardada en la base
+- [x] poder eliminar una contraseña ingresada
+- [x] no poder ingresar una cuanta duplicada
+- [x] modificar una cuenta ya existente
+- [ ] agregar un sistema de logue de error en la cosola
+- [ ] agregar que cuando el usuario ingresa una contraseña por primera vez no se muestre que es lo que ingresa
+- [ ] agregar que cuando se muestra una contraseña al apreta una tecla esta desaparece de la pantalla
 
 ## El espiruto del proyecto:
 Este proyecto no es brindar únicamente una consola simple para poder administrar contraseñas, sino el hecho de poder desarrollar el mismo con todas las buenas 
