@@ -25,6 +25,8 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 - [ ] agregar un sistema de logue de error en la cosola
 - [ ] agregar que cuando el usuario ingresa una contraseña por primera vez no se muestre que es lo que ingresa
 - [ ] agregar que cuando se muestra una contraseña al apreta una tecla esta desaparece de la pantalla
+- [ ] agregar comando clear para la consola
+- [ ] agregar prompt
 
 ## El espiruto del proyecto:
 Este proyecto no es brindar únicamente una consola simple para poder administrar contraseñas, sino el hecho de poder desarrollar el mismo con todas las buenas 
