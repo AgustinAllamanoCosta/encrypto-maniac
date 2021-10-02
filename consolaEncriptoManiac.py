@@ -5,7 +5,7 @@ from CustomException import *
 from constantesEncriptoManiac import *
 from comandosManiac import *
 import re
-import loggin
+import logging
 
 class ConsolaEncryptoManiac():
 
@@ -60,20 +60,16 @@ class ConsolaEncryptoManiac():
 			logging.debug('Comando no encontrado '+entrada)
 			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 		except ParametrosComandoIncompletos as expt:
-			logging.debug('Paramentros incompletos')
-			logging.debug(expt.mensaje)
+			logging.debug('Paramentros incompletos '+entrada)
 			self.escribirEnConsola(expt.mensaje)
-		except ParametrosComandosNullos as expt:
-			logging.debug('Error en los parametros del comando..')
-			logging.debug(expt.mensaje)
+		except ParametrosComandosNullos:
+			logging.debug('Error en los parametros del comando'+entrada)
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
-		except IndexError as expt:
-			logging.debug('Index error')
-			logging.debug(expt.mensaje)
+		except IndexError:
+			logging.debug('Index error '+entrada)
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
 		except CuentaEnBaseDuplicadaException as expt:
-			logging.debug('Cuenta en base duplicada')
-			logging.debug(expt.mensaje)
+			logging.debug('Cuenta en base duplicada '+expt.mensaje)
 			self.escribirEnConsola(expt.mensaje)
 
 	def ingresarEntradas(self):
