@@ -4,6 +4,7 @@ from CustomException import *
 from constantesEncriptoManiac import *
 from encriptoManiac import *
 from os import system
+import logging
 
 class Comando(object):
 
@@ -27,13 +28,16 @@ class ComandoConsolaSinParametros(Comando):
 class ComandoAgregar(ComandoConsola):
 
 	def ejecutar(self,parametros):
+		logging.info('Se ejecuta comando agregar.')
 		super().validarParametros(parametros)
 		if(len(parametros)==1):
+			logging.debug('Parametros insuficiente para el comando agregar.')
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
 			if(self.encriptoManiac.existeCuentaEnBase(parametros[0]) != True):
 				self.encriptoManiac.ingresarClave(parametros[0],parametros[1])
 			else:
+				logging.debug('La cuenta esta duplicada')
 				raise CuentaEnBaseDuplicadaException(parametros[0])
 		return None
 
@@ -41,6 +45,7 @@ class ComandoModificar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
+		logging.info('Ejecutando el comando modificar')
 		if(len(parametros)==1):
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
@@ -51,12 +56,14 @@ class ComandoEliminar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
+		logging.info('Ejecutando el comando eliminar')
 		self.encriptoManiac.eliminarClave(parametros[0])
 		return None
 
 class ComandoMostrar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
+		logging.info('Ejecutando el comando mostrar')
 		super().validarParametros(parametros)
 		return self.encriptoManiac.buscarClave(parametros[0])
 
@@ -75,16 +82,19 @@ class ComandoAyuda(ComandoConsola):
 
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
+		logging.info('Ejecutando el comando ayuda')
 		return self.mensajeAyuda[parametros[0]]
 
 class ComandoListar(ComandoConsolaSinParametros):
 
 	def ejecutar(self):
+		logging.info('Ejecutando el comando listar')
 		return self.encriptoManiac.listarCuentas()
 
 class ComandoExit(ComandoConsolaSinParametros):
 
 	def ejecutar(self):
+		logging.info('Ejecutando el comando exit')
 		raise InterrumpirConsola()
 
 class ComandoVerMas(ComandoConsolaSinParametros):

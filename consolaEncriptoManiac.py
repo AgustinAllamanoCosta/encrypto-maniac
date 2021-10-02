@@ -5,10 +5,12 @@ from CustomException import *
 from constantesEncriptoManiac import *
 from comandosManiac import *
 import re
+import loggin
 
 class ConsolaEncryptoManiac():
 
 	def __init__(self):
+		logging.info('Iniciando consola')
 		self.historial = HistorialConsola()
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
@@ -52,16 +54,26 @@ class ConsolaEncryptoManiac():
 			self.escribirEnConsola(resultado)
 
 		except InterrumpirConsola:
+			logging.debug('Saliendo de la consola')
 			self.correrConsola = False
 		except ComandoNoEncontradoExcepcion:
+			logging.debug('Comando no encontrado '+entrada)
 			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
 		except ParametrosComandoIncompletos as expt:
+			logging.debug('Paramentros incompletos')
+			logging.debug(expt.mensaje)
 			self.escribirEnConsola(expt.mensaje)
-		except ParametrosComandosNullos:
+		except ParametrosComandosNullos as expt:
+			logging.debug('Error en los parametros del comando..')
+			logging.debug(expt.mensaje)
 			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
-		except IndexError:
+		except IndexError as expt:
+			logging.debug('Index error')
+			logging.debug(expt.mensaje)
 			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
 		except CuentaEnBaseDuplicadaException as expt:
+			logging.debug('Cuenta en base duplicada')
+			logging.debug(expt.mensaje)
 			self.escribirEnConsola(expt.mensaje)
 
 	def ingresarEntradas(self):
@@ -99,11 +111,13 @@ class FactoryConsolaEncriptoManiac(object):
 		}
 
 	def obtenerConsola(self,plataforma):
+		logging.info('Plataforma '+plataforma)
 		return self.tipoDeConsolas[plataforma.lower()]
 
 class HistorialConsola(object):
 	
 	def __init__(self):
+		logging.info('Iniciando historial')
 		self.entradas = []
 
 	def agregarEntrada(self,entrada):
