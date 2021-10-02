@@ -22,7 +22,7 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 - [x] poder eliminar una contraseña ingresada
 - [x] no poder ingresar una cuanta duplicada
 - [x] modificar una cuenta ya existente
-- [ ] agregar un sistema de logue de error en la cosola
+- [x] agregar un sistema de logue de error en la cosola
 - [ ] agregar que cuando el usuario ingresa una contraseña por primera vez no se muestre que es lo que ingresa
 - [ ] agregar que cuando se muestra una contraseña al apreta una tecla esta desaparece de la pantalla
 - [ ] agregar comando clear para la consola
