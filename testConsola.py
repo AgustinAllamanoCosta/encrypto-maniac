@@ -30,92 +30,92 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoAyuda.ejecutar = self.funcionesOriginales['ComandoAyuda']
 		EncriptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 
-	def test_dadoQueTengoUnContextoDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeSaleDelContextoAlIniciar();
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeBienvenida()
 
-	def test_dadoQueTengoUnContextoCuadnoSeIniciaLaConsolaSeVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCuadnoSeIniciaLaConsolaSeVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeSaleDelContextoAlIniciar();
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestrasLaListaDeComandosbasicos()
 
-	def test_dadoQueTengoUnContextoCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCundoSeIngresaElComandoAgregarSeVerificaQueSeEjecutaLaFuncionAgregarCuenta(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoAgregar()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
 		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
-	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoAgregarSinParametros()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueTengoUnContextoCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoAgregarConUnParametro()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaMuestraElMensajeDeAyudaDelComando()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoListarSeVerificaQueSeLlamaALaFuncionListar(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoListar()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeLlamaALaFuncionListar()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoVerMasSeListanElRestoDeLosComandos(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoVerMas()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 	
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutarElComandoModificar()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoModificar()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSinElParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutarElComandoModificarSinElParametro()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSeVerirficaQueSeLlamaALaFuncion(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSeVerirficaQueSeLlamaALaFuncion(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutarElComandoEliminar()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerifiacaQueSeLlamaALaFuncionComandoEliminar()
 
-	def test_dadoQueTengoUnContextoCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoEliminarSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutarElComandoEliminarSinParametros()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSeVerirficaQueSeLlamaALaFuncion(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoMostrar()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerficaQueSeLlamaALaFuncionMostrar()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoMostrarrSinParametrosSeVerirficaQueSeMuestraElMensajeDeError(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoMostrarSinParametro()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeMuestraElMensajeDeError()
 
-	def test_dadoQueTengoUnContextoConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaUnComandoQueNoExisteSeVerificaQueSeMuestraElMensajeDeComandosAvanzados(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueIngresaUnComandoQueNoExiste()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeListanElRestoDeLosComandos()
 
-	def test_dadoQueTengoUnContextoCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCuandoSeEnviaUnComandoEnMayusculaLoEjecutoIgual(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEnviaUnComandoEnMayuscula()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaQueSeEjecutaIgual()	
@@ -130,12 +130,12 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaWin()
 
-	def test_dadoQueTengoUnContextoCundoSeIngresaElComandoAgregarYLaCuentaExisteEnLaBaseSeVerificaQueSeVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
-		self.dadoQueSeTieneUnContexto()
+	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarYLaCuentaExisteEnLaBaseSeVerificaQueSeVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
+		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
 
-	def dadoQueSeTieneUnContexto(self):
+	def dadoQueTengoUnaConsola(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)	
 
 	def dadoQueSeSaleDelContextoAlIniciar(self):
@@ -251,7 +251,6 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
 		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeErrprComandoDuplicado + 'slack'
-
 #Utilidades 
 	def observadorFuncionListar(self):
 		self.seEjecutoListar = True
