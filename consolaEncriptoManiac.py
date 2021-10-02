@@ -23,7 +23,8 @@ class ConsolaEncryptoManiac():
 		'modificar':ComandoModificar(),
 		'eliminar':ComandoEliminar(),
 		'mostrar':ComandoMostrar(),
-		'ayuda':ComandoAyuda()
+		'ayuda':ComandoAyuda(),
+		'cabecera':ComandoEscribirCabeceraDeConsola()
 		}
 
 	def bucleDeConsola(self):
@@ -32,8 +33,9 @@ class ConsolaEncryptoManiac():
 			self.analizarEntrada(self.ingresarEntradas())
 
 	def escribirCabeceraDeConsola(self):
-		self.escribirEnConsola(ConstanteConsola.mensajeBienvenida)
-		self.escribirEnConsola(ConstanteConsola.mensajeComandosBasicos)
+		comando = self.comandosEstandar['cabecera']
+		comando.escribirEnConsolaStrategy(self.historial)
+
 
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
@@ -44,41 +46,39 @@ class ConsolaEncryptoManiac():
 
 			if isinstance(comando,ComandoConsolaSinParametros):
 				resultado = comando.ejecutar()
-				self.comandosEstandar.get('systema').ejecutar()
 			elif isinstance(comando,ComandoConsola):
 				resultado = comando.ejecutar(valoresEntrada[1:])
-				self.comandosEstandar.get('systema').ejecutar()
 			else:
 				raise ComandoNoEncontradoExcepcion()
 
-			self.escribirEnConsola(resultado)
+			self.comandosEstandar.get('systema').ejecutar()
+			comando.escribirEnConsolaStrategy(self.historial)
 
 		except InterrumpirConsola:
 			logging.debug('Saliendo de la consola')
 			self.correrConsola = False
 		except ComandoNoEncontradoExcepcion:
 			logging.debug('Comando no encontrado '+entrada)
-			self.escribirEnConsola(ConstanteConsola.mensajeComandosAvanzados)
+			self.escribirError(ConstanteConsola.mensajeComandosAvanzados)
 		except ParametrosComandoIncompletos as expt:
 			logging.debug('Paramentros incompletos '+entrada)
-			self.escribirEnConsola(expt.mensaje)
+			self.escribirError(expt.mensaje)
 		except ParametrosComandosNullos:
 			logging.debug('Error en los parametros del comando'+entrada)
-			self.escribirEnConsola(ConstanteConsola.mensajeErrorComandoParametros)
+			self.escribirError(ConstanteConsola.mensajeErrorComandoParametros)
 		except IndexError:
 			logging.debug('Index error '+entrada)
-			self.escribirEnConsola(ConstanteConsola.mensajeAyudaComandoAgregar)
+			self.escribirError(ConstanteConsola.mensajeAyudaComandoAgregar)
 		except CuentaEnBaseDuplicadaException as expt:
 			logging.debug('Cuenta en base duplicada '+expt.mensaje)
-			self.escribirEnConsola(expt.mensaje)
+			self.escribirError(expt.mensaje)
 
 	def ingresarEntradas(self):
 		return input()
 
-	def escribirEnConsola(self,mensaje):
-		if(mensaje != None):
-			print(mensaje)
-			self.historial.agregarEntrada(mensaje)
+	def escribirError(self,mensaje):
+		print(mensaje)
+		self.historial.agregarEntrada(mensaje)
  
 	def obtenerHistorial(self):
 		return self.historial.obtener()

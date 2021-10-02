@@ -10,11 +10,17 @@ class Comando(object):
 
 	def __init__(self):
 		self.encriptoManiac = EncriptoManiac()
+		self.mensajeComando = ""
+
+	def escribirEnConsolaStrategy(self,historial):
+		if(self.mensajeComando != None):
+			print(self.mensajeComando)
+			historial.agregarEntrada(self.mensajeComando)
 
 class ComandoConsola(Comando):
 
 	def ejecutar(self,parametros):
-		return None
+		return 0
 
 	def validarParametros(self,parametros):
 		if(parametros == []):
@@ -23,7 +29,7 @@ class ComandoConsola(Comando):
 class ComandoConsolaSinParametros(Comando):
 	
 	def ejecutar(self):
-		return None
+		return 0
 
 class ComandoAgregar(ComandoConsola):
 
@@ -39,7 +45,14 @@ class ComandoAgregar(ComandoConsola):
 			else:
 				logging.debug('La cuenta esta duplicada')
 				raise CuentaEnBaseDuplicadaException(parametros[0])
-		return None
+		self.mensajeComando = "Se agrego la contraseña"
+		return 0
+
+	def escribirEnConsolaStrategy(self,historial):
+		if(self.mensajeComando != None):
+			print(self.mensajeComando)
+			historial.agregarEntrada(self.mensajeComando)
+
 
 class ComandoModificar(ComandoConsola):
 	
@@ -50,7 +63,7 @@ class ComandoModificar(ComandoConsola):
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
 			self.encriptoManiac.actualizarClave(parametros[0],parametros[1])	
-		return None
+		return 0
 
 class ComandoEliminar(ComandoConsola):
 	
@@ -58,18 +71,20 @@ class ComandoEliminar(ComandoConsola):
 		super().validarParametros(parametros)
 		logging.info('Ejecutando el comando eliminar')
 		self.encriptoManiac.eliminarClave(parametros[0])
-		return None
+		return 0
 
 class ComandoMostrar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
 		logging.info('Ejecutando el comando mostrar')
 		super().validarParametros(parametros)
-		return self.encriptoManiac.buscarClave(parametros[0])
+		self.mensajeComando = self.encriptoManiac.buscarClave(parametros[0])
+		return 0
 
 class ComandoAyuda(ComandoConsola):
 
 	def __init__(self):
+		self.mensajeComando = ""
 		self.mensajeAyuda = {
 		'listar': ConstanteConsola.mensajeAyudaComandoListar,
 		'agregar':ConstanteConsola.mensajeAyudaComandoAgregar,
@@ -83,13 +98,15 @@ class ComandoAyuda(ComandoConsola):
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
 		logging.info('Ejecutando el comando ayuda')
-		return self.mensajeAyuda[parametros[0]]
+		self.mensajeComando = self.mensajeAyuda[parametros[0]]
+		return 0
 
 class ComandoListar(ComandoConsolaSinParametros):
 
 	def ejecutar(self):
 		logging.info('Ejecutando el comando listar')
-		return self.encriptoManiac.listarCuentas()
+		self.mensajeComando = self.encriptoManiac.listarCuentas()
+		return 0
 
 class ComandoExit(ComandoConsolaSinParametros):
 
@@ -103,7 +120,16 @@ class ComandoVerMas(ComandoConsolaSinParametros):
 		pass
 
 	def ejecutar(self):
-		return ConstanteConsola.mensajeComandosAvanzados
+		self.mensajeComando = ConstanteConsola.mensajeComandosAvanzados
+		return 0
+
+class ComandoEscribirCabeceraDeConsola(ComandoConsolaSinParametros):
+
+	def escribirEnConsolaStrategy(self,historial):
+		print(ConstanteConsola.mensajeBienvenida)
+		print(ConstanteConsola.mensajeComandosBasicos)
+		historial.agregarEntrada(ConstanteConsola.mensajeBienvenida)
+		historial.agregarEntrada(ConstanteConsola.mensajeComandosBasicos)
 
 class ComandoUnix(ComandoConsolaSinParametros):
 	def __init__(self):
