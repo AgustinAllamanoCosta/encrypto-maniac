@@ -53,7 +53,6 @@ class ComandoAgregar(ComandoConsola):
 			print(self.mensajeComando)
 			historial.agregarEntrada(self.mensajeComando)
 
-
 class ComandoModificar(ComandoConsola):
 	
 	def ejecutar(self,parametros):

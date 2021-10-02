@@ -57,6 +57,9 @@ class TestComandosManiac(unittest.TestCase):
 			self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
 		self.seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada()
 
+	def test_dadoQueSeEjecutaElComandoMostrarDadoQueSeMuestraLaContraseñaSolicitadaCuandoSeVuelveAIngresarCualquierCosaEnLaConsolaLaContraseñaDesaparece(self):
+		pass
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
 		return self
