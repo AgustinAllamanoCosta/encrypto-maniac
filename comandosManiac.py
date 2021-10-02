@@ -5,6 +5,7 @@ from constantesEncriptoManiac import *
 from encriptoManiac import *
 from os import system
 import logging
+import tkinter
 
 class Comando(object):
 

@@ -13,7 +13,7 @@ class TestComandosManiac(unittest.TestCase):
 			'eliminarClave': EncriptoManiac.eliminarClave,
 			'buscarClave': EncriptoManiac.buscarClave,
 			'listarCuentas': EncriptoManiac.listarCuentas,
-			'existeCuentaEnBase': EncriptoManiac.existeCuentaEnBase
+			'existeCuentaEnBase': EncriptoManiac.existeCuentaEnBase,
 		}
 
 	def tearDown(self):
@@ -35,9 +35,9 @@ class TestComandosManiac(unittest.TestCase):
 		self.seVerificaQueSeLlamaALaFuncionEliminarClave()
 
 	def test_dadoQueSeLlamaComandoMostrarConParametroNombreDeCuentaSeVerifiacaQueSeLlamanALaFuncionBuscarClave(self):
-		self.dadoQueSeLlamaAlComandoBuscarClave().conParametros(['slack'])
-		self.cuandoSeLlamanALaFuncionEjecutarDelComandoBuscarClave()
-		self.seVerificaQueSeLlamaALaFuncionBuscarClave()
+		self.dadoQueSeLlamaAlComandoMostrar().conParametros(['slack'])
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoMostrar()
+		self.seVerificaQueSeLlamaALaFuncionMostrar()
 
 	def test_dadoQueSeLlamaComandoListarSeVerifiacaQueSeLlamanALaFuncionListarCuentas(self):
 		self.dadoQueSeLlamaAlComandoListar()
@@ -57,8 +57,11 @@ class TestComandosManiac(unittest.TestCase):
 			self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
 		self.seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada()
 
-	def test_dadoQueSeEjecutaElComandoMostrarDadoQueSeMuestraLaContraseñaSolicitadaCuandoSeVuelveAIngresarCualquierCosaEnLaConsolaLaContraseñaDesaparece(self):
-		pass
+	def test_dadoQueSeEjecutaElComandoMostrarDadoQueSeMuestraSeVerficaQueSeMuestraUnPopUpConLaMisma(self):
+		self.dadoQueSeLlamaAlComandoMostrar().conParametros(['slack'])
+		self.dadoQueSeMuestraLaContraseña()
+		self.cuandoSeLlamaALaFuncionEscribirDelComando()
+		self.seVerficaQueSeMuestraUnPopUpConLaMisma()
 
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
@@ -72,12 +75,12 @@ class TestComandosManiac(unittest.TestCase):
 		self.comando = ComandoEliminar()
 		return self
 
-	def dadoQueSeLlamaAlComandoBuscarClave(self):
-		self.comando = ComandoMostrar()
-		return self
-
 	def dadoQueSeLlamaAlComandoListar(self):
 		self.comando = ComandoListar()
+
+	def dadoQueSeLlamaAlComandoMostrar(self):
+		self.comando = ComandoMostrar()
+		return self
 
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.seEjecutoExisteCuentaEnBase = False
@@ -86,6 +89,9 @@ class TestComandosManiac(unittest.TestCase):
 	def dadoQueNoExisteLaCuentaEnLaBase(self):
 		self.seEjecutoExisteCuentaEnBase = False
 		EncriptoManiac.existeCuentaEnBase = self.observadorNoExisteCuentaEnBase
+
+	def dadoQueSeMuestraLaContraseña(self):
+		self.comando.ejecutar = self.ejecutarMostrarMock
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
@@ -105,7 +111,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncriptoManiac.eliminarClave = self.observadorEliminarClave
 		self.comando.ejecutar(self.parametroComando)
 
-	def cuandoSeLlamanALaFuncionEjecutarDelComandoBuscarClave(self):
+	def cuandoSeLlamanALaFuncionEjecutarDelComandoMostrar(self):
 		self.seEjecutoBuscarClave = False
 		EncriptoManiac.buscarClave = self.observadorBuscarClave
 		self.comando.ejecutar(self.parametroComando)	
@@ -114,6 +120,37 @@ class TestComandosManiac(unittest.TestCase):
 		self.seEjecutoListarCuentas = False
 		EncriptoManiac.listarCuentas = self.observadorListarCuentas
 		self.comando.ejecutar()
+
+	def cuandoSeLlamaALaFuncionEscribirDelComando(self):
+		self.comando.escribirEnConsolaStrategy(None)
+
+	def buscarClaveMock(self,nombre):
+		return ['slack','']
+
+	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
+		assert self.seEjecutoIngresarClave == True
+		assert self.seEjecutoExisteCuentaEnBase == True
+
+	def seVerificaQueSeLlamaALaFuncionActualizarClave(self):
+		assert self.seEjecutoActualizarClave == True
+
+	def seVerificaQueSeLlamaALaFuncionEliminarClave(self):
+		assert self.seEjecutoEliminarClave == True
+
+	def seVerificaQueSeLlamaALaFuncionMostrar(self):
+		assert self.seEjecutoBuscarClave == True
+
+	def seVerificaQueSeLlamaALaFuncionListarCuentas(self):
+		assert self.seEjecutoListarCuentas == True
+
+	def seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada(self):
+		assert self.seEjecutoExisteCuentaEnBase == True
+		assert self.seEjecutoIngresarClave == False
+
+	def seVerficaQueSeMuestraUnPopUpConLaMisma(self):
+		assert self.comando.mensajeComando == '123455'
+
+	#UTIL
 
 	def observadorActualizarClave(self,param1,param2):
 		self.seEjecutoActualizarClave = True
@@ -137,31 +174,13 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorNoExisteCuentaEnBase(self,nombreCuenta):
 		self.seEjecutoExisteCuentaEnBase = True
 		return False
+	
+	def observadorComandoSystema(self):
+		self.seEejecutoElComandoDelSystema = True
 
-	def buscarClaveMock(self,nombre):
-		return ['slack','']
+	def ejecutarMostrarMock(self):
+		self.mensajeComando = '123455'
 
-	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
-		assert self.seEjecutoIngresarClave == True
-		assert self.seEjecutoExisteCuentaEnBase == True
-
-	def seVerificaQueSeLlamaALaFuncionActualizarClave(self):
-		assert self.seEjecutoActualizarClave == True
-
-	def seVerificaQueSeLlamaALaFuncionEliminarClave(self):
-		assert self.seEjecutoEliminarClave == True
-
-	def seVerificaQueSeLlamaALaFuncionBuscarClave(self):
-		assert self.seEjecutoBuscarClave == True
-
-	def seVerificaQueSeLlamaALaFuncionListarCuentas(self):
-		assert self.seEjecutoListarCuentas == True
-
-	def seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada(self):
-		assert self.seEjecutoExisteCuentaEnBase == True
-		assert self.seEjecutoIngresarClave == False
-
-		
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)
 	unittest.TextTestRunner(verbosity=2).run(suite)
