@@ -100,7 +100,7 @@ class EncriptoManiac(object):
 		baseDeDatos.close()
 			
 	def actualizarClave(self,nombreApp,calveNueva):
-		logging.info('Se va a actualizar la clave de la cuenta'+nombreCuenta)
+		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
 		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
 		baseDeDatos.execute(ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
 		baseDeDatos.commit()
