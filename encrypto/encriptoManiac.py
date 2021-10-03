@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sqlite3
 from cryptography.fernet import Fernet as ft
-from constantesEncriptoManiac import *
+from util import constantesEncriptoManiac
 import os
 import logging
 

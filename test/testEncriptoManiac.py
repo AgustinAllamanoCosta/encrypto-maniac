@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+import EncriptoManiac 
+from EncryptoManiac.util import ConstantesEncryptoManiac as cem
 import unittest
 import sqlite3
-from encriptoManiac import EncriptoManiac 
-from encriptoManiac import ConstantesEncryptoManiac as cem
 import os 
 
 class TestEncriptoManiac(unittest.TestCase):
