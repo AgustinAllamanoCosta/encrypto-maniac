@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from consolaEncriptoManiac import *
+from ConsolaEncryptoManiac import *
+from ComandosManiac import *
+from EncryptoManiac import *
 import threading as t
 import sys
+
 class TestConsolaManiac(unittest.TestCase):
 
 	def setUp(self):
@@ -16,7 +19,7 @@ class TestConsolaManiac(unittest.TestCase):
 			'ComandoEliminar' : ComandoEliminar.ejecutar,
 			'ComandoMostrar' : ComandoMostrar.ejecutar,
 			'ComandoAyuda' : ComandoAyuda.ejecutar,
-			'existeCuentaEnBase' :EncriptoManiac.existeCuentaEnBase
+			'existeCuentaEnBase' :EncryptoManiac.existeCuentaEnBase
 		}
 
 	def tearDown(self):
@@ -28,7 +31,7 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoEliminar.ejecutar = self.funcionesOriginales['ComandoEliminar']
 		ComandoMostrar.ejecutar = self.funcionesOriginales['ComandoMostrar']
 		ComandoAyuda.ejecutar = self.funcionesOriginales['ComandoAyuda']
-		EncriptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
+		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 
 	def test_dadoQueTengoUnaConsolaDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueTengoUnaConsola()
@@ -154,7 +157,7 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
-		EncriptoManiac.existeCuentaEnBase = self.existeCuentaEnBaseMock
+		EncryptoManiac.existeCuentaEnBase = self.existeCuentaEnBaseMock
 
 	def dadoQueSeEjecutaElComandoListar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'listar'

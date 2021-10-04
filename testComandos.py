@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from comandosManiac import *
-from encriptoManiac import *
+from ComandosManiac import *
+from EncryptoManiac import *
 
 class TestComandosManiac(unittest.TestCase):
 
 	def setUp(self):
 		self.funcionesOriginales = {
-			'ingresarClave': EncriptoManiac.ingresarClave,
-			'actualizarClave': EncriptoManiac.actualizarClave,
-			'eliminarClave': EncriptoManiac.eliminarClave,
-			'buscarClave': EncriptoManiac.buscarClave,
-			'listarCuentas': EncriptoManiac.listarCuentas,
-			'existeCuentaEnBase': EncriptoManiac.existeCuentaEnBase,
+			'ingresarClave': EncryptoManiac.ingresarClave,
+			'actualizarClave': EncryptoManiac.actualizarClave,
+			'eliminarClave': EncryptoManiac.eliminarClave,
+			'buscarClave': EncryptoManiac.buscarClave,
+			'listarCuentas': EncryptoManiac.listarCuentas,
+			'existeCuentaEnBase': EncryptoManiac.existeCuentaEnBase,
 		}
 
 	def tearDown(self):
-		EncriptoManiac.ingresarClave = self.funcionesOriginales['ingresarClave']
-		EncriptoManiac.actualizarClave = self.funcionesOriginales['actualizarClave']
-		EncriptoManiac.eliminarClave = self.funcionesOriginales['eliminarClave']
-		EncriptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
-		EncriptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
-		EncriptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
+		EncryptoManiac.ingresarClave = self.funcionesOriginales['ingresarClave']
+		EncryptoManiac.actualizarClave = self.funcionesOriginales['actualizarClave']
+		EncryptoManiac.eliminarClave = self.funcionesOriginales['eliminarClave']
+		EncryptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
+		EncryptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
+		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
 		self.dadoQueSeLlamaAlComandoActualizarClave().conParametros(['slack','456'])
@@ -84,11 +84,11 @@ class TestComandosManiac(unittest.TestCase):
 
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.seEjecutoExisteCuentaEnBase = False
-		EncriptoManiac.existeCuentaEnBase = self.observadorExisteCuentaEnBase
+		EncryptoManiac.existeCuentaEnBase = self.observadorExisteCuentaEnBase
 
 	def dadoQueNoExisteLaCuentaEnLaBase(self):
 		self.seEjecutoExisteCuentaEnBase = False
-		EncriptoManiac.existeCuentaEnBase = self.observadorNoExisteCuentaEnBase
+		EncryptoManiac.existeCuentaEnBase = self.observadorNoExisteCuentaEnBase
 
 	def dadoQueSeMuestraLaContraseña(self):
 		self.comando.ejecutar = self.ejecutarMostrarMock
@@ -98,27 +98,27 @@ class TestComandosManiac(unittest.TestCase):
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar(self):
 		self.seEjecutoIngresarClave = False
-		EncriptoManiac.ingresarClave = self.observadorIngresarClave
+		EncryptoManiac.ingresarClave = self.observadorIngresarClave
 		self.comando.ejecutar(self.parametroComando)
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoActualizarClave(self):
 		self.seEjecutoActualizarClave = False
-		EncriptoManiac.actualizarClave = self.observadorActualizarClave
+		EncryptoManiac.actualizarClave = self.observadorActualizarClave
 		self.comando.ejecutar(self.parametroComando)
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoEliminarClave(self):
 		self.seEjecutoEliminarClave = False
-		EncriptoManiac.eliminarClave = self.observadorEliminarClave
+		EncryptoManiac.eliminarClave = self.observadorEliminarClave
 		self.comando.ejecutar(self.parametroComando)
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoMostrar(self):
 		self.seEjecutoBuscarClave = False
-		EncriptoManiac.buscarClave = self.observadorBuscarClave
+		EncryptoManiac.buscarClave = self.observadorBuscarClave
 		self.comando.ejecutar(self.parametroComando)	
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoListar(self):
 		self.seEjecutoListarCuentas = False
-		EncriptoManiac.listarCuentas = self.observadorListarCuentas
+		EncryptoManiac.listarCuentas = self.observadorListarCuentas
 		self.comando.ejecutar()
 
 	def cuandoSeLlamaALaFuncionEscribirDelComando(self):

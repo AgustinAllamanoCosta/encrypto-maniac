@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import EncriptoManiac 
-from EncryptoManiac.util import ConstantesEncryptoManiac as cem
+import os 
+import EncryptoManiac as EM
+import ConstantesEncryptoManiac as CEM
 import unittest
 import sqlite3
-import os 
 
-class TestEncriptoManiac(unittest.TestCase):
+class TestEncryptoManiac(unittest.TestCase):
 
 	def test_DadoQueCorroElProgramaDosVecesLaSegundaFallaPorqueLaBaseYaEstaCreada(self):
 		self.dadoQueInicioCryptoManiac()
@@ -93,65 +92,65 @@ class TestEncriptoManiac(unittest.TestCase):
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
-		self.encriptoManiac = EncriptoManiac()
+		self.encryptoManiac = EM.EncryptoManiac()
 	
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.nombreAPP = 'slack'
 		self.claveAIngresar = 'aaaa'
-		self.encriptoManiac.ingresarClave(self.nombreAPP,self.claveAIngresar)
+		self.encryptoManiac.ingresarClave(self.nombreAPP,self.claveAIngresar)
 
 	def dadoQueExisteLaCuenta(self,nombre):
 		self.nombreAPP = nombre
 		return self
 
 	def caundoGeneraLaClave(self):
-		self.encriptoManiac.generarClave()
+		self.encryptoManiac.generarClave()
 
 	def cuandoSeEncryptaLaPalabra(self,palabra):
 		self.palabraAEncryptar = palabra
-		self.palabraEncryptada = self.encriptoManiac.encriptarASE(self.palabraAEncryptar)
+		self.palabraEncryptada = self.encryptoManiac.encriptarASE(self.palabraAEncryptar)
 
 	def cuandoSeIngresaLaCuenta(self,nombre):
 		self.nombreAPP = nombre
 		return self
 	
 	def cuandoBuscoPorSuNombre(self):
-		self.claveIngresada = self.encriptoManiac.buscarClave(self.nombreAPP)
+		self.claveIngresada = self.encryptoManiac.buscarClave(self.nombreAPP)
 
 	def cuandoEjecutoElMetodoBuscarConUnNombreQueCuentaQueNoEstaEnLaBase(self):
-		self.claveIngresada = self.encriptoManiac.buscarClave('adadsasdadasdasds')
+		self.claveIngresada = self.encryptoManiac.buscarClave('adadsasdadasdasds')
 
 	def cuandoSeEjecutaListarCuentas(self):
-		self.cuentaListadas = self.encriptoManiac.listarCuentas()
+		self.cuentaListadas = self.encryptoManiac.listarCuentas()
 
 	def cuandoSeActualizaLaClave(self,clave):
 		self.nuevaClave = clave
-		self.encriptoManiac.actualizarClave(self.nombreAPP,self.nuevaClave)
+		self.encryptoManiac.actualizarClave(self.nombreAPP,self.nuevaClave)
 
 	def conlaClave(self,clave):
 		self.claveAIngresar = clave
-		self.encriptoManiac.ingresarClave(self.nombreAPP,self.claveAIngresar)
+		self.encryptoManiac.ingresarClave(self.nombreAPP,self.claveAIngresar)
 
 	def cuandoQueSeEjecutaLaFuncionEliminar(self):
-		self.encriptoManiac.eliminarClave('slack')
+		self.encryptoManiac.eliminarClave('slack')
 
 	def cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase(self,nombreCuenta):
-		self.existeCuenta = self.encriptoManiac.existeCuentaEnBase(nombreCuenta)
+		self.existeCuenta = self.encryptoManiac.existeCuentaEnBase(nombreCuenta)
 
 	def serVerificaQueSeIniciaLaBase(self):
-		self.assertEqual(self.encriptoManiac.baseIniciada, True)
+		self.assertEqual(self.encryptoManiac.baseIniciada, True)
 
 	def seVerificaQueSeCrearElArchivoPuntoKey(self):
-		self.assertTrue(os.path.exists(cem.nombreArchivoKey))
+		self.assertTrue(os.path.exists(CEM.ConstantesEM.nombreArchivoKey))
 
 	def seVerificaQueSeCargaUnaClave(self):
-		self.assertNotEqual(self.encriptoManiac.fernet, None)
+		self.assertNotEqual(self.encryptoManiac.fernet, None)
 
 	def seVerificaQueSeEncryptoExitosamente(self):
 		self.assertNotEqual(self.palabraEncryptada,self.palabraAEncryptar)
 
 	def seVerificaQueSeInsertoCorrectamenteEnLaBase(self):
-		baseDeDatos = sqlite3.connect(cem.baseEncriptoManiac)
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',(self.nombreAPP,))
 		self.assertNotEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()
@@ -167,10 +166,10 @@ class TestEncriptoManiac(unittest.TestCase):
 		self.assertEqual(self.cuentaListadas,respuestaEsperada)	
 
 	def seVerificaQueSeActualizo(self):
-		self.assertEqual(self.encriptoManiac.buscarClave(self.nombreAPP),self.nuevaClave)
+		self.assertEqual(self.encryptoManiac.buscarClave(self.nombreAPP),self.nuevaClave)
 
 	def seVerficaQueSeEliminoLaCuentaSlack(self):
-		baseDeDatos = sqlite3.connect(cem.baseEncriptoManiac)
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',('slack',))
 		self.assertEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()	
@@ -182,11 +181,11 @@ class TestEncriptoManiac(unittest.TestCase):
 		assert self.existeCuenta == False
 
 	def limpiarBase(self):
-		baseDeDatos = sqlite3.connect(cem.baseEncriptoManiac)
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
 		baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
 if __name__ == "__main__":
-	suite = unittest.TestLoader().loadTestsFromTestCase(TestEncriptoManiac)
+	suite = unittest.TestLoader().loadTestsFromTestCase(TestEncryptoManiac)
 	unittest.TextTestRunner(verbosity=2).run(suite)

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import ConstantesEncryptoManiac as CEM
 import sqlite3
 from cryptography.fernet import Fernet as ft
-from util import constantesEncriptoManiac
 import os
 import logging
 
-class EncriptoManiac(object):
+class EncryptoManiac(object):
 
 	def __init__(self):
 		self.baseIniciada = False
@@ -16,9 +16,9 @@ class EncriptoManiac(object):
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
 		try:
-			baseDeDatos.execute(ConsultaDB.crearTabla)
+			baseDeDatos.execute(CEM.ConsultaDB.crearTabla)
 		except sqlite3.OperationalError:
 			logging.info('Tabla ya existente, no se creo')
 			
@@ -28,7 +28,7 @@ class EncriptoManiac(object):
 
 	def iniciarClaves(self):
 		logging.info('Iniciando archivos de clave......')
-		if(os.path.exists(ConstantesEncryptoManiac.nombreArchivoKey)):
+		if(os.path.exists(CEM.ConstantesEM.nombreArchivoKey)):
 			self.fernet = ft(self.cargarClave())
 		else:
 			self.generarClave()
@@ -37,12 +37,12 @@ class EncriptoManiac(object):
 
 	def generarClave(self):
 		logging.info('Generando clave')
-		with open(ConstantesEncryptoManiac.nombreArchivoKey,'wb') as archivoKey:
+		with open(CEM.ConstantesEM.nombreArchivoKey,'wb') as archivoKey:
 			archivoKey.write(ft.generate_key())
 
 	def cargarClave(self):
 		logging.info('Cargando clave')
-		archivoKey = open(ConstantesEncryptoManiac.nombreArchivoKey,'rb') 
+		archivoKey = open(CEM.ConstantesEM.nombreArchivoKey,'rb') 
 		key = archivoKey.read()
 		archivoKey.close()
 		return key
@@ -52,15 +52,15 @@ class EncriptoManiac(object):
 		
 	def ingresarClave(self,nombreApp,clave):
 		logging.info('Ingresando clave para '+nombreApp)
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		baseDeDatos.execute(ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos.execute(CEM.ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
 	def buscarClave(self,nombreApp):
 		logging.info('Buscando clave para '+nombreApp)
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		cursor = baseDeDatos.execute(ConsultaDB.buscarClave,(nombreApp,))
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		cursor = baseDeDatos.execute(CEM.ConsultaDB.buscarClave,(nombreApp,))
 		respuesta = cursor.fetchone()
 		baseDeDatos.close()
 		if( respuesta != None and len(respuesta)>0):
@@ -69,8 +69,8 @@ class EncriptoManiac(object):
 			return None
 
 	def listarCuentas(self):
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		cursor = baseDeDatos.execute(ConsultaDB.listarCuentas)
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		cursor = baseDeDatos.execute(CEM.ConsultaDB.listarCuentas)
 		respuesta = cursor.fetchall()
 		baseDeDatos.close()
 		if(len(respuesta)>0):
@@ -83,8 +83,8 @@ class EncriptoManiac(object):
 
 	def existeCuentaEnBase(self,nombreCuenta):
 		logging.info('Existe la cuenta'+nombreCuenta)
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		cursor = baseDeDatos.execute(ConsultaDB.buscarCuenta,(nombreCuenta,))
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		cursor = baseDeDatos.execute(CEM.ConsultaDB.buscarCuenta,(nombreCuenta,))
 		respuesta = cursor.fetchall()
 		baseDeDatos.close()
 		if(len(respuesta)>0):
@@ -94,15 +94,15 @@ class EncriptoManiac(object):
 
 
 	def eliminarClave(self,parametro):
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		baseDeDatos.execute(ConsultaDB.eliminarClave,(parametro,))
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos.execute(CEM.ConsultaDB.eliminarClave,(parametro,))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 			
 	def actualizarClave(self,nombreApp,calveNueva):
 		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
-		baseDeDatos = sqlite3.connect(ConstantesEncryptoManiac.baseEncriptoManiac)
-		baseDeDatos.execute(ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos.execute(CEM.ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 

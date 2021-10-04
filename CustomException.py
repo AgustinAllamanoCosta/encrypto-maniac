@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from constantesEncriptoManiac import *
+from ConstantesEncryptoManiac import *
+
 class InterrumpirConsola(Exception):
 	pass
 

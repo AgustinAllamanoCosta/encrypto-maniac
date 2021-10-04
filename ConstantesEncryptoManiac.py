@@ -28,8 +28,8 @@ class ConstanteConsola:
 	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
 	mensajeErrprComandoDuplicado = 'Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingres. Nombre de cuenta: '
 
-class ConstantesEncryptoManiac:
-	baseEncriptoManiac = "manicaDB.db"
+class ConstantesEM:
+	baseEncryptoManiac = "manicaDB.db"
 	nombreArchivoKey = 'encriptoKey.key'
 
 class ConsultaDB:

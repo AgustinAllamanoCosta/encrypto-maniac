@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from encriptoManiac import EncriptoManiac 
+
+import EncryptoManiac 
 from CustomException import *
-from constantesEncriptoManiac import *
-from comandosManiac import *
+import ConstantesEncryptoManiac 
+from ComandosManiac import *
 import re
 import logging
 

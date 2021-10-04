@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 from CustomException import *
-from constantesEncriptoManiac import *
-from encriptoManiac import *
+from ConstantesEncryptoManiac import *
+import EncryptoManiac as EM
 from os import system
 import logging
 import tkinter
@@ -10,7 +10,7 @@ import tkinter
 class Comando(object):
 
 	def __init__(self):
-		self.encriptoManiac = EncriptoManiac()
+		self.encriptoManiac = EM.EncryptoManiac()
 		self.mensajeComando = ""
 
 	def escribirEnConsolaStrategy(self,historial):
