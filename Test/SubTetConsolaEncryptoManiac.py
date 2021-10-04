@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from ConsolaEncryptoManiac import *
+from Encryptador.ConsolaEncryptoManiac import *
 from os import sys
 
 class SubTestConsolaEncriptoManiac(unittest.TestCase):
