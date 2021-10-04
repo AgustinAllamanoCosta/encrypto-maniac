@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os 
-import EncryptoManiac as EM
-import ConstantesEncryptoManiac as CEM
+from Encryptador import EncryptoManiac as EM
+from Util import ConstantesEncryptoManiac as CEM
 import unittest
 import sqlite3
 

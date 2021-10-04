@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
-from CustomException import *
-from ConstantesEncryptoManiac import *
-import EncryptoManiac as EM
+from Util.CustomException import *
+from Util.ConstantesEncryptoManiac import *
+from Encryptador import EncryptoManiac as EM
 from os import system
 import logging
 import tkinter

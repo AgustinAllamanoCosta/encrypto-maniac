@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import ConstantesEncryptoManiac as CEM
+from Util import ConstantesEncryptoManiac as CEM
 import sqlite3
 from cryptography.fernet import Fernet as ft
 import os

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from ComandosManiac import *
-from EncryptoManiac import *
+from Encryptador.ComandosManiac import *
+from Encryptador.EncryptoManiac import *
 
 class TestComandosManiac(unittest.TestCase):
 

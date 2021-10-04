@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from ConsolaEncryptoManiac import *
-from ComandosManiac import *
-from EncryptoManiac import *
+from Encryptador.ConsolaEncryptoManiac import *
+from Encryptador.ComandosManiac import *
+from Encryptador.EncryptoManiac import *
 import threading as t
 import sys
 
