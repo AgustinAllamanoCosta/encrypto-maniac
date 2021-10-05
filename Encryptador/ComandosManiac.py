@@ -77,8 +77,7 @@ class ComandoEliminar(ComandoConsola):
 class ComandoMostrar(ComandoConsola):
 	
 	def __init__(self):
-		self.encriptoManiac = EM.EncryptoManiac()
-		self.mensajeComando = ""
+		super().__init__()
 		self.popUp = PopUpManiac()
 
 	def ejecutar(self,parametros):
@@ -89,7 +88,10 @@ class ComandoMostrar(ComandoConsola):
 		return 0
 
 	def escribirEnConsolaStrategy(self,historial):
-		self.popUp.run()
+		try:
+			self.popUp.mostrarPopUp()
+		except:
+			pass
 
 class ComandoAyuda(ComandoConsola):
 

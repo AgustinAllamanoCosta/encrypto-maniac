@@ -101,15 +101,12 @@ class ConsolaEncryptoManiacLinux(ConsolaEncryptoManiac):
 
 class FactoryConsolaEncriptoManiac(object):
 
-	def __init__(self):
-		self.tipoDeConsolas = {
-		'linux':ConsolaEncryptoManiacLinux(),
-		'win32':ConsolaEncryptoManiacWin()
-		}
-
 	def obtenerConsola(self,plataforma):
 		logging.info('Plataforma '+plataforma)
-		return self.tipoDeConsolas[plataforma.lower()]
+		if('linux' == plataforma.lower()):
+			return ConsolaEncryptoManiacLinux()
+		elif('win32' == plataforma.lower()):
+			return ConsolaEncryptoManiacWin()
 
 class HistorialConsola(object):
 	
