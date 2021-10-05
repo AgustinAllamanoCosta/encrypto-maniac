@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*
 from Util.CustomException import *
 from Util.ConstantesEncryptoManiac import *
+from Util.UIManiac import *
 from Encryptador import EncryptoManiac as EM
 from os import system
 import logging
@@ -75,11 +76,20 @@ class ComandoEliminar(ComandoConsola):
 
 class ComandoMostrar(ComandoConsola):
 	
+	def __init__(self):
+		self.encriptoManiac = EM.EncryptoManiac()
+		self.mensajeComando = ""
+		self.popUp = PopUpManiac()
+
 	def ejecutar(self,parametros):
 		logging.info('Ejecutando el comando mostrar')
 		super().validarParametros(parametros)
 		self.mensajeComando = self.encriptoManiac.buscarClave(parametros[0])
+		self.popUp.setMensaje(self.mensajeComando)
 		return 0
+
+	def escribirEnConsolaStrategy(self,historial):
+		self.popUp.run()
 
 class ComandoAyuda(ComandoConsola):
 

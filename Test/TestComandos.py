@@ -3,6 +3,7 @@
 import unittest
 from Encryptador.ComandosManiac import *
 from Encryptador.EncryptoManiac import *
+from Util.UIManiac import *
 
 class TestComandosManiac(unittest.TestCase):
 
@@ -91,7 +92,9 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.existeCuentaEnBase = self.observadorNoExisteCuentaEnBase
 
 	def dadoQueSeMuestraLaContraseña(self):
-		self.comando.ejecutar = self.ejecutarMostrarMock
+		self.seMostroElPopUp = False
+		EncryptoManiac.buscarClave = self.buscarClaveMock
+		PopUpManiac.run = self.runPopUpMock
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
@@ -122,6 +125,7 @@ class TestComandosManiac(unittest.TestCase):
 		self.comando.ejecutar()
 
 	def cuandoSeLlamaALaFuncionEscribirDelComando(self):
+		self.comando.ejecutar(self.parametroComando)
 		self.comando.escribirEnConsolaStrategy(None)
 
 	def buscarClaveMock(self,nombre):
@@ -178,8 +182,11 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorComandoSystema(self):
 		self.seEejecutoElComandoDelSystema = True
 
-	def ejecutarMostrarMock(self):
-		self.mensajeComando = '123455'
+	def runPopUpMock(self):
+		self.seMostroElPopUp = True
+
+	def buscarClaveMock(self,nombreCuenta):
+		return '123455'
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)

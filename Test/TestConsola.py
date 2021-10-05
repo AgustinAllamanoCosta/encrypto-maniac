@@ -4,6 +4,7 @@ import unittest
 from Encryptador.ConsolaEncryptoManiac import *
 from Encryptador.ComandosManiac import *
 from Encryptador.EncryptoManiac import *
+
 import threading as t
 import sys
 
