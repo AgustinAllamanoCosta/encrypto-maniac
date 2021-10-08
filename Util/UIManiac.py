@@ -57,7 +57,3 @@ class PopUpManiac:
 
 		self.ventana.after(self.tiempoVidaVentana, lambda: self.ventana.destroy())
 		self.ventana.mainloop()
-
-r = PopUpManiac()
-r.setMensaje("asdasdasdasdasd")
-r.mostrarPopUp()
