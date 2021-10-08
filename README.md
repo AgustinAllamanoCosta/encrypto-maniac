@@ -26,7 +26,7 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 - [ ] agregar que cuando el usuario ingresa una contraseña por primera vez no se muestre que es lo que ingresa
 - [ ] agregar que cuando se muestra una contraseña se puede copiar al porta papeles
 - [ ] agregar comando clear para la consola
-- [ ] agregar prompt
+- [x] agregar prompt
 - [ ] agregar servidor y consola externa.
 
 ## El espiruto del proyecto:
