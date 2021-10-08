@@ -15,6 +15,7 @@ class ConsolaEncryptoManiac():
 		self.historial = HistorialConsola()
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
+		self.prompt = "EM>>"
 
 		self.comandosEstandar = {
 		'exit':ComandoExit(),
@@ -75,7 +76,7 @@ class ConsolaEncryptoManiac():
 			self.escribirError(expt.mensaje)
 
 	def ingresarEntradas(self):
-		return input()
+		return input(self.prompt)
 
 	def escribirError(self,mensaje):
 		print(mensaje)
