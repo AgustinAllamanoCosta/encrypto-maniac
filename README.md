@@ -17,16 +17,17 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 
 ## Features:
 
-- [x] agregar una contraseña y poder mostrarla con un comando
-- [x] poder listar todas las cuentas que tienen una contraseña guardada en la base
-- [x] poder eliminar una contraseña ingresada
-- [x] no poder ingresar una cuanta duplicada
-- [x] modificar una cuenta ya existente
-- [x] agregar un sistema de logue de error en la cosola
-- [ ] agregar que cuando el usuario ingresa una contraseña por primera vez no se muestre que es lo que ingresa
-- [x] agregar que cuando se muestra una contraseña se puede copiar al porta papeles
-- [x] agregar prompt
-- [ ] agregar servidor y consola externa.
+- [x] Guardar contraseñas encryptadas.
+- [x] Listar las contraseñas listadas en la base
+- [x] Eliminar contraseñas ingresadas
+- [x] No poder ingresar una contrase duplicada.
+- [x] Modificar contraseñas ya ingresadas
+- [ ] Al momento de ingresar una contraseña no se muestra que es lo que se esta escribiendo.
+- [x] Cuando se muestra una contraseña se hace en un popUp que dura 4 segundos.
+- [x] El popUp tiene un boton para copiar al porta papeles.
+- [x] Agregar prompt
+- [ ] Agregar servidor remoto.
+- [ ] Agregar cli.
 
 ## El espiruto del proyecto:
 Este proyecto no es brindar únicamente una consola simple para poder administrar contraseñas, sino el hecho de poder desarrollar el mismo con todas las buenas 
