@@ -22,7 +22,7 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 - [x] Eliminar contraseñas ingresadas
 - [x] No poder ingresar una contrase duplicada.
 - [x] Modificar contraseñas ya ingresadas
-- [ ] Al momento de ingresar una contraseña no se muestra que es lo que se esta escribiendo.
+- [X] Al momento de ingresar una contraseña no se muestra que es lo que se esta escribiendo.
 - [x] Cuando se muestra una contraseña se hace en un popUp que dura 4 segundos.
 - [x] El popUp tiene un boton para copiar al porta papeles.
 - [x] Agregar prompt
