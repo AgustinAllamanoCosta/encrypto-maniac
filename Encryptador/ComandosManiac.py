@@ -34,7 +34,12 @@ class ComandoConsolaSinParametros(Comando):
 	def ejecutar(self):
 		return 0
 
-class ComandoAgregar(ComandoConsola):
+class ComandoSensibles(ComandoConsola):
+
+	def obtenerContraseña(self):
+		return getpass("Contraseña:")
+
+class ComandoAgregar(ComandoSensibles):
 
 	def ejecutar(self,parametros):
 		logging.info('Se ejecuta comando agregar.')
@@ -50,15 +55,7 @@ class ComandoAgregar(ComandoConsola):
 		self.mensajeComando = "Se agrego la contraseña"
 		return 0
 
-	def obtenerContraseña(self):
-		return getpass("Contraseña:")
-
-	def escribirEnConsolaStrategy(self,historial):
-		if(self.mensajeComando != None):
-			print(self.mensajeComando)
-			historial.agregarEntrada(self.mensajeComando)
-
-class ComandoModificar(ComandoConsola):
+class ComandoModificar(ComandoSensibles):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
@@ -66,11 +63,9 @@ class ComandoModificar(ComandoConsola):
 		if(len(parametros)==0):
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoModificar)
 		else:
-			self.encriptoManiac.actualizarClave(parametros[0],self.obtenerContraseña())	
+			self.encriptoManiac.actualizarClave(parametros[0],self.obtenerContraseña())
+		self.mensajeComando = "Se modifico la contraseña de la cuenta "+parametros[0]
 		return 0
-
-	def obtenerContraseña(self):
-		return getpass("Contraseña:")
 
 class ComandoEliminar(ComandoConsola):
 	
