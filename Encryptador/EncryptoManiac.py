@@ -10,13 +10,14 @@ class EncryptoManiac(object):
 
 	def __init__(self):
 		self.baseIniciada = False
+		self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
 		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		try:
 			baseDeDatos.execute(CEM.ConsultaDB.crearTabla)
 		except sqlite3.OperationalError:
@@ -52,14 +53,14 @@ class EncryptoManiac(object):
 		
 	def ingresarClave(self,nombreApp,clave):
 		logging.info('Ingresando clave para '+nombreApp)
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		baseDeDatos.execute(CEM.ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
 	def buscarClave(self,nombreApp):
 		logging.info('Buscando clave para '+nombreApp)
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		cursor = baseDeDatos.execute(CEM.ConsultaDB.buscarClave,(nombreApp,))
 		respuesta = cursor.fetchone()
 		baseDeDatos.close()
@@ -69,7 +70,7 @@ class EncryptoManiac(object):
 			return None
 
 	def listarCuentas(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		cursor = baseDeDatos.execute(CEM.ConsultaDB.listarCuentas)
 		respuesta = cursor.fetchall()
 		baseDeDatos.close()
@@ -83,7 +84,7 @@ class EncryptoManiac(object):
 
 	def existeCuentaEnBase(self,nombreCuenta):
 		logging.info('Existe la cuenta'+nombreCuenta)
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		cursor = baseDeDatos.execute(CEM.ConsultaDB.buscarCuenta,(nombreCuenta,))
 		respuesta = cursor.fetchall()
 		baseDeDatos.close()
@@ -92,17 +93,24 @@ class EncryptoManiac(object):
 		else:
 			return False
 
+	def configurarRutaBBDD(self,rutaBBDD):
+		self.rutaBBDD = rutaBBDD + CEM.ConstantesEM.baseEncryptoManiac
+		self.iniciarBaseDeClaves()
+
 
 	def eliminarClave(self,parametro):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		baseDeDatos.execute(CEM.ConsultaDB.eliminarClave,(parametro,))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 			
 	def actualizarClave(self,nombreApp,calveNueva):
 		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.conectarBBDD()
 		baseDeDatos.execute(CEM.ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
 		baseDeDatos.commit()
 		baseDeDatos.close()
+
+	def conectarBBDD(self):
+		return sqlite3.connect(self.rutaBBDD)
 

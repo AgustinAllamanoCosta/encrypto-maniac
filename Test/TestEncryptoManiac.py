@@ -89,6 +89,14 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.seVerficaQueLaFuncionRetornaFalse()
 		self.limpiarBase()
 
+	def test_DadoQueSeTieneConfiguradoElDirectorioDeLaBBDDPorDefectoCuandoSeEjecutaLaFuncionConfigurarSeVerificaQueCambiaElOrigenDeLaBBDD(self):
+		self.limpiarBase()
+		self.dadoQueInicioCryptoManiac()
+		self.cuandoSeEjecutaLaFuncionConfigurar().conElParametro('c:\\')
+		self.seVerificaQueCambiaElOrigenDeLaBBDD()
+		self.seVerificarQueSeRecargaLaConfiguracion()
+		self.limpiarBase()
+
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
@@ -137,6 +145,14 @@ class TestEncryptoManiac(unittest.TestCase):
 	def cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase(self,nombreCuenta):
 		self.existeCuenta = self.encryptoManiac.existeCuentaEnBase(nombreCuenta)
 
+	def cuandoSeEjecutaLaFuncionConfigurar(self):
+		self.baseIniciada = False
+		self.encryptoManiac.iniciarBaseDeClaves = self.mockIniciarBase
+		return self		
+
+	def conElParametro(self,parametros):
+		self.encryptoManiac.configurarRutaBBDD(parametros)
+
 	def serVerificaQueSeIniciaLaBase(self):
 		self.assertEqual(self.encryptoManiac.baseIniciada, True)
 
@@ -179,6 +195,15 @@ class TestEncryptoManiac(unittest.TestCase):
 
 	def seVerficaQueLaFuncionRetornaFalse(self):
 		assert self.existeCuenta == False
+
+	def seVerificaQueCambiaElOrigenDeLaBBDD(self):
+		assert self.encryptoManiac.rutaBBDD != ""
+
+	def seVerificarQueSeRecargaLaConfiguracion(self):
+		assert self.baseIniciada == True
+
+	def mockIniciarBase(self):
+		self.baseIniciada = True
 
 	def limpiarBase(self):
 		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
