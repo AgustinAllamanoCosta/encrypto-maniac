@@ -22,7 +22,7 @@ class ConstanteConsola:
 	mensajeAyudaComandoMostrar = '''Comando mostrar-> mostrar parametro1 \n parametro1: el nombre de la cuenta a mostrar la clave, si no existe la cuenta no se mostrara nada :D'''
 	mensajeAyudaComandoVerMas = '''Comando vermas-> muestra la lista de comando disponibles :D'''
 	mensajeAyudaComandoEliminar = '''Comando eliminar-> eliminar parametro1 \n parametro1: nombre de la cuenta a elimnar de la base, la misma despues no se puede recuperar :D'''
-	mensajeAyudaComandoModificar = '''Comando modificar-> modificar parametro1 parametro2 \n parametro1: nombre de la cuenta a modificar \n parametro2 nueva calve a ingresar'''
+	mensajeAyudaComandoModificar = '''Comando modificar-> modificar parametro1 \n parametro1: nombre de la cuenta a modificar '''
 
 	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
 	mensajeErrprComandoDuplicado = 'Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingres. Nombre de cuenta: '

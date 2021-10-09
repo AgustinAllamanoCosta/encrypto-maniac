@@ -63,11 +63,14 @@ class ComandoModificar(ComandoConsola):
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
 		logging.info('Ejecutando el comando modificar')
-		if(len(parametros)==1):
-			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+		if(len(parametros)==0):
+			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoModificar)
 		else:
-			self.encriptoManiac.actualizarClave(parametros[0],parametros[1])	
+			self.encriptoManiac.actualizarClave(parametros[0],self.obtenerContraseña())	
 		return 0
+
+	def obtenerContraseña(self):
+		return getpass("Contraseña:")
 
 class ComandoEliminar(ComandoConsola):
 	

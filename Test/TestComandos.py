@@ -29,9 +29,9 @@ class TestComandosManiac(unittest.TestCase):
 		getpass = self.funcionesOriginales['getpass']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
-		self.dadoQueSeLlamaAlComandoActualizarClave().conParametros(['slack','456'])
-		self.cuandoSeLlamanALaFuncionEjecutarDelComandoActualizarClave()
-		self.seVerificaQueSeLlamaALaFuncionActualizarClave()
+		self.dadoQueSeLlamaAlComandoModificarClave().conParametros(['slack','456'])
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoModificarClave()
+		self.seVerificaQueSeLlamaALaFuncionModificarClave()
 
 	def test_dadoQueSeLlamaAlComandoEliminarConParametrosNombreDeCuentaSeVerifiacaQueSeLlamaALaFuncionEliminarClave(self):
 		self.dadoQueSeLlamaAlComandoEliminarClave().conParametros(['slack'])
@@ -73,12 +73,18 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionEscribirDelComando()
 		self.seVerficaQueSeMuestraUnPopUpConLaMisma()
 
+	def test_dadoQueSeLlamaAlComandoModificarConParametrosDeNombreDeCuentaYContraseniaSeVerificaSeDesactivaElEchoDeLaConsola(self):
+		self.dadoQueSeLlamaAlComandoModificarClave().conParametros(['slack'])
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoModificarClave()
+		self.seVerificaSeDesactivaElEchoDeLaConsola()
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar()
 		return self
 
-	def dadoQueSeLlamaAlComandoActualizarClave(self):
+	def dadoQueSeLlamaAlComandoModificarClave(self):
 		self.comando = ComandoModificar()
+		self.comando.obtenerContraseña = self.observadorGetPass
 		return self
 
 	def dadoQueSeLlamaAlComandoEliminarClave(self):
@@ -115,7 +121,7 @@ class TestComandosManiac(unittest.TestCase):
 		self.comando.obtenerContraseña = self.observadorGetPass
 		self.comando.ejecutar(self.parametroComando)
 
-	def cuandoSeLlamanALaFuncionEjecutarDelComandoActualizarClave(self):
+	def cuandoSeLlamanALaFuncionEjecutarDelComandoModificarClave(self):
 		self.seEjecutoActualizarClave = False
 		EncryptoManiac.actualizarClave = self.observadorActualizarClave
 		self.comando.ejecutar(self.parametroComando)
@@ -146,7 +152,7 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seEjecutoIngresarClave == True
 		assert self.seEjecutoExisteCuentaEnBase == True
 
-	def seVerificaQueSeLlamaALaFuncionActualizarClave(self):
+	def seVerificaQueSeLlamaALaFuncionModificarClave(self):
 		assert self.seEjecutoActualizarClave == True
 
 	def seVerificaQueSeLlamaALaFuncionEliminarClave(self):
