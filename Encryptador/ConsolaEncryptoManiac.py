@@ -5,6 +5,7 @@ from Encryptador import EncryptoManiac
 from Util.CustomException import *
 from Util import ConstantesEncryptoManiac 
 from Encryptador.ComandosManiac import *
+from getpass import getpass
 import re
 import logging
 

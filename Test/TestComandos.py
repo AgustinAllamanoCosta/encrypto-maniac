@@ -4,6 +4,7 @@ import unittest
 from Encryptador.ComandosManiac import *
 from Encryptador.EncryptoManiac import *
 from Util.UIManiac import *
+from getpass import getpass
 
 class TestComandosManiac(unittest.TestCase):
 
@@ -15,6 +16,7 @@ class TestComandosManiac(unittest.TestCase):
 			'buscarClave': EncryptoManiac.buscarClave,
 			'listarCuentas': EncryptoManiac.listarCuentas,
 			'existeCuentaEnBase': EncryptoManiac.existeCuentaEnBase,
+			'getpass' : getpass,
 		}
 
 	def tearDown(self):
@@ -24,6 +26,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
 		EncryptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
 		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
+		getpass = self.funcionesOriginales['getpass']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
 		self.dadoQueSeLlamaAlComandoActualizarClave().conParametros(['slack','456'])
@@ -46,17 +49,23 @@ class TestComandosManiac(unittest.TestCase):
 		self.seVerificaQueSeLlamaALaFuncionListarCuentas()
 
 	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaQueSeLlamaALaFuncionIngresarClave(self):
-		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
+		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack'])
 		self.dadoQueNoExisteLaCuentaEnLaBase()
 		self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
 		self.seVerificaQueSeLlamaALaFuncionIngresarClave()
 
 	def test_dadoQueExisteUnaCuentaLaBaseCuandoSeVaAIngresarUnaCuentaConElMismoNombreSeVerificaQueSeLanzaUnaExcepcion(self):
-		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack','123'])
+		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack'])
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		with self.assertRaises(CuentaEnBaseDuplicadaException):
 			self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
 		self.seVerificaQueSeLanzaLaExcepcionDeCuentaDuplicada()
+
+	def test_dadoQueSeLlamaAlComandoAgregarConParametrosDeNombreDeCuentaYContraseniaSeVerificaSeDesactivaElEchoDeLaConsola(self):
+		self.dadoQueSeLlamaAlComandoAgregar().conParametros(['slack'])
+		self.dadoQueNoExisteLaCuentaEnLaBase()
+		self.cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar()
+		self.seVerificaSeDesactivaElEchoDeLaConsola()
 
 	def test_dadoQueSeEjecutaElComandoMostrarDadoQueSeMuestraSeVerficaQueSeMuestraUnPopUpConLaMisma(self):
 		self.dadoQueSeLlamaAlComandoMostrar().conParametros(['slack'])
@@ -101,7 +110,9 @@ class TestComandosManiac(unittest.TestCase):
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar(self):
 		self.seEjecutoIngresarClave = False
+		self.seDesactivaElEcho = False
 		EncryptoManiac.ingresarClave = self.observadorIngresarClave
+		self.comando.obtenerContraseña = self.observadorGetPass
 		self.comando.ejecutar(self.parametroComando)
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoActualizarClave(self):
@@ -154,6 +165,9 @@ class TestComandosManiac(unittest.TestCase):
 	def seVerficaQueSeMuestraUnPopUpConLaMisma(self):
 		assert self.comando.mensajeComando == '123455'
 
+	def seVerificaSeDesactivaElEchoDeLaConsola(self):
+		assert self.seDesactivaElEcho == True
+
 	#UTIL
 
 	def observadorActualizarClave(self,param1,param2):
@@ -179,6 +193,10 @@ class TestComandosManiac(unittest.TestCase):
 		self.seEjecutoExisteCuentaEnBase = True
 		return False
 	
+	def observadorGetPass(self):
+		self.seDesactivaElEcho = True
+		return '1234'
+
 	def observadorComandoSystema(self):
 		self.seEejecutoElComandoDelSystema = True
 

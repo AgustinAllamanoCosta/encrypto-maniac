@@ -5,6 +5,7 @@ from Util.ConstantesEncryptoManiac import *
 from Util.UIManiac import *
 from Encryptador import EncryptoManiac as EM
 from os import system
+from getpass import getpass
 import logging
 import tkinter
 
@@ -37,18 +38,20 @@ class ComandoAgregar(ComandoConsola):
 
 	def ejecutar(self,parametros):
 		logging.info('Se ejecuta comando agregar.')
-		super().validarParametros(parametros)
-		if(len(parametros)==1):
+		if(len(parametros)==0):
 			logging.debug('Parametros insuficiente para el comando agregar.')
 			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
 			if(self.encriptoManiac.existeCuentaEnBase(parametros[0]) != True):
-				self.encriptoManiac.ingresarClave(parametros[0],parametros[1])
+				self.encriptoManiac.ingresarClave(parametros[0],self.obtenerContraseña())
 			else:
 				logging.debug('La cuenta esta duplicada')
 				raise CuentaEnBaseDuplicadaException(parametros[0])
 		self.mensajeComando = "Se agrego la contraseña"
 		return 0
+
+	def obtenerContraseña(self):
+		return getpass("Contraseña:")
 
 	def escribirEnConsolaStrategy(self,historial):
 		if(self.mensajeComando != None):

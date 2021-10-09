@@ -14,10 +14,9 @@ class ConstanteConsola:
 	Pd: para ver como usar un comando escribi -> ayuda nombreComando <- ej: ayuda modificar'''
 	
 	
-	mensajeAyudaComandoAgregar = '''Comando agregar-> agregar parametro1 parametro2 
+	mensajeAyudaComandoAgregar = '''Comando agregar-> agregar parametro1 
 	parametro1: es el nombre de la cuenta a agregar
-	parametro2: es la contraseña de la cuenta
-	LOS DOS PARAMETROS SON OBLIGATORIOS'''
+	EL PARAMETRO ES OBLIGATORIOS'''
 	mensajeAyudaComandoListar= '''Comando listar-> se utiliza para listar todo el contenido de la base, no utiliza parametros para hacerlo :D'''
 	mensajeAyudaComandoExit='''Comando exit-> se utiliza para salir del sistema, todas las contraseñas quedaran guardades en la base de datos, asi que cundo vuelvas todo estara como si nunca te hubieras ido :D'''
 	mensajeAyudaComandoMostrar = '''Comando mostrar-> mostrar parametro1 \n parametro1: el nombre de la cuenta a mostrar la clave, si no existe la cuenta no se mostrara nada :D'''
