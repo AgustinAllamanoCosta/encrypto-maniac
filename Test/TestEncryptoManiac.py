@@ -89,11 +89,19 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.seVerficaQueLaFuncionRetornaFalse()
 		self.limpiarBase()
 
-	def test_DadoQueSeTieneConfiguradoElDirectorioDeLaBBDDPorDefectoCuandoSeEjecutaLaFuncionConfigurarSeVerificaQueCambiaElOrigenDeLaBBDD(self):
+	def test_DadoQueSeTieneConfiguradoElDirectorioDeLaBBDDPorDefectocuandoSeEjecutaLaFuncionConfigurarBBDDBBDDSeVerificaQueCambiaElOrigenDeLaBBDD(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
-		self.cuandoSeEjecutaLaFuncionConfigurar().conElParametro('c:\\')
+		self.cuandoSeEjecutaLaFuncionConfigurarBBDD().conElParametro('c:\\ArchivoBBDD\\')
 		self.seVerificaQueCambiaElOrigenDeLaBBDD()
+		self.seVerificarQueSeRecargaLaConfiguracion()
+		self.limpiarBase()
+
+	def test_DadoQueSeTieneConfiguradoElDirectorioDelArchivoDeClavesPorDefectocuandoSeEjecutaLaFuncionConfigurarBBDDKeySeVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
+		self.limpiarBase()
+		self.dadoQueInicioCryptoManiac()
+		self.cuandoSeEjecutaLaFuncionConfigurarKey().conElParametro('c:\\ArchivoKey\\')
+		self.seVerificaQueCambiaElOrigenDelArchivoDeClaves()
 		self.seVerificarQueSeRecargaLaConfiguracion()
 		self.limpiarBase()
 
@@ -145,10 +153,15 @@ class TestEncryptoManiac(unittest.TestCase):
 	def cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase(self,nombreCuenta):
 		self.existeCuenta = self.encryptoManiac.existeCuentaEnBase(nombreCuenta)
 
-	def cuandoSeEjecutaLaFuncionConfigurar(self):
+	def cuandoSeEjecutaLaFuncionConfigurarBBDD(self):
 		self.baseIniciada = False
 		self.encryptoManiac.iniciarBaseDeClaves = self.mockIniciarBase
 		return self		
+
+	def cuandoSeEjecutaLaFuncionConfigurarKey(self):
+		self.archvioIniciado = False 
+		self.encryptoManiac.generarClave = self.mockArchivoKey
+		self.encryptoManiac.cargarClave = self.mockArchivoKey
 
 	def conElParametro(self,parametros):
 		self.encryptoManiac.configurarRutaBBDD(parametros)
@@ -202,8 +215,14 @@ class TestEncryptoManiac(unittest.TestCase):
 	def seVerificarQueSeRecargaLaConfiguracion(self):
 		assert self.baseIniciada == True
 
+	def seVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
+		assert self.encryptoManiac.rutaKey != CEM.ConstantesEM.baseEncryptoManiac
+
 	def mockIniciarBase(self):
 		self.baseIniciada = True
+
+	def mockArchivoKey(self):
+		self.archvioIniciado = True
 
 	def limpiarBase(self):
 		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
