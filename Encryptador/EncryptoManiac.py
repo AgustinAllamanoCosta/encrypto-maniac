@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Util import ConstantesEncryptoManiac as CEM
-import sqlite3
 from cryptography.fernet import Fernet as ft
-import os
+from Util import ConstantesEncryptoManiac as CEM
 import logging
+import os
+import sqlite3
 
 class EncryptoManiac(object):
 
 	def __init__(self):
 		self.baseIniciada = False
 		self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
+		self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
 		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
@@ -29,7 +30,7 @@ class EncryptoManiac(object):
 
 	def iniciarClaves(self):
 		logging.info('Iniciando archivos de clave......')
-		if(os.path.exists(CEM.ConstantesEM.nombreArchivoKey)):
+		if(os.path.exists(self.rutaKey)):
 			self.fernet = ft(self.cargarClave())
 		else:
 			self.generarClave()
@@ -38,12 +39,12 @@ class EncryptoManiac(object):
 
 	def generarClave(self):
 		logging.info('Generando clave')
-		with open(CEM.ConstantesEM.nombreArchivoKey,'wb') as archivoKey:
+		with open(self.rutaKey,'wb') as archivoKey:
 			archivoKey.write(ft.generate_key())
 
 	def cargarClave(self):
 		logging.info('Cargando clave')
-		archivoKey = open(CEM.ConstantesEM.nombreArchivoKey,'rb') 
+		archivoKey = open(self.rutaKey,'rb') 
 		key = archivoKey.read()
 		archivoKey.close()
 		return key
@@ -97,6 +98,9 @@ class EncryptoManiac(object):
 		self.rutaBBDD = rutaBBDD + CEM.ConstantesEM.baseEncryptoManiac
 		self.iniciarBaseDeClaves()
 
+	def configurarRutaKey(self,rutaKey):
+		self.rutaKey = rutaKey + CEM.ConstantesEM.nombreArchivoKey
+		self.iniciarClaves()
 
 	def eliminarClave(self,parametro):
 		baseDeDatos = self.conectarBBDD()

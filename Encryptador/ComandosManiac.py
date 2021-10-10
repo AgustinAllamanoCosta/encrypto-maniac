@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
-from Util.CustomException import *
-from Util.ConstantesEncryptoManiac import *
-from Util.UIManiac import *
-from Encryptador import EncryptoManiac as EM
-from os import system
 from getpass import getpass
+from os import system
 import logging
 import tkinter
+
+from Encryptador import EncryptoManiac as EM
+from Util.ConstantesEncryptoManiac import ConstanteConsola
+from Util.CustomException import ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
+from Util.UIManiac import PopUpManiac
+
 
 class Comando(object):
 
@@ -85,7 +87,7 @@ class ComandoMostrar(ComandoConsola):
 		logging.info('Ejecutando el comando mostrar')
 		super().validarParametros(parametros)
 		self.mensajeComando = self.encriptoManiac.buscarClave(parametros[0])
-		self.popUp.setMensaje(self.mensajeComando)
+		self.popUp.dddd(self.mensajeComando)
 		return 0
 
 	def escribirEnConsolaStrategy(self,historial):

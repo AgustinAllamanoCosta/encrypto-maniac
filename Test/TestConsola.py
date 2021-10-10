@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import unittest
-from Encryptador.ConsolaEncryptoManiac import *
-from Encryptador.ComandosManiac import *
-from Encryptador.EncryptoManiac import *
-
+from Encryptador.ComandosManiac import ComandoModificar,ComandoAgregar,ComandoListar,ComandoVerMas,ComandoExit,ComandoEliminar,ComandoMostrar,ComandoAyuda,ComandoUnix,ComandoWin
+from Encryptador.ConsolaEncryptoManiac import FactoryConsolaEncriptoManiac,ConsolaEncryptoManiac
+from Util.ConstantesEncryptoManiac import ConstanteConsola
+from Encryptador.EncryptoManiac import EncryptoManiac
 import threading as t
 import sys
+import unittest
 
 class TestConsolaManiac(unittest.TestCase):
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os 
 from Encryptador import EncryptoManiac as EM
 from Util import ConstantesEncryptoManiac as CEM
-import unittest
+import os 
 import sqlite3
+import unittest
 
 class TestEncryptoManiac(unittest.TestCase):
 
@@ -92,17 +92,17 @@ class TestEncryptoManiac(unittest.TestCase):
 	def test_DadoQueSeTieneConfiguradoElDirectorioDeLaBBDDPorDefectocuandoSeEjecutaLaFuncionConfigurarBBDDBBDDSeVerificaQueCambiaElOrigenDeLaBBDD(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
-		self.cuandoSeEjecutaLaFuncionConfigurarBBDD().conElParametro('c:\\ArchivoBBDD\\')
+		self.cuandoSeEjecutaLaFuncionConfigurarBBDD('c:\\ArchivoBBDD\\')
 		self.seVerificaQueCambiaElOrigenDeLaBBDD()
-		self.seVerificarQueSeRecargaLaConfiguracion()
+		self.seVerificarQueSeRecargaLaConfiguracionDeLaBBD()
 		self.limpiarBase()
 
 	def test_DadoQueSeTieneConfiguradoElDirectorioDelArchivoDeClavesPorDefectocuandoSeEjecutaLaFuncionConfigurarBBDDKeySeVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
-		self.cuandoSeEjecutaLaFuncionConfigurarKey().conElParametro('c:\\ArchivoKey\\')
+		self.cuandoSeEjecutaLaFuncionConfigurarKey('c:\\ArchivoKey\\')
 		self.seVerificaQueCambiaElOrigenDelArchivoDeClaves()
-		self.seVerificarQueSeRecargaLaConfiguracion()
+		self.seVerificarQueSeRecargaLaConfiguracionDeLasKey()
 		self.limpiarBase()
 
 #Utilidades
@@ -153,18 +153,15 @@ class TestEncryptoManiac(unittest.TestCase):
 	def cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase(self,nombreCuenta):
 		self.existeCuenta = self.encryptoManiac.existeCuentaEnBase(nombreCuenta)
 
-	def cuandoSeEjecutaLaFuncionConfigurarBBDD(self):
+	def cuandoSeEjecutaLaFuncionConfigurarBBDD(self,parametros):
 		self.baseIniciada = False
 		self.encryptoManiac.iniciarBaseDeClaves = self.mockIniciarBase
-		return self		
-
-	def cuandoSeEjecutaLaFuncionConfigurarKey(self):
-		self.archvioIniciado = False 
-		self.encryptoManiac.generarClave = self.mockArchivoKey
-		self.encryptoManiac.cargarClave = self.mockArchivoKey
-
-	def conElParametro(self,parametros):
 		self.encryptoManiac.configurarRutaBBDD(parametros)
+
+	def cuandoSeEjecutaLaFuncionConfigurarKey(self,parametros):
+		self.archvioIniciado = False 
+		self.encryptoManiac.iniciarClaves = self.mockArchivoKey
+		self.encryptoManiac.configurarRutaKey(parametros)
 
 	def serVerificaQueSeIniciaLaBase(self):
 		self.assertEqual(self.encryptoManiac.baseIniciada, True)
@@ -212,8 +209,11 @@ class TestEncryptoManiac(unittest.TestCase):
 	def seVerificaQueCambiaElOrigenDeLaBBDD(self):
 		assert self.encryptoManiac.rutaBBDD != ""
 
-	def seVerificarQueSeRecargaLaConfiguracion(self):
+	def seVerificarQueSeRecargaLaConfiguracionDeLaBBD(self):
 		assert self.baseIniciada == True
+		
+	def seVerificarQueSeRecargaLaConfiguracionDeLasKey(self):
+		assert self.archvioIniciado == True
 
 	def seVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
 		assert self.encryptoManiac.rutaKey != CEM.ConstantesEM.baseEncryptoManiac

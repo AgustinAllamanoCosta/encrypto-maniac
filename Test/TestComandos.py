@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import unittest
-from Encryptador.ComandosManiac import *
-from Encryptador.EncryptoManiac import *
-from Util.UIManiac import *
 from getpass import getpass
+from Encryptador.ComandosManiac import ComandoAgregar, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
+from Encryptador.EncryptoManiac import EncryptoManiac
+from Util.CustomException import CuentaEnBaseDuplicadaException
+from Util.UIManiac import PopUpManiac
+import unittest
 
 class TestComandosManiac(unittest.TestCase):
 
@@ -78,8 +79,12 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamanALaFuncionEjecutarDelComandoModificarClave()
 		self.seVerificaSeDesactivaElEchoDeLaConsola()
 
+	def _dadoQueSeLlamaAlComandoConfigurarConParametrosMenosBYUnaNuevaRutaParaLaBBDDSeVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
+		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-p c:\\'])
+		self.seVerificaQueSeActualizaYSeCargaLaNuevaBBDD()
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
-		self.comando = ComandoAgregar()
+		self.comando = ComandoAgregar() 
 		return self
 
 	def dadoQueSeLlamaAlComandoModificarClave(self):
@@ -96,6 +101,10 @@ class TestComandosManiac(unittest.TestCase):
 
 	def dadoQueSeLlamaAlComandoMostrar(self):
 		self.comando = ComandoMostrar()
+		return self
+
+	def dadoQueSeLlamaAlComandoConfigurar(self):
+		self.comando = ComandoConfigurar()
 		return self
 
 	def dadoQueExisteUnaCuentaEnLaBase(self):
@@ -145,9 +154,6 @@ class TestComandosManiac(unittest.TestCase):
 		self.comando.ejecutar(self.parametroComando)
 		self.comando.escribirEnConsolaStrategy(None)
 
-	def buscarClaveMock(self,nombre):
-		return ['slack','']
-
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		assert self.seEjecutoIngresarClave == True
 		assert self.seEjecutoExisteCuentaEnBase == True
@@ -173,6 +179,9 @@ class TestComandosManiac(unittest.TestCase):
 
 	def seVerificaSeDesactivaElEchoDeLaConsola(self):
 		assert self.seDesactivaElEcho == True
+
+	def seVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
+		assert self.seEejecuto
 
 	#UTIL
 

@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from Encryptador import EncryptoManiac 
-from Util.CustomException import *
-from Util import ConstantesEncryptoManiac 
-from Encryptador.ComandosManiac import *
 from getpass import getpass
-import re
+from Encryptador.ComandosManiac import *
+from Util.CustomException import InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,IndexError,CuentaEnBaseDuplicadaException
 import logging
+import re
 
 class ConsolaEncryptoManiac():
 
@@ -18,7 +15,7 @@ class ConsolaEncryptoManiac():
 		self.correrConsola = True
 		self.prompt = "EM>>"
 
-		self.comandosEstandar = {
+		self.comandosEstandar = { 
 		'exit':ComandoExit(),
 		'listar':ComandoListar(),
 		'vermas':ComandoVerMas(),
@@ -45,12 +42,11 @@ class ConsolaEncryptoManiac():
 		try:
 			self.historial.agregarEntrada(entrada)
 			comando = self.comandosEstandar.get(valoresEntrada[0].lower())
-			resultado = None
 
 			if isinstance(comando,ComandoConsolaSinParametros):
-				resultado = comando.ejecutar()
+				comando.ejecutar()
 			elif isinstance(comando,ComandoConsola):
-				resultado = comando.ejecutar(valoresEntrada[1:])
+				comando.ejecutar(valoresEntrada[1:])
 			else:
 				raise ComandoNoEncontradoExcepcion()
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Util.ConstantesEncryptoManiac import *
+from Util.ConstantesEncryptoManiac import ConstanteConsola
+
 
 class InterrumpirConsola(Exception):
 	pass
@@ -13,7 +14,7 @@ class ComandoNoEncontradoExcepcion(Exception):
 
 class CuentaEnBaseDuplicadaException(Exception):
 	def __init__(self, nombreCuenta):
-		self.mensaje =ConstanteConsola.mensajeErrprComandoDuplicado + nombreCuenta
+		self.mensaje = ConstanteConsola.mensajeErrprComandoDuplicado + nombreCuenta
 		super().__init__(self.mensaje)
 
 class ParametrosComandoIncompletos(Exception):
