@@ -26,6 +26,7 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 - [x] Cuando se muestra una contraseña se hace en un popUp que dura 4 segundos.
 - [x] El popUp tiene un boton para copiar al porta papeles.
 - [x] Agregar prompt
+- [ ] Cargar una base anteriormente creada con su archivo de claves
 - [ ] Agregar servidor remoto.
 - [ ] Agregar cli.
 
