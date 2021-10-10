@@ -17,6 +17,7 @@ class TestComandosManiac(unittest.TestCase):
 			'buscarClave': EncryptoManiac.buscarClave,
 			'listarCuentas': EncryptoManiac.listarCuentas,
 			'existeCuentaEnBase': EncryptoManiac.existeCuentaEnBase,
+			'configurar' : EncryptoManiac.configurarRutaBBDD,
 			'getpass' : getpass,
 		}
 
@@ -27,6 +28,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
 		EncryptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
 		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
+		EncryptoManiac.configurarRutaBBDD = self.funcionesOriginales['configurar']
 		getpass = self.funcionesOriginales['getpass']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
@@ -79,8 +81,9 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamanALaFuncionEjecutarDelComandoModificarClave()
 		self.seVerificaSeDesactivaElEchoDeLaConsola()
 
-	def _dadoQueSeLlamaAlComandoConfigurarConParametrosMenosBYUnaNuevaRutaParaLaBBDDSeVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
+	def test_dadoQueSeLlamaAlComandoConfigurarConParametrosMenosBYUnaNuevaRutaParaLaBBDDSeVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
 		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-p c:\\'])
+		self.cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar()
 		self.seVerificaQueSeActualizaYSeCargaLaNuevaBBDD()
 
 	def dadoQueSeLlamaAlComandoAgregar(self):
@@ -154,6 +157,11 @@ class TestComandosManiac(unittest.TestCase):
 		self.comando.ejecutar(self.parametroComando)
 		self.comando.escribirEnConsolaStrategy(None)
 
+	def cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar(self):
+		self.seEjecuto = False
+		EncryptoManiac.configurarRutaBBDD = self.observadorComandoConfigurar
+		self.comando.ejecutar(self.parametroComando)
+
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
 		assert self.seEjecutoIngresarClave == True
 		assert self.seEjecutoExisteCuentaEnBase == True
@@ -181,7 +189,7 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seDesactivaElEcho == True
 
 	def seVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
-		assert self.seEejecuto
+		assert self.seEjecuto == True
 
 	#UTIL
 
@@ -214,7 +222,10 @@ class TestComandosManiac(unittest.TestCase):
 
 	def observadorComandoSystema(self):
 		self.seEejecutoElComandoDelSystema = True
-
+	
+	def observadorComandoConfigurar(self,rutaAConfigurar):
+		self.seEjecuto = True
+	
 	def runPopUpMock(self):
 		self.seMostroElPopUp = True
 
