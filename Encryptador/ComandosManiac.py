@@ -147,9 +147,14 @@ class ComandoEscribirCabeceraDeConsola(ComandoConsolaSinParametros):
 class ComandoConfigurar(ComandoConsola):
 	
 	def ejecutar(self,parametros):
-		self.encriptoManiac.configurarRutaBBDD(parametros[0])
-		return 0	
-
+		
+		for index, param in enumerate(parametros):
+			if(param.lower() == '-p'):
+				self.encriptoManiac.configurarRutaBBDD(parametros[index + 1 ])
+			elif(param.lower() == '-a'):
+				self.encriptoManiac.configurarRutaKey(parametros[index + 1])
+		return 0		
+	
 class ComandoUnix(ComandoConsolaSinParametros):
 	def __init__(self):
 		pass

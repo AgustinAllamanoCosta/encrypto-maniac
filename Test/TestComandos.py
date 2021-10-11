@@ -17,7 +17,8 @@ class TestComandosManiac(unittest.TestCase):
 			'buscarClave': EncryptoManiac.buscarClave,
 			'listarCuentas': EncryptoManiac.listarCuentas,
 			'existeCuentaEnBase': EncryptoManiac.existeCuentaEnBase,
-			'configurar' : EncryptoManiac.configurarRutaBBDD,
+			'configurarBBDD' : EncryptoManiac.configurarRutaBBDD,
+			'configurarKey' : EncryptoManiac.configurarRutaKey,
 			'getpass' : getpass,
 		}
 
@@ -28,7 +29,8 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.buscarClave = self.funcionesOriginales['buscarClave']
 		EncryptoManiac.listarCuentas = self.funcionesOriginales['listarCuentas']
 		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
-		EncryptoManiac.configurarRutaBBDD = self.funcionesOriginales['configurar']
+		EncryptoManiac.configurarRutaBBDD = self.funcionesOriginales['configurarBBDD']
+		EncryptoManiac.configurarRutaKey = self.funcionesOriginales['configurarKey']
 		getpass = self.funcionesOriginales['getpass']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
@@ -82,10 +84,20 @@ class TestComandosManiac(unittest.TestCase):
 		self.seVerificaSeDesactivaElEchoDeLaConsola()
 
 	def test_dadoQueSeLlamaAlComandoConfigurarConParametrosMenosBYUnaNuevaRutaParaLaBBDDSeVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
-		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-p c:\\'])
+		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-p','c:\\'])
 		self.cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar()
 		self.seVerificaQueSeActualizaYSeCargaLaNuevaBBDD()
 
+	def test_dadoQueSeLlamaAlComandoConfigurarConParametrosMenosAYUnaNuevaRutaParaElArchivoDeKeySeVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
+		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-a','c:\\'])
+		self.cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar()
+		self.seVerificaQueSeActualizaYSeCargaLaNuevaKey()
+
+	def test_dadoQueSeLlamaAlComandoConfigurarConLosDosParametrosSeguidosConValoresValidosSeVerificaQueSeLlamaALasDosFuncionesDelEncryptoManiac(self):
+		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-a','c:\\','-p','c:\\'])
+		self.cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar()
+		self.seVerificaQueSeLlamaALasFuncionesDelEncryptoManiacCorrespondiente()
+		
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar() 
 		return self
@@ -158,8 +170,10 @@ class TestComandosManiac(unittest.TestCase):
 		self.comando.escribirEnConsolaStrategy(None)
 
 	def cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar(self):
-		self.seEjecuto = False
-		EncryptoManiac.configurarRutaBBDD = self.observadorComandoConfigurar
+		self.seEjecutoConfigurarKey = False
+		self.seEjecutoConfigurarBBDD = False
+		EncryptoManiac.configurarRutaBBDD = self.observadorComandoConfigurarBBDD
+		EncryptoManiac.configurarRutaKey  = self.observadorComandoConfigurarKey
 		self.comando.ejecutar(self.parametroComando)
 
 	def seVerificaQueSeLlamaALaFuncionIngresarClave(self):
@@ -189,7 +203,16 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seDesactivaElEcho == True
 
 	def seVerificaQueSeActualizaYSeCargaLaNuevaBBDD(self):
-		assert self.seEjecuto == True
+		assert self.seEjecutoConfigurarBBDD == True
+		assert self.seEjecutoConfigurarKey == False
+		
+	def seVerificaQueSeActualizaYSeCargaLaNuevaKey(self):
+		assert self.seEjecutoConfigurarKey == True
+		assert self.seEjecutoConfigurarBBDD == False
+		
+	def seVerificaQueSeLlamaALasFuncionesDelEncryptoManiacCorrespondiente(self):
+		assert self.seEjecutoConfigurarKey == True
+		assert self.seEjecutoConfigurarBBDD == True
 
 	#UTIL
 
@@ -223,8 +246,11 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorComandoSystema(self):
 		self.seEejecutoElComandoDelSystema = True
 	
-	def observadorComandoConfigurar(self,rutaAConfigurar):
-		self.seEjecuto = True
+	def observadorComandoConfigurarBBDD(self,rutaAConfigurar):
+		self.seEjecutoConfigurarBBDD = True
+	
+	def observadorComandoConfigurarKey(self,rutaAConfigurar):
+		self.seEjecutoConfigurarKey = True
 	
 	def runPopUpMock(self):
 		self.seMostroElPopUp = True
