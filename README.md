@@ -21,9 +21,15 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que 
 - [x] Listar las contraseñas listadas en la base
 - [x] Eliminar contraseñas ingresadas
 - [x] No poder ingresar una contrase duplicada.
+<<<<<<< HEAD
 - [x] Modificar contraseñas ya ingresadas
 - [X] Al momento de ingresar una contraseña no se muestra que es lo que se esta escribiendo.
 - [x] Cuando se muestra una contraseña se hace en un popUp que dura 4 segundos.
+=======
+- [x] Modificar contraseÃ±as ya ingresadas
+- [X] Al momento de ingresar una contraseÃ±a no se muestra que es lo que se esta escribiendo.
+- [x] Cuando se muestra una contraseÃ±a se hace en un popUp que dura 4 segundos.
+>>>>>>> main
 - [x] El popUp tiene un boton para copiar al porta papeles.
 - [x] Agregar prompt
 - [ ] Cargar una base anteriormente creada con su archivo de claves

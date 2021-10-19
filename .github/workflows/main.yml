@@ -25,12 +25,12 @@ jobs:
           pip install cryptography
       - name: Correr test de comandos de consola
         run: |
-          python testConsola.py
-          python subTetConsolaEncriptoManiac.py
+          python Test/TestConsola.py
+          python Test/SubTetConsolaEncryptoManiac.py
       - name: Correr test de consola
         run: | 
-          python testConsola.py
+          python Test/TestConsola.py
       - name: Correr test de Encrypto Maniac
         run: |
-          python testEncriptoManiac.py
+          python Test/TestEncryptoManiac.py
         
