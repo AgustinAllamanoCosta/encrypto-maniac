@@ -52,15 +52,9 @@ class TestConsolaManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
 		self.seVerificaQueSeLlamaALaFuncionAgregar()
 
-	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarSinParametroSeVerificaQueSeMuestraElMensajeDeError(self):
+	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarSinParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
 		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoAgregarSinParametros()
-		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
-		self.seVerificaQueSeMuestraElMensajeDeError()
-
-	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarConUnSoloParametroSeVerificaMuestraElMensajeDeAyudaDelComando(self):
-		self.dadoQueTengoUnaConsola()
-		self.dadoQueSeEjecutaElComandoAgregarConUnParametro()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
 		self.seVerificaMuestraElMensajeDeAyudaDelComando()
 
@@ -138,7 +132,8 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
-
+		self.seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola()
+		
 	def dadoQueTengoUnaConsola(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)	
 
@@ -149,15 +144,12 @@ class TestConsolaManiac(unittest.TestCase):
 	def dadoQueSeEjecutaElComandoAgregarSinParametros(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar'
 
-	def dadoQueSeEjecutaElComandoAgregarConUnParametro(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack'
-
 	def dadoQueSeEjecutaElComandoAgregar(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack'
 		ComandoAgregar.ejecutar = self.observadorFuncionAgregar
 
 	def dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack 1234'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack'
 		EncryptoManiac.existeCuentaEnBase = self.existeCuentaEnBaseMock
 
 	def dadoQueSeEjecutaElComandoListar(self):
@@ -276,15 +268,15 @@ class TestConsolaManiac(unittest.TestCase):
 
 class HiloQueSePuedeDetener(t.Thread):
 
-    def __init__(self,  *args, **kwargs):
-        super(HiloQueSePuedeDetener, self).__init__(*args, **kwargs)
-        self.frenarHilo = t.Event()
+	def __init__(self,  *args, **kwargs):
+		super(HiloQueSePuedeDetener, self).__init__(*args, **kwargs)
+		self.frenarHilo = t.Event()
 
-    def stop(self):
-        self.frenarHilo.set()
+	def stop(self):
+		self.frenarHilo.set()
 
-    def stopped(self):
-        return self.frenarHilo.is_set()
+	def stopped(self):
+		return self.frenarHilo.is_set()
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestConsolaManiac)
