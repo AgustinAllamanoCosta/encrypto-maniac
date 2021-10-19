@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from getpass import getpass
 from Encryptador.ComandosManiac import *
-from Util.CustomException import InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,IndexError,CuentaEnBaseDuplicadaException
+from Util.CustomException import InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException
 import logging
 import re
 
