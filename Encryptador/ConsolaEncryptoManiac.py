@@ -78,7 +78,7 @@ class ConsolaEncryptoManiac():
 	def escribirError(self,mensaje):
 		print(mensaje)
 		self.historial.agregarEntrada(mensaje)
- 
+
 	def obtenerHistorial(self):
 		return self.historial.obtener()
 
