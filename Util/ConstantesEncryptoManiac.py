@@ -28,7 +28,7 @@ class ConstanteConsola:
 	mensajeErrprComandoDuplicado = 'Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingresar. Nombre de cuenta: '
 
 class ConstantesEM:
-	baseEncryptoManiac = 'manicaDB.db'
+	baseEncryptoManiac = 'maniacDB.db'
 	nombreArchivoKey = 'encriptoKey.key'
 
 class ConsultaDB:
