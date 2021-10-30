@@ -1,8 +1,13 @@
 from Encryptador import ConsolaEncryptoManiac as CEM
+from Web import aplicacionWeb
 import sys
 
-def run():
-	consola = CEM.FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
-	consola.bucleDeConsola()
+def run(tipo):
+	if (tipo.lower() == 'consola'):
+		consola = CEM.FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
+		consola.bucleDeConsola()
+	else:
+		app = aplicacionWeb.aplicacion()
+		app.crear().run()
 
-run()
+run('')
