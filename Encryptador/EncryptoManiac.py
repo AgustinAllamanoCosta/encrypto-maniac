@@ -14,8 +14,8 @@ class EncryptoManiac(object):
 		self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
-		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
-
+		#logging.basicConfig(filanme='./encrypto.log', encoding='utf-8', level=logging.INFO)
+	
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
 		baseDeDatos = self.conectarBBDD()
@@ -109,12 +109,13 @@ class EncryptoManiac(object):
 		baseDeDatos.close()
 			
 	def actualizarClave(self,nombreApp,calveNueva):
-		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
+		logging.info('Se va a actualizar la clave de la cuenta '+nombreApp)
 		baseDeDatos = self.conectarBBDD()
 		baseDeDatos.execute(CEM.ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
 	def conectarBBDD(self):
+		logging.warn('Se va a conectar a la base de datos'+self.rutaBBDD) 	
 		return sqlite3.connect(self.rutaBBDD)
 

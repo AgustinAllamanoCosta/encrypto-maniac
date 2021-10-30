@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint
-from . import maniacDB
+from Web.aplicacionWeb import aplicacion 
 
 main = Blueprint('main',__name__)
 
@@ -13,6 +13,3 @@ def indexSitio():
 @main.route('/profile')
 def perfiles():
     return 'Perfiles'
-
-if __name__ == '__main__':
-    pass
