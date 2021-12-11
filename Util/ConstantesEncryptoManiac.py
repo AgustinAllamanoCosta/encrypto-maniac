@@ -30,6 +30,8 @@ class ConstanteConsola:
 class ConstantesEM:
 	baseEncryptoManiac = 'maniacDB.db'
 	nombreArchivoKey = 'encriptoKey.key'
+	rutaARecursos='..\\EncryptoManiac\\recursos\\'
+	rutaARecursosTest='..\\EncryptoManiac\\Test\\RecursosTest\\'
 
 class ConsultaDB:
 	actualizarClave = 'UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?'

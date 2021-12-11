@@ -8,13 +8,19 @@ import sqlite3
 
 class EncryptoManiac(object):
 
-	def __init__(self):
+	def __init__(self, configuracion=[]):
+		
 		self.baseIniciada = False
-		self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
-		self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
+		
+		if(len(configuracion) > 0 ):
+			self.rutaBBDD = os.path.abspath(configuracion[0]+CEM.ConstantesEM.baseEncryptoManiac)
+			self.rutaKey =  os.path.abspath(configuracion[1]+CEM.ConstantesEM.nombreArchivoKey)
+		else:
+			self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
+			self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
-		#logging.basicConfig(filanme='./encrypto.log', encoding='utf-8', level=logging.INFO)
+		logging.basicConfig(filanme='./encrypto.log', encoding='utf-8', level=logging.INFO)
 	
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
@@ -95,11 +101,11 @@ class EncryptoManiac(object):
 			return False
 
 	def configurarRutaBBDD(self,rutaBBDD):
-		self.rutaBBDD = rutaBBDD + CEM.ConstantesEM.baseEncryptoManiac
+		self.rutaBBDD = os.path.abspath(rutaBBDD + CEM.ConstantesEM.baseEncryptoManiac)
 		self.iniciarBaseDeClaves()
 
 	def configurarRutaKey(self,rutaKey):
-		self.rutaKey = rutaKey + CEM.ConstantesEM.nombreArchivoKey
+		self.rutaKey = os.path.abspath(rutaKey + CEM.ConstantesEM.nombreArchivoKey)
 		self.iniciarClaves()
 
 	def eliminarClave(self,parametro):

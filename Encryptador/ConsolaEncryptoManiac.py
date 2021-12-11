@@ -98,7 +98,7 @@ class ConsolaEncryptoManiacLinux(ConsolaEncryptoManiac):
 		self.comandosEstandar['systema'] = ComandoUnix()
 
 class FactoryConsolaEncriptoManiac(object):
-
+	
 	def obtenerConsola(self,plataforma):
 		logging.info('Plataforma '+plataforma)
 		if('linux' == plataforma.lower()):

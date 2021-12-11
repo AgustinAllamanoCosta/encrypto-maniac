@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*
 from getpass import getpass
 from os import system
+from tkinter import constants
 from Encryptador import EncryptoManiac as EM
-from Util.ConstantesEncryptoManiac import ConstanteConsola
+from Util.ConstantesEncryptoManiac import ConstanteConsola, ConstantesEM
 from Util.CustomException import ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
 from Util.UIManiac import PopUpManiac
 import logging
 import tkinter
 
 class Comando(object):
-
+	
 	def __init__(self):
-		self.encriptoManiac = EM.EncryptoManiac()
+		self.encriptoManiac = EM.EncryptoManiac([ConstantesEM.rutaARecursos,ConstantesEM.rutaARecursos])
 		self.mensajeComando = ""
 
 	def escribirEnConsolaStrategy(self,historial):

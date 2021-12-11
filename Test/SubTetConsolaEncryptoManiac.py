@@ -3,6 +3,7 @@
 from os import sys
 from Encryptador.ConsolaEncryptoManiac import ConsolaEncryptoManiac, FactoryConsolaEncriptoManiac
 from Encryptador.ComandosManiac import ComandoAyuda
+from Util.ConstantesEncryptoManiac import ConstantesEM
 import unittest
 
 class SubTestConsolaEncriptoManiac(unittest.TestCase):

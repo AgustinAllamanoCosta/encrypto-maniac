@@ -8,108 +8,93 @@ import unittest
 
 class TestEncryptoManiac(unittest.TestCase):
 
-	def test_DadoQueCorroElProgramaDosVecesLaSegundaFallaPorqueLaBaseYaEstaCreada(self):
-		self.dadoQueInicioCryptoManiac()
-		self.dadoQueInicioCryptoManiac()
-		self.serVerificaQueSeIniciaLaBase()
+	def __init__(self, methodName: str = ...) -> None:
+		super().__init__(methodName=methodName)
+		self.encryptoManiac=None
+
+	def tearDown(self):
+		if os.path.exists(self.encryptoManiac.rutaBBDD):
+			os.remove(self.encryptoManiac.rutaBBDD)
+		if os.path.exists(self.encryptoManiac.rutaKey):
+			os.remove(self.encryptoManiac.rutaKey)
 
 	def test_CunadoSeEjecutaElMetodoGenerarClaveSeGeneraUnArchivoPunotKey(self):
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.caundoGeneraLaClave()
 		self.seVerificaQueSeCrearElArchivoPuntoKey()
 
 	def test_CuandoInicioElEncriptadorSeCargaUnaClave(self):
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.seVerificaQueSeCargaUnaClave()
 		
 	def test_DadoQueIngresoUnaPalabraALaFuncionEncriptarASEMeLaRetornaEncriptada(self):
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.cuandoSeEncryptaLaPalabra("holaMundoCripto123")
 		self.seVerificaQueSeEncryptoExitosamente()
 			
 # Test de integracion con base de datos mejorar 
 	def test_DadoQueSeEjecutaLaFuncionIngresarClaveSeEncriptaYSeInsertaEnLaBaseDeDatos(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.cuandoSeIngresaLaCuenta('slack').conlaClave('1234Allamano')
 		self.seVerificaQueSeInsertoCorrectamenteEnLaBase()
-		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionBuscarClaveSeEsperaQueRetorneLaClaveDesencryptada(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		self.cuandoBuscoPorSuNombre()
 		self.seVerificaQueSeObtieneLaCalveIngresada()
-		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionBuscarClaveConUnNombreDeAppQueNoExisteEnLaBaseSeEsperaQueRetorneNone(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.cuandoEjecutoElMetodoBuscarConUnNombreQueCuentaQueNoEstaEnLaBase()
 		self.seVerificaQueLaRespuestaEsNone()
-		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionListarCuentasYQueExistenCuentasEnLaBBDDSeVerificaQueLaFuncionRetornasLasCuentas(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		self.cuandoSeEjecutaListarCuentas()
 		self.seVerificaQueSeListenLasCuentas()
-		self.limpiarBase()	
-
+	
 	def test_DadoQueSeEjecutaLaFuncionActualizarClaveYQueExisteUnRegistroEnLaBBDDSeVerificaQueLaClaveDeEseRegistroSeActualiza(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.dadoQueExisteUnaCuentaEnLaBase()
 		self.cuandoSeActualizaLaClave('4444')
 		self.seVerificaQueSeActualizo()
-		self.limpiarBase()		
-
+	
 	def test_DadoQueSeEjecutaLaFuncionEliminarYQueExisteUnRegistroEnLaBBDDQueCoincideConElValorAEliminarSeVerificaQueSeEliminaDeLaBase(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.cuandoSeIngresaLaCuenta('slack').conlaClave('1234Admin')
 		self.cuandoQueSeEjecutaLaFuncionEliminar()
 		self.seVerficaQueSeEliminoLaCuentaSlack()
-		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionExisteCuentaEnBaseYQueNoExisteLaCuentaBuscadaEnLaBaseSeVerificaQueLaFuncionRetornaFalse(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.dadoQueExisteLaCuenta('slack').conlaClave('1234Admin')
 		self.cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase('slack')
 		self.seVerficaQueLaFuncionRetornaTrue()
-		self.limpiarBase()
 
 	def test_DadoQueSeEjecutaLaFuncionExisteCuentaEnBaseYQueExisteLaCuentaBuscadaEnLaBaseSeVerificaQueLaFuncionRetornaFalse(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioiEncriptoManiac()
 		self.cuandoQueSeEjecutaLaFuncionExisteCuentaEnLaBase('slack')
 		self.seVerficaQueLaFuncionRetornaFalse()
-		self.limpiarBase()
 
 	def test_DadoQueSeTieneConfiguradoElDirectorioDeLaBBDDPorDefectocuandoSeEjecutaLaFuncionConfigurarBBDDBBDDSeVerificaQueCambiaElOrigenDeLaBBDD(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
-		self.cuandoSeEjecutaLaFuncionConfigurarBBDD('c:\\ArchivoBBDD\\')
+		self.dadoQueInicioiEncriptoManiac()
+		self.cuandoSeEjecutaLaFuncionConfigurarBBDD('..\\EncryptoManiac\\Test\\RecursosTestDos\\')
 		self.seVerificaQueCambiaElOrigenDeLaBBDD()
 		self.seVerificarQueSeRecargaLaConfiguracionDeLaBBD()
-		self.limpiarBase()
 
 	def test_DadoQueSeTieneConfiguradoElDirectorioDelArchivoDeClavesPorDefectocuandoSeEjecutaLaFuncionConfigurarBBDDKeySeVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
-		self.cuandoSeEjecutaLaFuncionConfigurarKey('c:\\ArchivoKey\\')
+		self.dadoQueInicioiEncriptoManiac()
+		self.cuandoSeEjecutaLaFuncionConfigurarKey('..\\EncryptoManiac\\Test\\RecursosTestDos\\')
 		self.seVerificaQueCambiaElOrigenDelArchivoDeClaves()
 		self.seVerificarQueSeRecargaLaConfiguracionDeLasKey()
-		self.limpiarBase()
 
 #Utilidades
 
-	def dadoQueInicioCryptoManiac(self):
-		self.encryptoManiac = EM.EncryptoManiac()
-	
+	def dadoQueInicioiEncriptoManiac(self):
+		self.encryptoManiac = EM.EncryptoManiac([CEM.ConstantesEM.rutaARecursosTest,CEM.ConstantesEM.rutaARecursosTest])
+
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.nombreAPP = 'slack'
 		self.claveAIngresar = 'aaaa'
@@ -167,7 +152,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertEqual(self.encryptoManiac.baseIniciada, True)
 
 	def seVerificaQueSeCrearElArchivoPuntoKey(self):
-		self.assertTrue(os.path.exists(CEM.ConstantesEM.nombreArchivoKey))
+		self.assertTrue(os.path.exists(CEM.ConstantesEM.rutaARecursosTest+CEM.ConstantesEM.nombreArchivoKey))
 
 	def seVerificaQueSeCargaUnaClave(self):
 		self.assertNotEqual(self.encryptoManiac.fernet, None)
@@ -176,7 +161,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertNotEqual(self.palabraEncryptada,self.palabraAEncryptar)
 
 	def seVerificaQueSeInsertoCorrectamenteEnLaBase(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.encryptoManiac.conectarBBDD()
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',(self.nombreAPP,))
 		self.assertNotEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()
@@ -195,7 +180,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertEqual(self.encryptoManiac.buscarClave(self.nombreAPP),self.nuevaClave)
 
 	def seVerficaQueSeEliminoLaCuentaSlack(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = self.encryptoManiac.conectarBBDD()
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',('slack',))
 		self.assertEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()	
@@ -223,13 +208,6 @@ class TestEncryptoManiac(unittest.TestCase):
 
 	def mockArchivoKey(self):
 		self.archvioIniciado = True
-
-	def limpiarBase(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
-		baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
-		baseDeDatos.commit()
-		baseDeDatos.close()
-
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestEncryptoManiac)
 	unittest.TextTestRunner(verbosity=2).run(suite)
