@@ -30,7 +30,8 @@ class ConstanteConsola:
 class ConstantesEM:
 	baseEncryptoManiac = 'maniacDB.db'
 	nombreArchivoKey = 'encriptoKey.key'
-	rutaARecursos='..\\EncryptoManiac\\recursos\\'
+	rutaARecursos='..\\EncryptoManiac\\Recursos\\'
+	rutaARecursosWeb='..\\EncryptoManiac\\Web\\Recursos\\'
 	rutaARecursosTest='..\\EncryptoManiac\\Test\\RecursosTest\\'
 
 class ConsultaDB:

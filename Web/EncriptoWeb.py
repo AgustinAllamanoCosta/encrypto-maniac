@@ -3,16 +3,15 @@
 
 from flask import Flask
 from Encryptador import EncryptoManiac as EM
+from Util.ConstantesEncryptoManiac import ConstantesEM
 from flask import Blueprint, render_template
 from Web.main import main as mainBlueprint
 import os
 
-RUTA_A_RECURSOS = os.getcwd()+'\\Web\\recursos\\'
-
 aplicacion = Flask(__name__)
 
 def create_app():
-    encriptador = EM.EncryptoManiac([RUTA_A_RECURSOS,RUTA_A_RECURSOS])    
+    encriptador = EM.EncryptoManiac([ConstantesEM.rutaARecursosWeb,ConstantesEM.rutaARecursosWeb])    
 
     aplicacion.config['EncryptoManiac'] = encriptador
     aplicacion.register_blueprint(mainBlueprint)
