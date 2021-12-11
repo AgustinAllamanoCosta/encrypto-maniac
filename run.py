@@ -1,14 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from Encryptador import ConsolaEncryptoManiac as CEM
-from Web import aplicacionWeb
-import sys
+from Web import EncriptoWeb
 
-def run(tipo):
-	if(len(tipo) > 1):
-		if (tipo[1].lower() == 'consola'):
-			consola = CEM.FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
-			consola.bucleDeConsola()
-	else:
-		app = aplicacionWeb.aplicacion()
-		app.crear().run()
+def run():
+	consola = CEM.FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
+	consola.bucleDeConsola()
 
-run(sys.argv)
+run()
