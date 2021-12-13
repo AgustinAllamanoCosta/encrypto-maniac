@@ -121,3 +121,5 @@ encriptoKey.key
 /.metadata/
 /.settings/org.eclipse.core.resources.prefs
 maniacDB.db
+id_rsa
+*.pub
