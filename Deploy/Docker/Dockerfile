@@ -10,8 +10,10 @@ ENV FLASK_ENV="development"
 ENV FLASK_APP="/EncryptoManiac/Web/EncriptoWeb:crearAplicacion()"
 ENV PYTHONPATH="/EncryptoManiac/"
 
-RUN mkdir /EncryptoManiac/ && mkdir /EncryptoManiac/Web/Recursos
-
-COPY . .
+COPY Encryptador/ /EncryptoManiac/Encryptador/
+RUN mkdir /EncryptoManiac/Recursos/
+COPY Encryptador/Util Encryptador/Util
+COPY Encryptador/Web Encryptador/Web
+RUN mkdir /EncryptoManiac/Web/Recursos/
 
 CMD [ "bash" ]
