@@ -1,2 +1,2 @@
 cd ..
-docker build -t em -f Deploy/Docker/Dockerfile .
+docker build -t encryptoManiacWeb -f $1/Dockerfile .
