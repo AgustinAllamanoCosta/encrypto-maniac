@@ -1,2 +1,2 @@
 cd ..
-docker build -t encryptoManiacWeb -f $1/Dockerfile .
+docker build -t encrypto-maniac-web -f $1/Dockerfile .
