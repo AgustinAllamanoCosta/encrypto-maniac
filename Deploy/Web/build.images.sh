@@ -1,2 +1,2 @@
 cd $WORKSPACE
-docker build -t encrypto-maniac-web -f $1/Dockerfile .
+docker build -t ghcr.io/agustinallamanocosta/encryptoManiac:latest -f $1/Dockerfile .

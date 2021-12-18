@@ -21,26 +21,6 @@ remote.execute() {
    )
 }
 
-remote.copy() {                                                                                                                       
-
-    FROM=$1
-    TO=$2
-    remote.execute mkdir -p $TO
-    (
-      set -x;<
-      scp -o StrictHostKeyChecking=no \
-          -o UserKnownHostsFile=/dev/null \
-          -o LogLevel=error \
-          -P $SSH_PORT \
-          -i $SSH_PRIVATE_KEY \
-          $FROM \
-          $SSH_USER@$HOST:$TO
-    )
-}
-
 _run(){ 
-	remote.execute docker login ghcr.io -u agustinallamanoocosta -p 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
-    remote.execute docker pull ghcr.io/agustinallamanocosta/encryptoManiac:latest 
-    remote.execute docker stop em
-    remote.execute docker run -d -t --rm --name encryptoM -p 80:5000 -v /etc/baseEncryoptoM:/EncryptadorManiac/Recursos -v /etc/baseEncryoptoMWeb:/EncryptadorManiac/Web/Recursos ghcr.io/agustinallamanocosta/encryptoManiac:latest
+	
 }
