@@ -20,4 +20,4 @@ RUN   mkdir /EncryptoManiac/Web/Recursos/
 COPY  EncryptoManiac/run.flask.sh .
 RUN chmod u+x /EncryptoManiac/run.flask.sh
 
-CMD [ "./EncryptoManiac/run.flask.sh" ]
+CMD [ "/EncryptoManiac/run.flask.sh" ]
