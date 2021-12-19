@@ -18,4 +18,4 @@ COPY  EncryptoManiac/Util  /EncryptoManiac/Util
 COPY  EncryptoManiac/Web  /EncryptoManiac/Web
 RUN   mkdir /EncryptoManiac/Web/Recursos/
 
-CMD [ "flask run" ]
+CMD [ "bash" ]
