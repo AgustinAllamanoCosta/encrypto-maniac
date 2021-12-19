@@ -2,17 +2,21 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
-#from Encryptador import EncryptoManiac as EM
-#from Util.ConstantesEncryptoManiac import ConstantesEM
+from flask import render_template
+from Encryptador import EncryptoManiac as EM
+from Util.ConstantesEncryptoManiac import ConstantesEM
 
 aplicacion = Flask(__name__)
+encriptador = EM.EncryptoManiac([ConstantesEM.rutaARecursosWeb,ConstantesEM.rutaARecursosWeb])    
 
-#encriptador = EM.EncryptoManiac([ConstantesEM.rutaARecursosWeb,ConstantesEM.rutaARecursosWeb])    
-#aplicacion.config['EncryptoManiac'] = encriptador
+@aplicacion.route('/login')
+def login():
+    return render_template('login.html')
 
-@aplicacion.route('/hola')
-def hola():
-    return "<p>Hola</p>"
+@aplicacion.route('/singUp')
+def singUp():
+    return render_template('singUp.html')
 
-#if __name__ == "__main__":
-#    aplicacion.run()
+@aplicacion.route('/consult')
+def consult():
+    return render_template('consult.html')
