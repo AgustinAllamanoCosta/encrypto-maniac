@@ -10,6 +10,8 @@ ENV FLASK_ENV="development"
 ENV FLASK_APP="/EncryptoManiac/Web/EncriptoWeb"
 ENV PYTHONPATH="/EncryptoManiac/"
 
+EXPOSE 5000
+
 COPY  EncryptoManiac/Encryptador/ /EncryptoManiac/Encryptador/
 RUN   mkdir /EncryptoManiac/Recursos/
 COPY  EncryptoManiac/Util  /EncryptoManiac/Util
