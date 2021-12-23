@@ -9,7 +9,7 @@ from Util.ConstantesEncryptoManiac import ConstantesEM
 aplicacion = Flask(__name__)
 encriptador = EM.EncryptoManiac([ConstantesEM.rutaARecursosWeb,ConstantesEM.rutaARecursosWeb])    
 
-@aplicacion.route('/login')
+@aplicacion.route('/')
 def login():
     return render_template('login.html')
 
