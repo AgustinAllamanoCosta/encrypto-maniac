@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>EncryptoManiac SingUp</title>
+{% extends "baseInit.html" %}
+{% block title %} Sing Up {% endblock %}
+{% block head %}
+	{{ super() }}
 	<link rel="stylesheet" type="text/css" href="singUp.html">
-</head>
-<body>
-	<header>
-		<h1>Encrypto Maniac</h1>
-	</header>
-	<main>
-		<h1>SingUp</h1>
-	</main>
-	<footer>
-	</footer>
-</body>
-</html>
+{% endblock %}
+{% block main %}
+	<form>
+		<label>Nombre de usuario</label>
+		<input type="text" id="nombreUsuario">
+		<label>Contraseña maestra</label>
+		<input type="text" id="contraseniaMaestra">
+		<p>Estan contraseña tiene un minimo de 16 caracteres y no pueden ser solo numero o letras. Esto es asi ya que esta contraseña 
+		te va a proporsionar acceso a tu catalogo de cuentas.
+		<input type="submit" value="Confirmar">
+		</p>
+	</form>
+{% endblock %}
+{% block footer %}
+{% endblock %}
