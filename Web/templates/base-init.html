@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	{% block head %}
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>EncryptoManiac {% block title %}{% endblock %}</title>
-	<link rel="stylesheet" type="text/css" href="base-init.css">
-	{% endblock %}
-</head>
-<body>
-	<header>
-		<h1>Encrypto Maniac</h1><br>
-	</header>
-	<main>
-        {% block main %}
-        {% endblock %}
-	</main>
-	<footer>
-        {% block footer %}
-		<h1>Otros datos :D</h1><br>
-		<h3>Creado por</h3><br>
-		<p>Agustin Allamano Costa</p><br>
-		<p> <a href="mailto:allamanocostaagustin@gmail.com">allamanocostaagustin@gmail.com</a></p><br>
-        {% endblock %}
-	</footer>
-</body>
+	<head>
+		{% block head %}
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>EncryptoManiac {% block title %}{% endblock %}</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',base-init.css) }}">
+		{% endblock %}
+	</head>
+	<body>
+		<header>
+			<h1>Encrypto Maniac</h1><br>
+		</header>
+		<main>
+			{% block main %}
+			{% endblock %}
+		</main>
+		<footer>
+			{% block footer %}
+			<h1>Otros datos :D</h1>
+			<h3>Creado por</h3>
+			<p>Agustin Allamano Costa</p>
+			<p> <a href="mailto:allamanocostaagustin@gmail.com">allamanocostaagustin@gmail.com</a></p>
+			{% endblock %}
+		</footer>
+	</body>
 </html>
