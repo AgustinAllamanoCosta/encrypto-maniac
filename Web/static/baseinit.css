@@ -1,7 +1,8 @@
 :root {
     --main-color       : #178665;
+    --second-color     : #234874;
     --title-color      : #252947;
-    --text-color       : #e2f2f7;
+    --text-color       : #111213;
     --light-text-color : #A0A7AC;
     --body-color : #009ba7;
 }
@@ -10,6 +11,11 @@ body {
     background : var(--body-color);
     color : var(--text-color);
 }
+header, footer {
+    background : var(--second-color);
+    color : var(--text-color);
+}
+
 h1, h2, h3 {
     color: var(--title-color);
 }
