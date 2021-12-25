@@ -1,21 +1,20 @@
 :root {
-    --main-color       : #274974;
-    --second-color     : #178665;
+    --main-color       : #178665;
     --title-color      : #252947;
     --text-color       : #111213;
     --light-text-color : #A0A7AC;
-    --body-color : #009ba7;
+    --body-color : #274974;
 }
 
 body {
     background : var(--body-color);
     color : var(--text-color);
     margin: 0;
-	padding: 0;
 }
 header, footer {
-    background : var(--second-color);
+    background : var(--main-color );
     color : var(--text-color);
+    margin: 0;  
 }
 
 h1, h2, h3 {
