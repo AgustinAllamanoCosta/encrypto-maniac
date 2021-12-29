@@ -14,16 +14,13 @@
 			</tr>
 		</thead>
 		<tbody>
+			{% for cuenta in cuentas %}
 			<tr>
-				<td> slack </td>
+				<td> {{ cuenta }} </td>
 				<td> <button>Editar</button></td>
 				<td> <button>Mostrar</button></td>
 			</tr>
-			<tr>
-				<td> slack </td>
-				<td> <button>Editar</button></td>
-				<td> <button>Mostrar</button></td>
-			</tr>
+			{% endfor %}
 			<tr>
 				<td><button>Agregar Cuenta</button></td>
 			</tr>
