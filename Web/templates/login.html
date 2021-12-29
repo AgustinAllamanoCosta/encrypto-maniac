@@ -1,11 +1,15 @@
 {% extends "baseinit.html" %}
 {% block title %} Login {% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='login.css') }}">
+{% endblock %}
 {% block main %}
 	<form>
 		<label>Nombre de usuario</label><br>
 		<input type="text" id="nombreUsuario"><br>
 		<label>Contraseña maestra</label><br>
-		<input type="text" id="contraseniaMaestra"><br>
-		<input type="submit" value="login">
+		<input type="password" id="contraseniaMaestra"><br>
+		<button type="submit">Login</button>
 	</form>
 {% endblock %}

@@ -1,16 +1,20 @@
 {% extends "baseinit.html" %}
 {% block title %} Sing Up {% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='singUp.css') }}">
+{% endblock %}
 {% block main %}
 	<form>
 		<label>Nombre de usuario</label><br>
-		<input type="text" id="nombreUsuario"><br>
-		<label>Contraseña maestra</label><br>
-		<input type="text" id="contraseniaMaestra"><br>
-		<label>Rpite la contraseña maestra</label><br>
-		<input type="text" id="contraseniaMaestraDos"><br>
+		<input type="text" id="nombreUsuario" value="Encrypto"><br>
+		<label>Contraseña Maestra</label><br>
+		<input type="password" id="contraseniaMaestra" value="Contraseña maestra"><br>
+		<label>Confirma Contraseña</label><br>
+		<input type="password" id="contraseniaMaestraDos" value="Contraseña maestra"><br>
+		<button type="submit">Confirmar</button>
 		<p>Estan contraseña tiene un minimo de 16 caracteres y no pueden ser solo numero o letras. Esto es asi ya que esta contraseña 
 		te va a proporsionar acceso a tu catalogo de cuentas.
 		</p>
-		<input type="submit" value="Confirmar">
 	</form>
 {% endblock %}

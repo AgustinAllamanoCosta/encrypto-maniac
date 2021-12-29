@@ -1,5 +1,32 @@
 {% extends "baseinit.html" %}
 {% block title %} Consulta {% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='consult.css') }}">
+{% endblock %}
 {% block main %}
-	<h1>Consultas</h1>
+	<h2>Consultas</h3><br>
+	<table>
+		<thead>
+			<tr>
+				<th>Nombre cuenta</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td> slack </td>
+				<td> <button>Editar</button></td>
+				<td> <button>Mostrar</button></td>
+			</tr>
+			<tr>
+				<td> slack </td>
+				<td> <button>Editar</button></td>
+				<td> <button>Mostrar</button></td>
+			</tr>
+			<tr>
+				<td><button>Agregar Cuenta</button></td>
+			</tr>
+		</tbody>
+	</table><br>
 {% endblock %}
