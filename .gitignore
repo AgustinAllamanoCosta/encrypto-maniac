@@ -123,3 +123,4 @@ encriptoKey.key
 maniacDB.db
 id_rsa
 *.pub
+run.flask.bat

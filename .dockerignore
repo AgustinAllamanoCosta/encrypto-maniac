@@ -4,3 +4,4 @@ Deploy/
 .gitattributes
 .github
 *.md
+run.flask.bat
