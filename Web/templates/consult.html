@@ -13,19 +13,20 @@
 				<th>Nombre Cuenta </th>
 				<th>Tiempo de uso</abbr></th>
 				<th>
-					<input type="submit" name="action" value="Agregar" class="button is-block is-info modal-button">
+					<input type="button" name="action" value="Agregar" class="button is-block is-info modal-button">
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for cuenta in cuentas %}
 			<tr class="is-selected">
-				<form  method="POST" action="/acountsFrom">
+				<form  method="POST" action="/consultForm">
 					<input name="nombreCuenta" value='{{ cuenta[0] }}' hidden>
 					<td> {{ cuenta[0] }} </td>
 					<td> 999 </td>
-					<td> <button type="submit" name="action" class="button is-block is-info modal-button">Editar</button></td>
-					<td> <button type="submit" name="action" class="button is-block is-info modal-button">Mostrar</button></td>
+					<td> <input type="button" name="action" class="button is-block is-info modal-button" value="Editar"></td>
+					<td> <input type="submit" name="action" class="button is-block is-info modal-button" value="Mostrar"></td>
+					<td> <input type="submit" name="action" class="button is-block is-info modal-button" value="Eliminar"></td>
 				</form>
 			</tr>
 			{% endfor %}
@@ -35,14 +36,34 @@
 	<div id= "modal" class="modal">
 		<div class="modal-background"></div>
 		<div class="modal-card">
-			<form method="POST" action="/addCount">
+			<form method="POST" action="/consultForm">
 				<header class="modal-card-head">
 					<p class="modal-card-title"> Agrega nueva cuenta</p>
 				</header>
 				<section class="modal-card-body">
 					<input type="text"     class="input" 	name="nombreCuenta"	placeholder="Nombre de la cuenta" >
-					<input type="password" class="input" 	name="primeraContrasenia"	placeholder="Contrasenia">
-					<input type="password" class="input" 	name="segundaContrasenia"	placeholder="Repita la pass">
+					<input type="password" class="input" 	name="primeraContrasenia"	placeholder="Contraseña">
+					<input type="password" class="input" 	name="segundaContrasenia"	placeholder="Repita la Contraseña">
+				</section>
+				<footer class="modal-card-foot">
+					<input type="submit"   class="button is-info" name="action" value="Agregar">
+					<button type="button"   id="modalCancelar" class="button is-danger" name="action" value="Agregar"> Cancelar</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+	
+	<div id= "modalEditar" class="modal">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<form method="POST" action="/consultForm">
+				<header class="modal-card-head">
+					<p class="modal-card-title"> Modificar cuenta</p>
+				</header>
+				<section class="modal-card-body">
+					<input type="text"     class="input" 	name="nombreCuenta"	value="{{ cuentaAEditar }}" readonly >
+					<input type="password" class="input" 	name="primeraContrasenia"	placeholder="Nueva Contraseña">
+					<input type="password" class="input" 	name="segundaContrasenia"	placeholder="Repita la Contraseña">
 				</section>
 				<footer class="modal-card-foot">
 					<button type="submit"   class="button is-info" name="action" value="Agregar"> Agregar</button>
@@ -51,7 +72,22 @@
 			</form>
 		</div>
 	</div>
-	
+
+	<div id= "modalMostrar" class="modal">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Contraseña</p>
+			</header>
+			<section class="modal-card-body">
+				<input type="text" class="input" name="nombreCuenta" value="{{ contrasenia }}" readonly >
+			</section>
+			<footer class="modal-card-foot">
+				<button type="button"   class="button is-info" name="action" value="Copiar"> Agregar</button>
+			</footer>
+		</div>
+	</div>
+
 	<script>
 		$(".modal-button").click(function() {
 			$("html").addClass("is-clipped");
