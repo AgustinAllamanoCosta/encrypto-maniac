@@ -1,11 +1,7 @@
 {% extends "baseinit.html" %}
 {% block title %} Sing Up {% endblock %}
-{% block head %}
-	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='singUp.css') }}">
-{% endblock %}
 {% block main %}
-	<form>
+	<form method="POST" action="/consultFrom">
 		<label>Nombre de usuario</label><br>
 		<input type="text" id="nombreUsuario" value="Encrypto"><br>
 		<label>Contraseña Maestra</label><br>

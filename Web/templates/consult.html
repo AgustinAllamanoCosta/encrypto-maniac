@@ -1,29 +1,66 @@
 {% extends "baseinit.html" %}
-{% block title %} Consulta {% endblock %}
 {% block head %}
 	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='consult.css') }}">
+	{% block title %} Consulta {% endblock %}
+	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {% endblock %}
+
 {% block main %}
-	<h2>Consultas</h3><br>
-	<table>
+	<h2 class="title is-1">Consultas</h3><br>	
+	<table class="table">
 		<thead>
 			<tr>
-				<th>Nombre cuenta</th>
-				<th>Acciones</th>
+				<th>Nombre Cuenta </th>
+				<th>Tiempo de uso</abbr></th>
+				<th>
+					<input type="submit" name="action" value="Agregar" class="button is-block is-info modal-button">
+				</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for cuenta in cuentas %}
-			<tr>
-				<td> {{ cuenta }} </td>
-				<td> <button>Editar</button></td>
-				<td> <button>Mostrar</button></td>
+			<tr class="is-selected">
+				<form  method="POST" action="/consultFrom">
+					<td> {{ cuenta[0] }} </td>
+					<td> 999 </td>
+					<td> <input type="submit" name="action" value="Editar"></td>
+					<td> <input type="submit" name="action" value="Mostrar"></td>
+				</form>
 			</tr>
 			{% endfor %}
-			<tr>
-				<td><button>Agregar Cuenta</button></td>
-			</tr>
 		</tbody>
 	</table><br>
+
+	<div id= "modal" class="modal">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<form method="POST" action="/addCount">
+				<header class="modal-card-head">
+					<p class="modal-card-title"> Agrega nueva cuenta</p>
+				</header>
+				<section class="modal-card-body">
+					<input type="text"     class="input" 	name="nombreCuenta"	placeholder="Nombre de la cuenta" >
+					<input type="password" class="input" 	name="primeraContrasenia"	placeholder="Contrasenia">
+					<input type="password" class="input" 	name="segundaContrasenia"	placeholder="Repita la pass">
+				</section>
+				<footer class="modal-card-foot">
+					<button type="submit"   class="button is-info" name="action" value="Agregar"> Agregar</button>
+					<button type="button"   id="modalCancelar" class="button is-danger" name="action" value="Agregar"> Cancelar</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+	
+	<script>
+		$(".modal-button").click(function() {
+			$("html").addClass("is-clipped");
+			$("#modal").addClass("is-active");
+		});
+
+		$("#modalCancelar").click(function() {
+			$("html").removeClass("is-clipped");
+			$("#modal").removeClass("is-active");
+		});
+	</script>
+
 {% endblock %}

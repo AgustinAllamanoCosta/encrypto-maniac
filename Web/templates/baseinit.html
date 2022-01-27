@@ -5,18 +5,18 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>EncryptoManiac {% block title %}{% endblock %}</title>
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='baseinit.css') }}">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 		{% endblock %}
 	</head>
-	<body>
-		<header>
-			<h1>Encrypto Maniac</h1>
+	<body class="hero is-info is-large">
+		<header class="hero-head has-text-centered">
+			<h1 class="title is-1" >Encrypto Maniac</h1>
 		</header>
-		<main>
+		<main class="hero-body content ">
 			{% block main %}
 			{% endblock %}
 		</main>
-		<footer>
+		<footer class="hero-foot content ">
 			{% block footer %}
 			<h2>Otros datos :D</h1>
 			<h3>Creado por</h3>
