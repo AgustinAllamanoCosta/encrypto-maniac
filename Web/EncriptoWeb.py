@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from flask import request
 from flask import Flask
 from flask import render_template
 from Encryptador import EncryptoManiac as EM
@@ -17,6 +18,18 @@ def login():
 def singUp():
     return render_template('singUp.html')
 
-@aplicacion.route('/consult')
-def consult():
-    return render_template('consult.html')
+@aplicacion.route('/consultFrom', methods=['POST','GET'])
+def consultFrom():
+    return render_template('consult.html',cuentas=buscarCuentas())
+
+@aplicacion.route('/addCount', methods=['POST'])
+def addCount():
+    if(request.form["primeraContrasenia"] == request.form["segundaContrasenia"]):
+        encriptador.ingresarClave(request.form["nombreCuenta"],request.form["segundaContrasenia"])
+    return render_template('consult.html',cuentas=buscarCuentas())
+
+def buscarCuentas():
+    cuentasUsuario = []
+    if(encriptador.existenCuentasEnLaBase()):
+        cuentasUsuario = encriptador.obtenerCuentasDeLaBase()
+    return cuentasUsuario
