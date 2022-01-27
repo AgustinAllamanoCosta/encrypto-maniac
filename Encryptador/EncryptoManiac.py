@@ -77,10 +77,7 @@ class EncryptoManiac(object):
 			return None
 
 	def listarCuentas(self):
-		baseDeDatos = self.conectarBBDD()
-		cursor = baseDeDatos.execute(CEM.ConsultaDB.listarCuentas)
-		respuesta = cursor.fetchall()
-		baseDeDatos.close()
+		respuesta = self.obtenerCuentasDeLaBase()
 		if(len(respuesta)>0):
 			lista = ''
 			for app in respuesta:
@@ -88,6 +85,18 @@ class EncryptoManiac(object):
 			return lista
 		else:
 			return None
+	
+	def obtenerCuentasDeLaBase(self):
+		baseDeDatos = self.conectarBBDD()
+		cursor = baseDeDatos.execute(CEM.ConsultaDB.listarCuentas)
+		respuesta = cursor.fetchall()
+		baseDeDatos.close()
+		return respuesta
+
+	def existenCuentasEnLaBase(self):
+		if(self.listarCuentas()):
+			return True
+		return False
 
 	def existeCuentaEnBase(self,nombreCuenta):
 		logging.info('Existe la cuenta'+nombreCuenta)
