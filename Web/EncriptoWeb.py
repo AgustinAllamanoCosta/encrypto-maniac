@@ -28,6 +28,10 @@ def addCount():
         encriptador.ingresarClave(request.form["nombreCuenta"],request.form["segundaContrasenia"])
     return render_template('consult.html',cuentas=buscarCuentas())
 
+@aplicacion.route('/acountsFrom', methods=['POST'])
+def acountForm():
+    return encriptador.buscarClave(request.form["nombreCuenta"])
+
 def buscarCuentas():
     cuentasUsuario = []
     if(encriptador.existenCuentasEnLaBase()):

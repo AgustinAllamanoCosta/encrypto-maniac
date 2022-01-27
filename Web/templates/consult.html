@@ -20,11 +20,12 @@
 		<tbody>
 			{% for cuenta in cuentas %}
 			<tr class="is-selected">
-				<form  method="POST" action="/consultFrom">
+				<form  method="POST" action="/acountsFrom">
+					<input name="nombreCuenta" value='{{ cuenta[0] }}' hidden>
 					<td> {{ cuenta[0] }} </td>
 					<td> 999 </td>
-					<td> <input type="submit" name="action" value="Editar"></td>
-					<td> <input type="submit" name="action" value="Mostrar"></td>
+					<td> <button type="submit" name="action" class="button is-block is-info modal-button">Editar</button></td>
+					<td> <button type="submit" name="action" class="button is-block is-info modal-button">Mostrar</button></td>
 				</form>
 			</tr>
 			{% endfor %}
