@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 from getpass import getpass
 from Encryptador.ComandosManiac import ComandoAgregar, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
 from Encryptador.EncryptoManiac import EncryptoManiac

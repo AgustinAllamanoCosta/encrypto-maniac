@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from cryptography.fernet import Fernet as ft
+from Encryptador.Repository import Repository
 from Util import ConstantesEncryptoManiac as CEM
 import logging
 import os
@@ -10,22 +11,19 @@ class EncryptoManiac(object):
 
 	def __init__(self):
 		self.baseIniciada = False
-		self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
 		self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
+		self.baseRepository = Repository()
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
 		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
-		baseDeDatos = self.conectarBBDD()
 		try:
-			baseDeDatos.execute(CEM.ConsultaDB.crearTabla)
+			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.crearTabla)
 		except sqlite3.OperationalError:
 			logging.info('Tabla ya existente, no se creo')
-			
 		self.baseIniciada = True
-		baseDeDatos.close()
 		logging.info('Base de datos iniciada con exito.')
 
 	def iniciarClaves(self):
@@ -54,27 +52,18 @@ class EncryptoManiac(object):
 		
 	def ingresarClave(self,nombreApp,clave):
 		logging.info('Ingresando clave para '+nombreApp)
-		baseDeDatos = self.conectarBBDD()
-		baseDeDatos.execute(CEM.ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
-		baseDeDatos.commit()
-		baseDeDatos.close()
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
 
 	def buscarClave(self,nombreApp):
 		logging.info('Buscando clave para '+nombreApp)
-		baseDeDatos = self.conectarBBDD()
-		cursor = baseDeDatos.execute(CEM.ConsultaDB.buscarClave,(nombreApp,))
-		respuesta = cursor.fetchone()
-		baseDeDatos.close()
+		respuesta = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarClave,(nombreApp,))
 		if( respuesta != None and len(respuesta)>0):
 			return self.fernet.decrypt(respuesta[0]).decode()
 		else:
 			return None
 
 	def listarCuentas(self):
-		baseDeDatos = self.conectarBBDD()
-		cursor = baseDeDatos.execute(CEM.ConsultaDB.listarCuentas)
-		respuesta = cursor.fetchall()
-		baseDeDatos.close()
+		respuesta = self.baseRepository.obtenerTodos(CEM.ConsultaDB.listarCuentas)
 		if(len(respuesta)>0):
 			lista = ''
 			for app in respuesta:
@@ -85,10 +74,7 @@ class EncryptoManiac(object):
 
 	def existeCuentaEnBase(self,nombreCuenta):
 		logging.info('Existe la cuenta'+nombreCuenta)
-		baseDeDatos = self.conectarBBDD()
-		cursor = baseDeDatos.execute(CEM.ConsultaDB.buscarCuenta,(nombreCuenta,))
-		respuesta = cursor.fetchall()
-		baseDeDatos.close()
+		respuesta = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.buscarCuenta,(nombreCuenta,))
 		if(len(respuesta)>0):
 			return True
 		else:
@@ -103,18 +89,8 @@ class EncryptoManiac(object):
 		self.iniciarClaves()
 
 	def eliminarClave(self,parametro):
-		baseDeDatos = self.conectarBBDD()
-		baseDeDatos.execute(CEM.ConsultaDB.eliminarClave,(parametro,))
-		baseDeDatos.commit()
-		baseDeDatos.close()
-			
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.eliminarClave,(parametro,))
+
 	def actualizarClave(self,nombreApp,calveNueva):
 		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
-		baseDeDatos = self.conectarBBDD()
-		baseDeDatos.execute(CEM.ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
-		baseDeDatos.commit()
-		baseDeDatos.close()
-
-	def conectarBBDD(self):
-		return sqlite3.connect(self.rutaBBDD)
-
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))

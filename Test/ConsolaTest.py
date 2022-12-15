@@ -1,9 +1,7 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+from Encryptador.EncryptoManiac import EncryptoManiac
 from Encryptador.ComandosManiac import ComandoModificar,ComandoAgregar,ComandoListar,ComandoVerMas,ComandoExit,ComandoEliminar,ComandoMostrar,ComandoAyuda,ComandoUnix,ComandoWin
 from Encryptador.ConsolaEncryptoManiac import FactoryConsolaEncriptoManiac,ConsolaEncryptoManiac
 from Util.ConstantesEncryptoManiac import ConstanteConsola
-from Encryptador.EncryptoManiac import EncryptoManiac
 import threading as t
 import sys
 import unittest

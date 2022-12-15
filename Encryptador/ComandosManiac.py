@@ -7,7 +7,6 @@ from Util.ConstantesEncryptoManiac import ConstanteConsola
 from Util.CustomException import ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
 from Util.UIManiac import PopUpManiac
 import logging
-import tkinter
 
 class Comando(object):
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from os import sys
 from Encryptador.ConsolaEncryptoManiac import ConsolaEncryptoManiac, FactoryConsolaEncriptoManiac
 from Encryptador.ComandosManiac import ComandoAyuda

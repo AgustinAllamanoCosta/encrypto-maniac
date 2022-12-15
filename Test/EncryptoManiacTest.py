@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 from Encryptador import EncryptoManiac as EM
 from Util import ConstantesEncryptoManiac as CEM
 import os 
