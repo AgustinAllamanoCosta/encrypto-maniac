@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from cryptography.fernet import Fernet as ft
-from Encryptador.Repository import Repository
+from Encryptador.BaseRepository import BaseRepository
+from Encryptador.KeyRepository import KeyRepository
 from Util import ConstantesEncryptoManiac as CEM
 import logging
-import os
 import sqlite3
 
 class EncryptoManiac(object):
 
 	def __init__(self):
 		self.baseIniciada = False
-		self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
-		self.baseRepository = Repository()
+		self.baseRepository = BaseRepository()
+		self.keyRepository = KeyRepository()
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
 		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
@@ -28,37 +27,19 @@ class EncryptoManiac(object):
 
 	def iniciarClaves(self):
 		logging.info('Iniciando archivos de clave......')
-		if(os.path.exists(self.rutaKey)):
-			self.fernet = ft(self.cargarClave())
-		else:
-			self.generarClave()
-			self.fernet = ft(self.cargarClave())
+		self.keyRepository.generarOCargarArchivoDeCalvesExistente()
 		logging.info('Archivos de calve iniciado')
-
-	def generarClave(self):
-		logging.info('Generando clave')
-		with open(self.rutaKey,'wb') as archivoKey:
-			archivoKey.write(ft.generate_key())
-
-	def cargarClave(self):
-		logging.info('Cargando clave')
-		archivoKey = open(self.rutaKey,'rb') 
-		key = archivoKey.read()
-		archivoKey.close()
-		return key
-
-	def encriptarASE(self, palabraAEncriptar):
-		return self.fernet.encrypt(palabraAEncriptar.encode())
 		
 	def ingresarClave(self,nombreApp,clave):
 		logging.info('Ingresando clave para '+nombreApp)
-		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarClave,(nombreApp,self.encriptarASE(clave)))
+		nuevaClave = self.keyRepository.encriptarASE(clave)
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarClave,(nombreApp,nuevaClave))
 
 	def buscarClave(self,nombreApp):
 		logging.info('Buscando clave para '+nombreApp)
 		respuesta = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarClave,(nombreApp,))
 		if( respuesta != None and len(respuesta)>0):
-			return self.fernet.decrypt(respuesta[0]).decode()
+			return self.keyRepository.desencriptarASE(respuesta[0])
 		else:
 			return None
 
@@ -93,4 +74,5 @@ class EncryptoManiac(object):
 
 	def actualizarClave(self,nombreApp,calveNueva):
 		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
-		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(self.encriptarASE(calveNueva),nombreApp))
+		nuevaClave = self.keyRepository.encriptarASE(calveNueva)
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(nuevaClave,nombreApp))

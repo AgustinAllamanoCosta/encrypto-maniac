@@ -4,7 +4,7 @@ from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
 
-class Repository(object):
+class BaseRepository(object):
 
     def __init__(self):
         self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac

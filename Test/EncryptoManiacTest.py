@@ -119,11 +119,11 @@ class TestEncryptoManiac(unittest.TestCase):
 		return self
 
 	def caundoGeneraLaClave(self):
-		self.encryptoManiac.generarClave()
+		self.encryptoManiac.keyRepository.generarOCargarArchivoDeCalvesExistente()
 
 	def cuandoSeEncryptaLaPalabra(self,palabra):
 		self.palabraAEncryptar = palabra
-		self.palabraEncryptada = self.encryptoManiac.encriptarASE(self.palabraAEncryptar)
+		self.palabraEncryptada = self.encryptoManiac.keyRepository.encriptarASE(self.palabraAEncryptar)
 
 	def cuandoSeIngresaLaCuenta(self,nombre):
 		self.nombreAPP = nombre
@@ -169,7 +169,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertTrue(os.path.exists(CEM.ConstantesEM.nombreArchivoKey))
 
 	def seVerificaQueSeCargaUnaClave(self):
-		self.assertNotEqual(self.encryptoManiac.fernet, None)
+		self.assertNotEqual(self.encryptoManiac.keyRepository.fernet, None)
 
 	def seVerificaQueSeEncryptoExitosamente(self):
 		self.assertNotEqual(self.palabraEncryptada,self.palabraAEncryptar)
