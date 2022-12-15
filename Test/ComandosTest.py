@@ -1,6 +1,7 @@
 
 from getpass import getpass
-from Encryptador.ComandosManiac import ComandoAgregar, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
+from Encryptador.comandos.ComandosManiac import ComandoAgregar, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
+from Encryptador.factory.ManiacFactory import FactoryEncriptador
 from Encryptador.EncryptoManiac import EncryptoManiac
 from Util.CustomException import CuentaEnBaseDuplicadaException
 from Util.UIManiac import PopUpManiac
@@ -9,6 +10,7 @@ import unittest
 class TestComandosManiac(unittest.TestCase):
 
 	def setUp(self):
+		self.encriptoManiac = FactoryEncriptador().obtenerEncripto()
 		self.funcionesOriginales = {
 			'ingresarClave': EncryptoManiac.ingresarClave,
 			'actualizarClave': EncryptoManiac.actualizarClave,
@@ -96,29 +98,29 @@ class TestComandosManiac(unittest.TestCase):
 		self.dadoQueSeLlamaAlComandoConfigurar().conParametros(['-a','c:\\','-p','c:\\'])
 		self.cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar()
 		self.seVerificaQueSeLlamaALasFuncionesDelEncryptoManiacCorrespondiente()
-		
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
-		self.comando = ComandoAgregar() 
+		self.comando = ComandoAgregar(self.encriptoManiac)
 		return self
 
 	def dadoQueSeLlamaAlComandoModificarClave(self):
-		self.comando = ComandoModificar()
+		self.comando = ComandoModificar(self.encriptoManiac)
 		self.comando.obtenerContraseña = self.observadorGetPass
 		return self
 
 	def dadoQueSeLlamaAlComandoEliminarClave(self):
-		self.comando = ComandoEliminar()
+		self.comando = ComandoEliminar(self.encriptoManiac)
 		return self
 
 	def dadoQueSeLlamaAlComandoListar(self):
-		self.comando = ComandoListar()
+		self.comando = ComandoListar(self.encriptoManiac)
 
 	def dadoQueSeLlamaAlComandoMostrar(self):
-		self.comando = ComandoMostrar()
+		self.comando = ComandoMostrar(self.encriptoManiac)
 		return self
 
 	def dadoQueSeLlamaAlComandoConfigurar(self):
-		self.comando = ComandoConfigurar()
+		self.comando = ComandoConfigurar(self.encriptoManiac)
 		return self
 
 	def dadoQueExisteUnaCuentaEnLaBase(self):

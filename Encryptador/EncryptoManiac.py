@@ -1,20 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Encryptador.BaseRepository import BaseRepository
-from Encryptador.KeyRepository import KeyRepository
+from Encryptador.repository import BaseRepository, KeyRepository
 from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
 
 class EncryptoManiac(object):
 
-	def __init__(self):
+	def __init__(self,baseRepositoryParam: BaseRepository, keyReposioryParam: KeyRepository):
 		self.baseIniciada = False
-		self.baseRepository = BaseRepository()
-		self.keyRepository = KeyRepository()
+		self.baseRepository = baseRepositoryParam
+		self.keyRepository = keyReposioryParam
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
-		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')

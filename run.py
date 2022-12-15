@@ -1,8 +1,8 @@
-from Encryptador import ConsolaEncryptoManiac as CEM
+from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 import sys
 
 def run():
-	consola = CEM.FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
+	consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
 	consola.bucleDeConsola()
 
 run()

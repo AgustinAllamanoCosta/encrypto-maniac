@@ -1,6 +1,7 @@
 from Encryptador.EncryptoManiac import EncryptoManiac
-from Encryptador.ComandosManiac import ComandoModificar,ComandoAgregar,ComandoListar,ComandoVerMas,ComandoExit,ComandoEliminar,ComandoMostrar,ComandoAyuda,ComandoUnix,ComandoWin
-from Encryptador.ConsolaEncryptoManiac import FactoryConsolaEncriptoManiac,ConsolaEncryptoManiac
+from Encryptador.comandos.ComandosManiac import ComandoModificar,ComandoAgregar,ComandoListar,ComandoVerMas,ComandoExit,ComandoEliminar,ComandoMostrar,ComandoAyuda,ComandoUnix,ComandoWin
+from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
+from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 import threading as t
 import sys

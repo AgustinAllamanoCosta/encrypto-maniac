@@ -1,4 +1,5 @@
 
+from Encryptador.repository import BaseRepository, KeyRepository
 from Encryptador import EncryptoManiac as EM
 from Util import ConstantesEncryptoManiac as CEM
 import os 
@@ -107,7 +108,7 @@ class TestEncryptoManiac(unittest.TestCase):
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
-		self.encryptoManiac = EM.EncryptoManiac()
+		self.encryptoManiac = EM.EncryptoManiac(BaseRepository.BaseRepository(),KeyRepository.KeyRepository())
 	
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.nombreAPP = 'slack'

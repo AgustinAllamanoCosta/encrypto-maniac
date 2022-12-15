@@ -1,30 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from getpass import getpass
-from Encryptador.ComandosManiac import *
+from Encryptador.comandos.ComandosManiac import *
+from Encryptador.consola.Historial import HistorialConsola
+from Encryptador import EncryptoManiac
 from Util.CustomException import InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException
 import logging
 import re
 
 class ConsolaEncryptoManiac():
 
-	def __init__(self):
+	def __init__(self, historalParam: HistorialConsola, encryptadorParam: EncryptoManiac):
 		logging.info('Iniciando consola')
-		self.historial = HistorialConsola()
+		self.historial = historalParam
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
 		self.prompt = "EM>>"
 
 		self.comandosEstandar = { 
-		'exit':ComandoExit(),
-		'listar':ComandoListar(),
+		'exit':ComandoExit(encryptadorParam),
+		'listar':ComandoListar(encryptadorParam),
 		'vermas':ComandoVerMas(),
-		'agregar':ComandoAgregar(),
-		'modificar':ComandoModificar(),
-		'eliminar':ComandoEliminar(),
-		'mostrar':ComandoMostrar(),
+		'agregar':ComandoAgregar(encryptadorParam),
+		'modificar':ComandoModificar(encryptadorParam),
+		'eliminar':ComandoEliminar(encryptadorParam),
+		'mostrar':ComandoMostrar(encryptadorParam),
 		'ayuda':ComandoAyuda(),
-		'cabecera':ComandoEscribirCabeceraDeConsola()
+		'cabecera':ComandoEscribirCabeceraDeConsola(encryptadorParam)
 		}
 
 	def bucleDeConsola(self):
@@ -84,36 +86,3 @@ class ConsolaEncryptoManiac():
 
 	def obtenerComandos(self):
 		return self.comandosEstandar
-
-class ConsolaEncryptoManiacWin(ConsolaEncryptoManiac):
-
-	def __init__(self):
-		super().__init__()
-		self.comandosEstandar['systema'] = ComandoWin()
-
-class ConsolaEncryptoManiacLinux(ConsolaEncryptoManiac):
-
-	def __init__(self):
-		super().__init__()
-		self.comandosEstandar['systema'] = ComandoUnix()
-
-class FactoryConsolaEncriptoManiac(object):
-
-	def obtenerConsola(self,plataforma):
-		logging.info('Plataforma '+plataforma)
-		if('linux' == plataforma.lower()):
-			return ConsolaEncryptoManiacLinux()
-		elif('win32' == plataforma.lower()):
-			return ConsolaEncryptoManiacWin()
-
-class HistorialConsola(object):
-	
-	def __init__(self):
-		logging.info('Iniciando historial')
-		self.entradas = []
-
-	def agregarEntrada(self,entrada):
-		self.entradas.append(entrada)
-
-	def obtener(self):
-		return self.entradas

@@ -10,8 +10,8 @@ import logging
 
 class Comando(object):
 
-	def __init__(self):
-		self.encriptoManiac = EM.EncryptoManiac()
+	def __init__(self, encryptador: EM.EncryptoManiac):
+		self.encriptoManiac = encryptador
 		self.mensajeComando = ""
 
 	def escribirEnConsolaStrategy(self,historial):
@@ -76,8 +76,8 @@ class ComandoEliminar(ComandoConsola):
 
 class ComandoMostrar(ComandoConsola):
 	
-	def __init__(self):
-		super().__init__()
+	def __init__(self,encripto):
+		super().__init__(encripto)
 		self.popUp = PopUpManiac()
 
 	def ejecutar(self,parametros):
