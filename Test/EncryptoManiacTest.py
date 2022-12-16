@@ -117,6 +117,7 @@ class TestEncryptoManiac(unittest.TestCase):
 
 	def dadoQueInicioCryptoManiac(self):
 		self.encryptoManiac = EM.EncryptoManiac(BaseRepository.BaseRepository(),KeyRepository.KeyRepository())
+		self.encryptoManiac.iniciarClaves()
 	
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.nombreAPP = 'slack'
@@ -218,7 +219,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',('slack',))
 		self.assertEqual(len(cursor.fetchall()),0)
-		baseDeDatos.close()	
+		baseDeDatos.close()
 
 	def seVerficaQueLaFuncionRetornaTrue(self):
 		assert self.existeCuenta == True
