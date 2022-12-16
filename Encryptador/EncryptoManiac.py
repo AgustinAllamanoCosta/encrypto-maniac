@@ -74,3 +74,6 @@ class EncryptoManiac(object):
 		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
 		nuevaClave = self.keyRepository.encriptarASE(calveNueva)
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(nuevaClave,nombreApp))
+
+	def iniciarSesion(self,usuario,contrasenia):
+		pass

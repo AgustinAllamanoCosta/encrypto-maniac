@@ -153,7 +153,18 @@ class ComandoConfigurar(ComandoConsola):
 			elif(param.lower() == '-a'):
 				self.encriptoManiac.configurarRutaKey(parametros[index + 1])
 		return 0		
+
+class ComandoLogin(ComandoConsolaSinParametros):
+
+	def ejecutar(self):
+		return self.encriptoManiac.iniciarSesion(self.obtenerUsuario(),self.obtenerContrasenia())
+
+	def obtenerUsuario(self):
+		return input('Usuario: ')
 	
+	def obtenerContrasenia(self):
+		return getpass('Contrasenia: ')
+
 class ComandoUnix(ComandoConsolaSinParametros):
 	def __init__(self):
 		pass

@@ -1,6 +1,6 @@
 
 from getpass import getpass
-from Encryptador.comandos.ComandosManiac import ComandoAgregar, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
+from Encryptador.comandos.ComandosManiac import ComandoAgregar, ComandoLogin, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
 from Encryptador.factory.ManiacFactory import FactoryEncriptador
 from Encryptador.EncryptoManiac import EncryptoManiac
 from Util.CustomException import CuentaEnBaseDuplicadaException
@@ -99,6 +99,18 @@ class TestComandosManiac(unittest.TestCase):
 		self.cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar()
 		self.seVerificaQueSeLlamaALasFuncionesDelEncryptoManiacCorrespondiente()
 
+	def test_dadoQueSeLlamaAlComandoLoginConUnUsusarioYContraseniaValidosSeEsperaQueRetorneTrue(self):
+		self.dadoQueSeLlamaAlComandoLogin()
+		self.conUsuarioYContraseniaValidos()
+		self.cuandoSeLlamaAlComandoLogin()
+		self.seVerificaQueRetornaTrue()
+
+	def dadoQueSeLlamaAlComandoLogin(self):
+		self.comando = ComandoLogin(self.encriptoManiac)
+		self.comando.obtenerContrasenia = lambda : 'contrasenia'
+		self.comando.obtenerUsuario = lambda : 'usuario'
+		return self
+
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar(self.encriptoManiac)
 		return self
@@ -138,6 +150,12 @@ class TestComandosManiac(unittest.TestCase):
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
+
+	def conUsuarioYContraseniaValidos(self):
+		EncryptoManiac.iniciarSesion = self.iniciarSessionMock
+
+	def cuandoSeLlamaAlComandoLogin(self):
+		self.restpuestaComando = self.comando.ejecutar()
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar(self):
 		self.seEjecutoIngresarClave = False
@@ -215,6 +233,9 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seEjecutoConfigurarKey == True
 		assert self.seEjecutoConfigurarBBDD == True
 
+	def seVerificaQueRetornaTrue(self):
+		assert self.restpuestaComando == True
+
 	#UTIL
 
 	def observadorActualizarClave(self,param1,param2):
@@ -258,6 +279,9 @@ class TestComandosManiac(unittest.TestCase):
 
 	def buscarClaveMock(self,nombreCuenta):
 		return '123455'
+
+	def iniciarSessionMock(self,usuario,contrasenia):
+		return True
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestComandosManiac)
