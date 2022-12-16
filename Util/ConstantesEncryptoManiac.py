@@ -38,4 +38,6 @@ class ConsultaDB:
 	buscarClave = 'SELECT clave FROM clavesYAplicaciones WHERE nombreApp == ?'
 	ingresarClave = 'INSERT INTO clavesYAplicaciones(nombreApp,clave) VALUES (?,?)'
 	eliminarClave = 'DELETE FROM clavesYAplicaciones WHERE nombreApp = ?'
-	crearTabla = 'CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text)'
+	buscarUsuario = 'SELECT contrasenia FROM usuarios WHERE usuario == ?'
+	crearTablaClaves = '''CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text);'''
+	crearTablaUsuario = '''CREATE TABLE usuarios ( codigo integer PRIMARY KEY autoincrement,usuario text,contrasenia text);'''

@@ -21,6 +21,7 @@ class TestComandosManiac(unittest.TestCase):
 			'configurarBBDD' : EncryptoManiac.configurarRutaBBDD,
 			'configurarKey' : EncryptoManiac.configurarRutaKey,
 			'getpass' : getpass,
+			'iniciarSesion': EncryptoManiac.iniciarSesion,
 		}
 
 	def tearDown(self):
@@ -32,6 +33,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 		EncryptoManiac.configurarRutaBBDD = self.funcionesOriginales['configurarBBDD']
 		EncryptoManiac.configurarRutaKey = self.funcionesOriginales['configurarKey']
+		EncryptoManiac.iniciarSesion = self.funcionesOriginales['iniciarSesion']
 		getpass = self.funcionesOriginales['getpass']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Encryptador.repository import BaseRepository, KeyRepository
+from Encryptador.repository.BaseRepository import BaseRepository
+from Encryptador.repository.KeyRepository import KeyRepository
 from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
@@ -9,17 +10,21 @@ class EncryptoManiac(object):
 
 	def __init__(self,baseRepositoryParam: BaseRepository, keyReposioryParam: KeyRepository):
 		self.baseIniciada = False
-		self.baseRepository = baseRepositoryParam
-		self.keyRepository = keyReposioryParam
+		self.baseRepository: BaseRepository = baseRepositoryParam
+		self.keyRepository: KeyRepository = keyReposioryParam
 		self.iniciarClaves()
 		self.iniciarBaseDeClaves()
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
 		try:
-			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.crearTabla)
+			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.crearTablaClaves)
 		except sqlite3.OperationalError:
-			logging.info('Tabla ya existente, no se creo')
+			logging.info('Tabla de calves ya existente, no se creo')
+		try:
+			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.crearTablaUsuario)
+		except sqlite3.OperationalError:
+			logging.info('Tabla de usuarios ya existente, no se creo')
 		self.baseIniciada = True
 		logging.info('Base de datos iniciada con exito.')
 
@@ -76,4 +81,7 @@ class EncryptoManiac(object):
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(nuevaClave,nombreApp))
 
 	def iniciarSesion(self,usuario,contrasenia):
-		pass
+		contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]	
+		if(contraseniaEnBase is not None or contraseniaEnBase is not ''):
+			contraseniaLimpia = self.keyRepository.desencriptarASE(contraseniaEnBase)
+			return contraseniaLimpia == contrasenia

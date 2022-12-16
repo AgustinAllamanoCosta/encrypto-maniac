@@ -105,6 +105,14 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.seVerificarQueSeRecargaLaConfiguracionDeLasKey()
 		self.limpiarBase()
 
+	def test_DadoQueTengoUnUsuarioConContraseniaValidaEnLaBaseCuandoVoyAIniciarSesionConLasCredencialesDelMismoSeVerificaQueElMetodoIniciarSesionRetornaTrue(self):
+		self.limpiarBase()
+		self.dadoQueInicioCryptoManiac()
+		self.dadoQueTengoUnUsuarioConCredencialesValidasEnLaBase()
+		self.cuandoSeLlamaAlMetodoIniciarSesion()
+		self.seVerificaQueRetornaTrue()
+		self.limpiarBase()
+
 #Utilidades
 
 	def dadoQueInicioCryptoManiac(self):
@@ -118,6 +126,18 @@ class TestEncryptoManiac(unittest.TestCase):
 	def dadoQueExisteLaCuenta(self,nombre):
 		self.nombreAPP = nombre
 		return self
+
+	def dadoQueTengoUnUsuarioConCredencialesValidasEnLaBase(self):
+		self.contraseniaUsuario = '1234'
+		self.nombreUsuario = 'usuarioUno'
+		keyRepo = KeyRepository.KeyRepository()
+		keyRepo.generarOCargarArchivoDeCalvesExistente()
+		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia) VALUES (?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),))
+		baseDeDatos.commit()
+
+	def cuandoSeLlamaAlMetodoIniciarSesion(self):
+		self.respuestaLogin = self.encryptoManiac.iniciarSesion(self.nombreUsuario,self.contraseniaUsuario)
 
 	def caundoGeneraLaClave(self):
 		self.encryptoManiac.keyRepository.generarOCargarArchivoDeCalvesExistente()
@@ -218,6 +238,9 @@ class TestEncryptoManiac(unittest.TestCase):
 	def seVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
 		assert self.encryptoManiac.rutaKey != CEM.ConstantesEM.baseEncryptoManiac
 
+	def seVerificaQueRetornaTrue(self):
+		assert self.respuestaLogin == True
+
 	def mockIniciarBase(self):
 		self.baseIniciada = True
 
@@ -227,6 +250,7 @@ class TestEncryptoManiac(unittest.TestCase):
 	def limpiarBase(self):
 		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
 		baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
+		baseDeDatos.execute('DELETE FROM usuarios')
 		baseDeDatos.commit()
 		baseDeDatos.close()
 
