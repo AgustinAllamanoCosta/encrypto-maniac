@@ -134,7 +134,7 @@ class TestComandosManiac(unittest.TestCase):
 	def dadoQueSeMuestraLaContraseña(self):
 		self.seMostroElPopUp = False
 		EncryptoManiac.buscarClave = self.buscarClaveMock
-		PopUpManiac.run = self.runPopUpMock
+		PopUpManiac.mostrarPopUp = self.runPopUpMock
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros

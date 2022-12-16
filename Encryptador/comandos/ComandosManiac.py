@@ -78,7 +78,7 @@ class ComandoMostrar(ComandoConsola):
 	
 	def __init__(self,encripto):
 		super().__init__(encripto)
-		self.popUp = PopUpManiac()
+		self.popUp = PopUpManiac(True,4000)
 
 	def ejecutar(self,parametros):
 		logging.info('Ejecutando el comando mostrar')
