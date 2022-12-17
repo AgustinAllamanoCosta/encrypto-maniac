@@ -38,7 +38,6 @@ class ConsolaEncryptoManiac():
 		comando = self.comandosEstandar['cabecera']
 		comando.escribirEnConsolaStrategy(self.historial)
 
-
 	def analizarEntrada(self,entrada):
 		valoresEntrada = self.patronConsola.findall(entrada)
 		try:
