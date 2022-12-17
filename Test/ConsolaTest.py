@@ -134,7 +134,8 @@ class TestConsolaManiac(unittest.TestCase):
 		self.seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola()
 		
 	def dadoQueTengoUnaConsola(self):
-		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)	
+		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
+		self.consola.estadoDeSesion.sesionActiva = True
 
 	def dadoQueSeSaleDelContextoAlIniciar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'exit'

@@ -34,6 +34,7 @@ class SubTestConsolaEncriptoManiac(unittest.TestCase):
 
 	def dadoQueSeTieneUnContexto(self):
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
+		self.consola.estadoDeSesion.sesionActiva = True
 
 	def dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro(self,comandoConParametro):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : comandoConParametro

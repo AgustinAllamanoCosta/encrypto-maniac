@@ -157,7 +157,6 @@ class ComandoConfigurar(ComandoConsola):
 class ComandoLogin(ComandoConsolaSinParametros):
 
 	def ejecutar(self):
-
 		return self.encriptoManiac.iniciarSesion(self.obtenerUsuario(),self.obtenerContrasenia())
 
 	def obtenerUsuario(self):

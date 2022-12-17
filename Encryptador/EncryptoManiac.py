@@ -79,7 +79,7 @@ class EncryptoManiac(object):
 		nuevaClave = self.keyRepository.encriptarASE(calveNueva)
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(nuevaClave,nombreApp))
 
-	def iniciarSesion(self,usuario,contrasenia):
+	def  iniciarSesion(self,usuario,contrasenia):
 		usuarioEnLaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
 		if(len(usuarioEnLaBase)>0):
 			contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]
@@ -90,4 +90,5 @@ class EncryptoManiac(object):
 			self.iniciarClaves()
 			contraseniaEncriptada = self.keyRepository.encriptarASE(contrasenia)
 			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada))
+			return True
 
