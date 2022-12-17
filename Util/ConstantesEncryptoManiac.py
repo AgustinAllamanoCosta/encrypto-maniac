@@ -26,6 +26,7 @@ class ConstanteConsola:
 
 	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
 	mensajeErrprComandoDuplicado = 'Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingresar. Nombre de cuenta: '
+	mensajeErrorContraseniaNoValida = 'La contrasenia ingresada no cumple con los requisitos de seguridad minimos, ocho caracteres de largo y un caracter especial'
 
 class ConstantesEM:
 	baseEncryptoManiac = "manicaDB.db"

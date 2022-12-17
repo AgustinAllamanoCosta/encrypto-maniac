@@ -6,13 +6,14 @@ from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
 
+from Util.CustomException import ContraseniaNoValidaException
+
 class EncryptoManiac(object):
 
 	def __init__(self,baseRepositoryParam: BaseRepository, keyReposioryParam: KeyRepository):
-		self.baseIniciada = False
 		self.baseRepository: BaseRepository = baseRepositoryParam
 		self.keyRepository: KeyRepository = keyReposioryParam
-		self.iniciarBaseDeClaves()
+		self.caracteresEspeciales = ['!','@','#','$','%','^','&','*','(',')','<','>','?','-','_','+','=','[',']','{','}','~']
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
@@ -24,7 +25,6 @@ class EncryptoManiac(object):
 			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.crearTablaUsuario)
 		except sqlite3.OperationalError:
 			logging.info('Tabla de usuarios ya existente, no se creo')
-		self.baseIniciada = True
 		logging.info('Base de datos iniciada con exito.')
 
 	def iniciarClaves(self):
@@ -69,7 +69,7 @@ class EncryptoManiac(object):
 
 	def configurarRutaKey(self,rutaKey):
 		self.rutaKey = rutaKey + CEM.ConstantesEM.nombreArchivoKey
-		self.iniciarClaves()
+		self.keyRepository.generarOCargarArchivoDeCalvesExistente(self.rutaKey)
 
 	def eliminarClave(self,parametro):
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.eliminarClave,(parametro,))
@@ -81,14 +81,26 @@ class EncryptoManiac(object):
 
 	def  iniciarSesion(self,usuario,contrasenia):
 		usuarioEnLaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
+		self.iniciarClaves()
 		if(len(usuarioEnLaBase)>0):
 			contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]
 			if(contraseniaEnBase is not None or contraseniaEnBase is not ''):
 				contraseniaLimpia = self.keyRepository.desencriptarASE(contraseniaEnBase)
 				return contraseniaLimpia == contrasenia
 		else:
-			self.iniciarClaves()
+			self.validadorDeContrasenias(contrasenia)
 			contraseniaEncriptada = self.keyRepository.encriptarASE(contrasenia)
-			self.baseRepository.ejecutarConsulta(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada))
+			self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada))
 			return True
+
+	def validadorDeContrasenias(self,contrasenia: str):
+		contieneEspeciales = False
+		tieneMasDeOchoCaracteres = False
+		if(len(contrasenia)>8):
+			tieneMasDeOchoCaracteres = True
+		for caracter in self.caracteresEspeciales:
+			if(caracter in contrasenia):
+				contieneEspeciales = True
+		if( not contieneEspeciales and not tieneMasDeOchoCaracteres):
+			raise ContraseniaNoValidaException()
 

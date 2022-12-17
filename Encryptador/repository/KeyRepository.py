@@ -9,24 +9,22 @@ class KeyRepository(object):
 
     def __init__(self):
         self.baseIniciada = False
-        self.rutaKey =  CEM.ConstantesEM.nombreArchivoKey
-        logging.basicConfig(filename='encrypto.log', level=logging.DEBUG)
 
-    def generarOCargarArchivoDeCalvesExistente(self):
-        if(os.path.exists(self.rutaKey)):
-            self.fernet = ft(self._cargarClave())
+    def generarOCargarArchivoDeCalvesExistente(self, rutaKeysParams = CEM.ConstantesEM.nombreArchivoKey):
+        if(os.path.exists(rutaKeysParams)):
+            self.fernet = ft(self._cargarClave(rutaKeysParams))
         else:
-            self._generarClave()
-            self.fernet = ft(self._cargarClave())
+            self._generarClave(rutaKeysParams)
+            self.fernet = ft(self._cargarClave(rutaKeysParams))
 
-    def _generarClave(self):
+    def _generarClave(self,rutaKeyParams: str):
         logging.info('Generando clave')
-        with open(self.rutaKey,'wb') as archivoKey:
+        with open(rutaKeyParams,'wb') as archivoKey:
             archivoKey.write(ft.generate_key())
 
-    def _cargarClave(self):
+    def _cargarClave(self,rutaKeyParams):
         logging.info('Cargando clave')
-        archivoKey = open(self.rutaKey,'rb') 
+        archivoKey = open(rutaKeyParams,'rb') 
         key = archivoKey.read()
         archivoKey.close()
         return key
@@ -36,7 +34,3 @@ class KeyRepository(object):
 
     def desencriptarASE(self, calveEncriptada):
         return self.fernet.decrypt(calveEncriptada).decode()
-
-    def configurarRutaKey(self,rutaKey):
-        self.rutaKey = rutaKey + CEM.ConstantesEM.nombreArchivoKey
-        self.iniciarClaves()

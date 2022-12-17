@@ -4,7 +4,7 @@ from getpass import getpass
 from os import system
 from Encryptador import EncryptoManiac as EM
 from Util.ConstantesEncryptoManiac import ConstanteConsola
-from Util.CustomException import ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
+from Util.CustomException import ContraseniaNoValidaException, ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
 from Util.UIManiac import PopUpManiac
 import logging
 

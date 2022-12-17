@@ -8,7 +8,6 @@ class BaseRepository(object):
 
     def __init__(self):
         self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
-        logging.basicConfig(filename='encrypto.log', level=logging.DEBUG)
 
     def _ejcutarConsultaBase(self,conexion: sqlite3.Connection, query: str,params: tuple):
         try:

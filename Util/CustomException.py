@@ -21,3 +21,8 @@ class ParametrosComandoIncompletos(Exception):
 	def __init__(self, mensaje):
 		self.mensaje = mensaje
 		super().__init__(mensaje)
+
+class ContraseniaNoValidaException(Exception):
+	def __init__(self):
+		self.mensaje = ConstanteConsola.mensajeErrorContraseniaNoValida
+		super().__init__(self.mensaje)

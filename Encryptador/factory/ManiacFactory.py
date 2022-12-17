@@ -27,13 +27,14 @@ class FactoryEncriptador(object):
 		keyReposiory = KeyRepository.KeyRepository()
 
 		encriptador = EncryptoManiac.EncryptoManiac(baseRepository,keyReposiory)
+		encriptador.iniciarBaseDeClaves()
 		return encriptador
 
 class FactoryConsolaEncriptoManiac(object):
 
 	def obtenerConsola(self, plataforma):
 
-		logging.basicConfig(filanme='encrypto.log', encoding='utf-8', level=logging.DEBUG)
+		logging.basicConfig(filename='encrypto.log', level=logging.DEBUG)
 		logging.info('Plataforma '+plataforma)
 
 		historial = HistorialConsola()

@@ -8,11 +8,6 @@ import unittest
 
 class TestEncryptoManiac(unittest.TestCase):
 
-	def test_DadoQueCorroElProgramaDosVecesLaSegundaFallaPorqueLaBaseYaEstaCreada(self):
-		self.dadoQueInicioCryptoManiac()
-		self.dadoQueInicioCryptoManiac()
-		self.serVerificaQueSeIniciaLaBase()
-
 	def test_CunadoSeEjecutaElMetodoGenerarClaveSeGeneraUnArchivoPunotKey(self):
 		self.dadoQueInicioCryptoManiac()
 		self.caundoGeneraLaClave()
@@ -21,12 +16,12 @@ class TestEncryptoManiac(unittest.TestCase):
 	def test_CuandoInicioElEncriptadorSeCargaUnaClave(self):
 		self.dadoQueInicioCryptoManiac()
 		self.seVerificaQueSeCargaUnaClave()
-		
+
 	def test_DadoQueIngresoUnaPalabraALaFuncionEncriptarASEMeLaRetornaEncriptada(self):
 		self.dadoQueInicioCryptoManiac()
 		self.cuandoSeEncryptaLaPalabra("holaMundoCripto123")
 		self.seVerificaQueSeEncryptoExitosamente()
-			
+
 # Test de integracion con base de datos mejorar 
 	def test_DadoQueSeEjecutaLaFuncionIngresarClaveSeEncriptaYSeInsertaEnLaBaseDeDatos(self):
 		self.limpiarBase()
@@ -181,11 +176,8 @@ class TestEncryptoManiac(unittest.TestCase):
 
 	def cuandoSeEjecutaLaFuncionConfigurarKey(self,parametros):
 		self.archvioIniciado = False 
-		self.encryptoManiac.iniciarClaves = self.mockArchivoKey
+		self.encryptoManiac.keyRepository.generarOCargarArchivoDeCalvesExistente = self.mockArchivoKey
 		self.encryptoManiac.configurarRutaKey(parametros)
-
-	def serVerificaQueSeIniciaLaBase(self):
-		self.assertEqual(self.encryptoManiac.baseIniciada, True)
 
 	def seVerificaQueSeCrearElArchivoPuntoKey(self):
 		self.assertTrue(os.path.exists(CEM.ConstantesEM.nombreArchivoKey))
@@ -245,7 +237,7 @@ class TestEncryptoManiac(unittest.TestCase):
 	def mockIniciarBase(self):
 		self.baseIniciada = True
 
-	def mockArchivoKey(self):
+	def mockArchivoKey(self,ruta):
 		self.archvioIniciado = True
 
 	def limpiarBase(self):
