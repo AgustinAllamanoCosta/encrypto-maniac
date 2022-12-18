@@ -1,7 +1,8 @@
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.repository import BaseRepository, KeyRepository
 from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
-from Encryptador.comandos.ComandosManiac import ComandoWin, ComandoUnix
+from Encryptador.comandos.ComandoWin import ComandoWin
+from Encryptador.comandos.ComandoUnix import ComandoUnix
 from Encryptador import EncryptoManiac
 import logging
 

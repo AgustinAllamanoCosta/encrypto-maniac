@@ -1,5 +1,14 @@
 from Encryptador.EncryptoManiac import EncryptoManiac
-from Encryptador.comandos.ComandosManiac import ComandoModificar,ComandoAgregar,ComandoListar,ComandoVerMas,ComandoExit,ComandoEliminar,ComandoMostrar,ComandoAyuda,ComandoUnix,ComandoWin
+from Encryptador.comandos.ComandoUnix import ComandoUnix
+from Encryptador.comandos.ComandoWin import ComandoWin
+from Encryptador.comandos.ComandoAgregar import ComandoAgregar
+from Encryptador.comandos.ComandoVerMas import ComandoVerMas
+from Encryptador.comandos.ComandoModificar import ComandoModificar
+from Encryptador.comandos.ComandoEliminar import ComandoEliminar
+from Encryptador.comandos.ComandoListar import ComandoListar
+from Encryptador.comandos.ComandoMostrar import ComandoMostrar
+from Encryptador.comandos.ComandoExit import ComandoExit
+from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
 from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 from Util.ConstantesEncryptoManiac import ConstanteConsola
@@ -35,13 +44,13 @@ class TestConsolaManiac(unittest.TestCase):
 
 	def test_dadoQueTengoUnaConsolaDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueTengoUnaConsola()
-		self.dadoQueSeSaleDelContextoAlIniciar();
+		self.dadoQueSeSaleDelContextoAlIniciar()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestraElMensajeDeBienvenida()
 
 	def test_dadoQueTengoUnaConsolaCuadnoSeIniciaLaConsolaSeVerificaQueSeMuestrasLaListaDeComandosbasicos(self):
 		self.dadoQueTengoUnaConsola()
-		self.dadoQueSeSaleDelContextoAlIniciar();
+		self.dadoQueSeSaleDelContextoAlIniciar()
 		self.cuandoSeInicia()
 		self.seVerificaQueSeMuestrasLaListaDeComandosbasicos()
 

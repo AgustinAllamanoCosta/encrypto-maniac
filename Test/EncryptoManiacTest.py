@@ -2,7 +2,6 @@
 from Encryptador.configuracion.Configuracion import Configuracion
 from Encryptador.repository import BaseRepository, KeyRepository
 from Encryptador import EncryptoManiac as EM
-from Util import ConstantesEncryptoManiac as CEM
 import os 
 import sqlite3
 import unittest
@@ -242,11 +241,14 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.archvioIniciado = True
 
 	def limpiarBase(self):
-		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
-		baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
-		baseDeDatos.execute('DELETE FROM usuarios')
-		baseDeDatos.commit()
-		baseDeDatos.close()
+		try:
+			baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
+			baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
+			baseDeDatos.execute('DELETE FROM usuarios')
+			baseDeDatos.commit()
+			baseDeDatos.close()
+		except sqlite3.OperationalError as exp:
+			pass
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestEncryptoManiac)

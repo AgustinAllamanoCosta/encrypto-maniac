@@ -1,7 +1,7 @@
 from os import sys
 from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
 from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
-from Encryptador.comandos.ComandosManiac import ComandoAyuda
+from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 import unittest
 
 class SubTestConsolaEncriptoManiac(unittest.TestCase):

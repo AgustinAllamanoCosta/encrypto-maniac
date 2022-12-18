@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Encryptador.comandos.ComandosManiac import *
+from Encryptador.comandos.ComandoMostrar import ComandoMostrar
+from Encryptador.comandos.ComandoAyuda import ComandoAyuda
+from Encryptador.comandos.ComandoExit import ComandoExit
+from Encryptador.comandos.ComandoLogin import ComandoLogin
+from Encryptador.comandos.ComandoVerMas import ComandoVerMas
+from Encryptador.comandos.ComandoEscribirCabeceraDeConsola import ComandoEscribirCabeceraDeConsola
+from Encryptador.comandos.ComandoEliminar import ComandoEliminar
+from Encryptador.comandos.ComandoModificar import ComandoModificar
+from Encryptador.comandos.ComandoAgregar import ComandoAgregar
+from Encryptador.comandos.ComandoListar import ComandoListar
+from Encryptador.comandos.Comando import Comando
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.consola.Historial import HistorialConsola
 from Encryptador import EncryptoManiac
+from Util.ConstantesEncryptoManiac import ConstanteConsola
 from Util.CustomException import ContraseniaNoValidaException, InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException
 import logging
 import re
