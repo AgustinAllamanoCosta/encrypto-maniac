@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from getpass import getpass
 from Encryptador.comandos.ComandosManiac import *
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.consola.Historial import HistorialConsola
 from Encryptador import EncryptoManiac
-from Util.CustomException import InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException
+from Util.CustomException import ContraseniaNoValidaException, InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException
 import logging
 import re
 
@@ -15,33 +14,34 @@ class ConsolaEncryptoManiac():
 		logging.info('Iniciando consola')
 		self.historial: HistorialConsola = historalParam
 		self.estadoDeSesion: EstadoDeSesion = estadoDeSesionParam
-		self.encriptador: EncryptoManiac = encryptadorParam
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
 		self.prompt = "EM>>"
 
-		self.comandosEstandar = { 
-		'exit':ComandoExit(self.encriptador),
-		'listar':ComandoListar(self.encriptador),
-		'agregar':ComandoAgregar(self.encriptador),
-		'modificar':ComandoModificar(self.encriptador),
-		'eliminar':ComandoEliminar(self.encriptador),
-		'mostrar':ComandoMostrar(self.encriptador),
-		'cabecera':ComandoEscribirCabeceraDeConsola(self.encriptador),
-		'ayuda':ComandoAyuda(),
-		'vermas':ComandoVerMas(),
+		self.comandosEstandar: dict[str,Comando] = {
+			'listar': ComandoListar(encryptadorParam),
+			'agregar': ComandoAgregar(encryptadorParam),
+			'modificar': ComandoModificar(encryptadorParam),
+			'eliminar': ComandoEliminar(encryptadorParam),
+			'mostrar': ComandoMostrar(encryptadorParam),
+			'cabecera': ComandoEscribirCabeceraDeConsola(encryptadorParam),
+			'vermas': ComandoVerMas(),
+		}
+
+		self.comandosSinSession: dict[str,Comando] = {
+			'login': ComandoLogin(encryptadorParam,self.estadoDeSesion),
+			'exit': ComandoExit(encryptadorParam),
+			'ayuda': ComandoAyuda(),
 		}
 
 	def analizarEntrada(self,entrada):
-		valoresEntrada = self.patronConsola.findall(entrada)
+		valoresEntrada: list[str] = self.patronConsola.findall(entrada)
 		try:
 			self.historial.agregarEntrada(entrada)
-
-			if(self.estadoDeSesion.sesionActiva):
-				self.ejecutarComandoEstandar(valoresEntrada)
-			else:
-				self.escribirError('Sesion no inciada...')
-				self.estadoDeSesion.sesionActiva = ComandoLogin(self.encriptador).ejecutar()
+			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
+			comando.ejecutar(valoresEntrada[1:])
+			self.comandosEstandar.get('systema').ejecutar([])
+			comando.escribirEnConsolaStrategy(self.historial)
 
 		except InterrumpirConsola:
 			logging.debug('Saliendo de la consola')
@@ -61,19 +61,17 @@ class ConsolaEncryptoManiac():
 		except CuentaEnBaseDuplicadaException as expt:
 			logging.debug('Cuenta en base duplicada '+expt.mensaje)
 			self.escribirError(expt.mensaje)
+		except ContraseniaNoValidaException as expt:
+			logging.debug('Contrasenia no valida')
+			self.escribirError(expt.mensaje)
 
-	def ejecutarComandoEstandar(self,valoresEntrada):
-		comando = self.comandosEstandar.get(valoresEntrada[0].lower())
-		
-		if isinstance(comando,ComandoConsolaSinParametros):
-			comando.ejecutar()
-		elif isinstance(comando,ComandoConsola):
-			comando.ejecutar(valoresEntrada[1:])
+	def obtenerComando(self,entrada):
+		if(entrada in self.comandosEstandar.keys() and self.estadoDeSesion.sesionActiva):
+			return self.comandosEstandar.get(entrada)
+		elif(entrada in self.comandosSinSession.keys()):
+			return self.comandosSinSession.get(entrada)
 		else:
 			raise ComandoNoEncontradoExcepcion()
-
-		self.comandosEstandar.get('systema').ejecutar()
-		comando.escribirEnConsolaStrategy(self.historial)
 
 	def bucleDeConsola(self):
 		self.escribirCabeceraDeConsola()

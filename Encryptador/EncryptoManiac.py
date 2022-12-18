@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.repository.BaseRepository import BaseRepository
 from Encryptador.repository.KeyRepository import KeyRepository
 from Util import ConstantesEncryptoManiac as CEM
@@ -79,7 +80,7 @@ class EncryptoManiac(object):
 		nuevaClave = self.keyRepository.encriptarASE(calveNueva)
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(nuevaClave,nombreApp))
 
-	def  iniciarSesion(self,usuario,contrasenia):
+	def iniciarSesion(self,usuario,contrasenia):
 		usuarioEnLaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
 		self.iniciarClaves()
 		if(len(usuarioEnLaBase)>0):
@@ -95,12 +96,9 @@ class EncryptoManiac(object):
 
 	def validadorDeContrasenias(self,contrasenia: str):
 		contieneEspeciales = False
-		tieneMasDeOchoCaracteres = False
-		if(len(contrasenia)>8):
-			tieneMasDeOchoCaracteres = True
 		for caracter in self.caracteresEspeciales:
 			if(caracter in contrasenia):
 				contieneEspeciales = True
-		if( not contieneEspeciales and not tieneMasDeOchoCaracteres):
+		if( not contieneEspeciales and not len(contrasenia)>8):
 			raise ContraseniaNoValidaException()
 

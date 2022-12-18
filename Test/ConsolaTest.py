@@ -248,7 +248,7 @@ class TestConsolaManiac(unittest.TestCase):
 	def seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
 		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeErrprComandoDuplicado + 'slack'
 #Utilidades 
-	def observadorFuncionListar(self):
+	def observadorFuncionListar(self,arg):
 		self.seEjecutoListar = True
 
 	def observadorFuncionEliminar(self,arg):

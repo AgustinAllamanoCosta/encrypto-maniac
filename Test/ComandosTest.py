@@ -1,6 +1,7 @@
 
 from getpass import getpass
 from Encryptador.comandos.ComandosManiac import ComandoAgregar, ComandoLogin, ComandoModificar,ComandoEliminar,ComandoListar,ComandoMostrar,ComandoConfigurar
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.factory.ManiacFactory import FactoryEncriptador
 from Encryptador.EncryptoManiac import EncryptoManiac
 from Util.CustomException import CuentaEnBaseDuplicadaException
@@ -108,7 +109,8 @@ class TestComandosManiac(unittest.TestCase):
 		self.seVerificaQueRetornaTrue()
 
 	def dadoQueSeLlamaAlComandoLogin(self):
-		self.comando = ComandoLogin(self.encriptoManiac)
+		self.estadoSesion = EstadoDeSesion('')
+		self.comando = ComandoLogin(self.encriptoManiac, self.estadoSesion)
 		self.comando.obtenerContrasenia = lambda : 'contrasenia'
 		self.comando.obtenerUsuario = lambda : 'usuario'
 		return self
@@ -236,7 +238,7 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seEjecutoConfigurarBBDD == True
 
 	def seVerificaQueRetornaTrue(self):
-		assert self.restpuestaComando == True
+		assert self.estadoSesion.sesionActiva == True
 
 	#UTIL
 

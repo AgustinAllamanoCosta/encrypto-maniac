@@ -3,8 +3,9 @@
 from getpass import getpass
 from os import system
 from Encryptador import EncryptoManiac as EM
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Util.ConstantesEncryptoManiac import ConstanteConsola
-from Util.CustomException import ContraseniaNoValidaException, ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
+from Util.CustomException import ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
 from Util.UIManiac import PopUpManiac
 import logging
 
@@ -14,26 +15,20 @@ class Comando(object):
 		self.encriptoManiac = encryptador
 		self.mensajeComando = ""
 
-	def escribirEnConsolaStrategy(self,historial):
-		if(self.mensajeComando != None):
-			print(self.mensajeComando)
-			historial.agregarEntrada(self.mensajeComando)
-
-class ComandoConsola(Comando):
-
-	def ejecutar(self,parametros):
+	def ejecutar(self,parametros = []):
 		return 0
 
 	def validarParametros(self,parametros):
 		if(parametros == []):
 			raise ParametrosComandosNullos()
 
-class ComandoConsolaSinParametros(Comando):
-	
-	def ejecutar(self):
-		return 0
 
-class ComandoSensibles(ComandoConsola):
+	def escribirEnConsolaStrategy(self,historial):
+		if(self.mensajeComando != None):
+			print(self.mensajeComando)
+			historial.agregarEntrada(self.mensajeComando)
+
+class ComandoSensibles(Comando):
 
 	def obtenerContraseña(self):
 		return getpass("Contraseña:")
@@ -66,7 +61,7 @@ class ComandoModificar(ComandoSensibles):
 		self.mensajeComando = "Se modifico la contraseña de la cuenta "+parametros[0]
 		return 0
 
-class ComandoEliminar(ComandoConsola):
+class ComandoEliminar(Comando):
 	
 	def ejecutar(self,parametros):
 		super().validarParametros(parametros)
@@ -74,7 +69,7 @@ class ComandoEliminar(ComandoConsola):
 		self.encriptoManiac.eliminarClave(parametros[0])
 		return 0
 
-class ComandoMostrar(ComandoConsola):
+class ComandoMostrar(Comando):
 	
 	def __init__(self,encripto):
 		super().__init__(encripto)
@@ -93,7 +88,7 @@ class ComandoMostrar(ComandoConsola):
 		except:
 			pass
 
-class ComandoAyuda(ComandoConsola):
+class ComandoAyuda(Comando):
 
 	def __init__(self):
 		self.mensajeComando = ""
@@ -113,29 +108,29 @@ class ComandoAyuda(ComandoConsola):
 		self.mensajeComando = self.mensajeAyuda[parametros[0]]
 		return 0
 
-class ComandoListar(ComandoConsolaSinParametros):
+class ComandoListar(Comando):
 
-	def ejecutar(self):
+	def ejecutar(self, parametros = []):
 		logging.info('Ejecutando el comando listar')
 		self.mensajeComando = self.encriptoManiac.listarCuentas()
 		return 0
 
-class ComandoExit(ComandoConsolaSinParametros):
+class ComandoExit(Comando):
 
-	def ejecutar(self):
+	def ejecutar(self, parametros = []):
 		logging.info('Ejecutando el comando exit')
 		raise InterrumpirConsola()
 
-class ComandoVerMas(ComandoConsolaSinParametros):
+class ComandoVerMas(Comando):
 
 	def __init__(self):
 		pass
 
-	def ejecutar(self):
+	def ejecutar(self,parametros = []):
 		self.mensajeComando = ConstanteConsola.mensajeComandosAvanzados
 		return 0
 
-class ComandoEscribirCabeceraDeConsola(ComandoConsolaSinParametros):
+class ComandoEscribirCabeceraDeConsola(Comando):
 
 	def escribirEnConsolaStrategy(self,historial):
 		print(ConstanteConsola.mensajeBienvenida)
@@ -143,7 +138,7 @@ class ComandoEscribirCabeceraDeConsola(ComandoConsolaSinParametros):
 		historial.agregarEntrada(ConstanteConsola.mensajeBienvenida)
 		historial.agregarEntrada(ConstanteConsola.mensajeComandosBasicos)
 
-class ComandoConfigurar(ComandoConsola):
+class ComandoConfigurar(Comando):
 	
 	def ejecutar(self,parametros):
 		
@@ -154,10 +149,15 @@ class ComandoConfigurar(ComandoConsola):
 				self.encriptoManiac.configurarRutaKey(parametros[index + 1])
 		return 0		
 
-class ComandoLogin(ComandoConsolaSinParametros):
+class ComandoLogin(Comando):
+
+	def __init__(self, encryptador: EM.EncryptoManiac, sesionUsuarioParam: EstadoDeSesion ):
+		self.encriptoManiac: EM.EncryptoManiac = encryptador
+		self.sesionUsuario: EstadoDeSesion = sesionUsuarioParam
+		self.mensajeComando = ""
 
 	def ejecutar(self):
-		return self.encriptoManiac.iniciarSesion(self.obtenerUsuario(),self.obtenerContrasenia())
+		self.sesionUsuario.sesionActiva = self.encriptoManiac.iniciarSesion(self.obtenerUsuario(),self.obtenerContrasenia())
 
 	def obtenerUsuario(self):
 		return input('Usuario: ')
@@ -165,16 +165,16 @@ class ComandoLogin(ComandoConsolaSinParametros):
 	def obtenerContrasenia(self):
 		return getpass('Contrasenia: ')
 
-class ComandoUnix(ComandoConsolaSinParametros):
+class ComandoUnix(Comando):
 	def __init__(self):
 		pass
 
-	def ejecutar(self):
+	def ejecutar(self, parametros):
 		system('clear')
 
-class ComandoWin(ComandoConsolaSinParametros):
+class ComandoWin(Comando):
 	def __init__(self):
 		pass
 
-	def ejecutar(self):
+	def ejecutar(self, parametros):
 		system('cls')
