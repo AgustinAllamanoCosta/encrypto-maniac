@@ -159,7 +159,7 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.iniciarSesion = self.iniciarSessionMock
 
 	def cuandoSeLlamaAlComandoLogin(self):
-		self.restpuestaComando = self.comando.ejecutar()
+		self.restpuestaComando = self.comando.ejecutar([])
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoAgregar(self):
 		self.seEjecutoIngresarClave = False

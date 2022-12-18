@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Util import ConstantesEncryptoManiac as CEM
+from Encryptador.configuracion.Configuracion import Configuracion
 import logging
 import sqlite3
 
 class BaseRepository(object):
 
     def __init__(self):
-        self.rutaBBDD = CEM.ConstantesEM.baseEncryptoManiac
+        self.rutaBBDD = Configuracion.rutaALaBaseDeDatos
 
     def _ejcutarConsultaBase(self,conexion: sqlite3.Connection, query: str,params: tuple):
         try:

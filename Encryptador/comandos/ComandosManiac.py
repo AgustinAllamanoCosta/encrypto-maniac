@@ -4,6 +4,7 @@ from getpass import getpass
 from os import system
 from Encryptador import EncryptoManiac as EM
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.consola.Historial import HistorialConsola
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 from Util.CustomException import ParametrosComandosNullos, ParametrosComandoIncompletos, CuentaEnBaseDuplicadaException, InterrumpirConsola
 from Util.UIManiac import PopUpManiac
@@ -22,8 +23,7 @@ class Comando(object):
 		if(parametros == []):
 			raise ParametrosComandosNullos()
 
-
-	def escribirEnConsolaStrategy(self,historial):
+	def escribirEnConsolaStrategy(self,historial: HistorialConsola):
 		if(self.mensajeComando != None):
 			print(self.mensajeComando)
 			historial.agregarEntrada(self.mensajeComando)
@@ -156,12 +156,14 @@ class ComandoLogin(Comando):
 		self.sesionUsuario: EstadoDeSesion = sesionUsuarioParam
 		self.mensajeComando = ""
 
-	def ejecutar(self):
-		self.sesionUsuario.sesionActiva = self.encriptoManiac.iniciarSesion(self.obtenerUsuario(),self.obtenerContrasenia())
+	def ejecutar(self,parametros):
+		usuario = self.obtenerUsuario()
+		self.sesionUsuario.sesionActiva = self.encriptoManiac.iniciarSesion(usuario,self.obtenerContrasenia())
+		self.sesionUsuario.usuario = usuario
 
 	def obtenerUsuario(self):
 		return input('Usuario: ')
-	
+
 	def obtenerContrasenia(self):
 		return getpass('Contrasenia: ')
 

@@ -1,4 +1,5 @@
 
+from Encryptador.configuracion.Configuracion import Configuracion
 from Encryptador.repository import BaseRepository, KeyRepository
 from Encryptador import EncryptoManiac as EM
 from Util import ConstantesEncryptoManiac as CEM
@@ -128,7 +129,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.nombreUsuario = 'usuarioUno'
 		keyRepo = KeyRepository.KeyRepository()
 		keyRepo.generarOCargarArchivoDeCalvesExistente()
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
 		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia) VALUES (?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),))
 		baseDeDatos.commit()
 
@@ -180,7 +181,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.encryptoManiac.configurarRutaKey(parametros)
 
 	def seVerificaQueSeCrearElArchivoPuntoKey(self):
-		self.assertTrue(os.path.exists(CEM.ConstantesEM.nombreArchivoKey))
+		self.assertTrue(os.path.exists(Configuracion.rutaAlArchivoDeConfiguracion))
 
 	def seVerificaQueSeCargaUnaClave(self):
 		self.assertNotEqual(self.encryptoManiac.keyRepository.fernet, None)
@@ -189,7 +190,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertNotEqual(self.palabraEncryptada,self.palabraAEncryptar)
 
 	def seVerificaQueSeInsertoCorrectamenteEnLaBase(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',(self.nombreAPP,))
 		self.assertNotEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()
@@ -208,7 +209,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertEqual(self.encryptoManiac.buscarClave(self.nombreAPP),self.nuevaClave)
 
 	def seVerficaQueSeEliminoLaCuentaSlack(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',('slack',))
 		self.assertEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()
@@ -229,7 +230,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		assert self.archvioIniciado == True
 
 	def seVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
-		assert self.encryptoManiac.rutaKey != CEM.ConstantesEM.baseEncryptoManiac
+		assert self.encryptoManiac.rutaKey != Configuracion.rutaAlArchivoDeConfiguracion
 
 	def seVerificaQueRetornaTrue(self):
 		assert self.respuestaLogin == True
@@ -241,7 +242,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.archvioIniciado = True
 
 	def limpiarBase(self):
-		baseDeDatos = sqlite3.connect(CEM.ConstantesEM.baseEncryptoManiac)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
 		baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
 		baseDeDatos.execute('DELETE FROM usuarios')
 		baseDeDatos.commit()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from cryptography.fernet import Fernet as ft
+from Encryptador.configuracion.Configuracion import Configuracion
 from Util import ConstantesEncryptoManiac as CEM
 import logging
 import os
@@ -10,7 +11,7 @@ class KeyRepository(object):
     def __init__(self):
         self.baseIniciada = False
 
-    def generarOCargarArchivoDeCalvesExistente(self, rutaKeysParams = CEM.ConstantesEM.nombreArchivoKey):
+    def generarOCargarArchivoDeCalvesExistente(self, rutaKeysParams = Configuracion.rutaAlArchivoDeConfiguracion):
         if(os.path.exists(rutaKeysParams)):
             self.fernet = ft(self._cargarClave(rutaKeysParams))
         else:

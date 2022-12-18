@@ -29,7 +29,7 @@ class ConstanteConsola:
 	mensajeErrorContraseniaNoValida = 'La contrasenia ingresada no cumple con los requisitos de seguridad minimos, ocho caracteres de largo y un caracter especial'
 
 class ConstantesEM:
-	baseEncryptoManiac = "manicaDB.db"
+	baseEncryptoManiac = 'manicaDB.db'
 	nombreArchivoKey = 'encriptoKey.key'
 
 class ConsultaDB:
