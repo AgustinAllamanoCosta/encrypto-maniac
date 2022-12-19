@@ -25,4 +25,4 @@ jobs:
           pip install cryptography
       - name: Correr todos los test.
         run: |
-          python -m unittest .\Test\ -p *.py
+          python -m unittest discover -s ./Test/ -p *Test.py
