@@ -1,0 +1,1 @@
+docker run --name encrypto encrypto-maniac

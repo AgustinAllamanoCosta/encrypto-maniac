@@ -1,0 +1,9 @@
+.gitattributes
+.gitignore
+.README.md
+*.sh
+*.bat
+./Test
+.vscode/
+.github
+dockerfile
