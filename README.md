@@ -2,7 +2,7 @@
 
 ## Encriptador de contraseñas con python y sql Lite:
 
-Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que permiten ser recuperadas en cualquier momento con un simple comando. La consola se puede correr tanto en linux como en windows, mediante un script creado por cada uno.
+Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que permiten ser recuperadas en cualquier momento con un simple comando. La consola se puede correr tanto en linux como en windows, mediante un script creado por cada uno. Cuenta con un docker file que permite dockerizar la aplicacion como tambien scripts para crear un contenedor que funcione como cli.
 
 ## Comandos de la consola:
 
@@ -13,6 +13,7 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 * agregar   -> para agregar una nueva cuenta y contraseña en la base
 * vermas    -> para ver el lista de comandos en la consola
 * exit      -> para salir del terminal
+* login     -> te puedes registrar o logear dentro de la app
 * Pd: para ver como usar un comando escribi -> ayuda nombreComando <- ej: ayuda modificar
 
 ## Features:
@@ -29,16 +30,16 @@ Encriptador simetrico de contraseñas, son guardadas en una base de sql-lite que
 - [x] Cuando se muestra una contraseÃ±a se hace en un popUp que dura 4 segundos.
 - [x] El popUp tiene un boton para copiar al porta papeles.
 - [x] Agregar prompt
-- [ ] Cargar una base anteriormente creada con su archivo de claves
-- [ ] Agregar servidor remoto.
-- [ ] Agregar cli.
+- [X] Cargar una base anteriormente creada con su archivo de claves
+- [ ] Agregar sitio web local.
+- [X] Agregar cli.
 
 ## El espiruto del proyecto:
 Este proyecto no es brindar únicamente una consola simple para poder administrar contraseñas, sino el hecho de poder desarrollar el mismo con todas las buenas 
 prácticas que conozco al día de la fecha y que, creo yo, van a aportar mucho más valor al producto final por más simple que sea. En otras palabras, en este proyecto busco 
-desarrollar esas habilidades que en mi día a día en mi trabajo no puedo usar. 
+desarrollar esas habilidades que en mi día a día en mi trabajo no puedo usar.
 Espero que te sirva.
 Saludos!
 
-version 1.0.4
+version 1.5.0
 
