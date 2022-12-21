@@ -10,6 +10,7 @@ class ConstanteConsola:
 	mostrar   -> para ver la contraseña de una cuenta
 	listar    -> para ver todas las cuentas en la base
 	agregar   -> para agregar una nueva cuenta y contraseña en la base
+	login     -> para logearse dentro de la app
 	vermas    -> para ver este mensaje :D
 	Pd: para ver como usar un comando escribi -> ayuda nombreComando <- ej: ayuda modificar'''
 	
@@ -26,7 +27,7 @@ class ConstanteConsola:
 
 	mensajeErrorComandoParametros = '''Error al ingresar los parametros del comando porfavor vuelva a intentarlo. Si tiene dudas puede usar el comando ayuda'''
 	mensajeErrprComandoDuplicado = 'Cuenta ya existente en la base, eliminela o modifiquela antes de volver a ingresar. Nombre de cuenta: '
-	mensajeErrorContraseniaNoValida = 'La contrasenia ingresada no cumple con los requisitos de seguridad minimos, ocho caracteres de largo y un caracter especial'
+	mensajeUsuarioInexsistente = 'No existe el usuario vamos a registrarnos...'
 
 class ConstantesEM:
 	baseEncryptoManiac = 'manicaDB.db'
@@ -41,6 +42,6 @@ class ConsultaDB:
 	eliminarClave = 'DELETE FROM clavesYAplicaciones WHERE nombreApp = ?'
 	buscarUsuario = 'SELECT contrasenia FROM usuarios WHERE usuario == ?'
 	listarUsuarios = 'SELECT usuario FROM usuarios'
-	ingresarUsuario = 'INSERT INTO usuarios(usuario,contrasenia) VALUES (?,?)'
+	ingresarUsuario = 'INSERT INTO usuarios(usuario,contrasenia,contraseniaRecupero) VALUES (?,?,?)'
 	crearTablaClaves = '''CREATE TABLE clavesYAplicaciones ( codigo integer PRIMARY KEY autoincrement,nombreApp text,clave text);'''
-	crearTablaUsuario = '''CREATE TABLE usuarios ( codigo integer PRIMARY KEY autoincrement,usuario text,contrasenia text);'''
+	crearTablaUsuario = '''CREATE TABLE usuarios ( codigo integer PRIMARY KEY autoincrement,usuario text,contrasenia text, contraseniaRecupero text);'''

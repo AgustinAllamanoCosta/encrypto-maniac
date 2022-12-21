@@ -12,6 +12,14 @@ class ParametrosComandosNullos(Exception):
 class ComandoNoEncontradoExcepcion(Exception):
 	pass
 
+class UsuarioNoAutorizadoException(Exception):
+	pass
+
+class NoExisteUsuarioEnLaBaseException(Exception):
+	def __init__(self):
+		self.mensaje = ConstanteConsola.mensajeUsuarioInexsistente
+		super().__init__(self.mensaje)
+
 class CuentaEnBaseDuplicadaException(Exception):
 	def __init__(self, nombreCuenta):
 		self.mensaje = ConstanteConsola.mensajeErrprComandoDuplicado + nombreCuenta
@@ -21,8 +29,3 @@ class ParametrosComandoIncompletos(Exception):
 	def __init__(self, mensaje):
 		self.mensaje = mensaje
 		super().__init__(mensaje)
-
-class ContraseniaNoValidaException(Exception):
-	def __init__(self):
-		self.mensaje = ConstanteConsola.mensajeErrorContraseniaNoValida
-		super().__init__(self.mensaje)

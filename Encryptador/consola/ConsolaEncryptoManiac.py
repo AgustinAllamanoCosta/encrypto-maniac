@@ -4,6 +4,7 @@ from Encryptador.comandos.ComandoMostrar import ComandoMostrar
 from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 from Encryptador.comandos.ComandoExit import ComandoExit
 from Encryptador.comandos.ComandoLogin import ComandoLogin
+from Encryptador.comandos.ComandoRegistrar import ComandoRegistrar
 from Encryptador.comandos.ComandoVerMas import ComandoVerMas
 from Encryptador.comandos.ComandoEscribirCabeceraDeConsola import ComandoEscribirCabeceraDeConsola
 from Encryptador.comandos.ComandoEliminar import ComandoEliminar
@@ -13,18 +14,19 @@ from Encryptador.comandos.ComandoListar import ComandoListar
 from Encryptador.comandos.Comando import Comando
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.consola.Historial import HistorialConsola
-from Encryptador import EncryptoManiac
+from Encryptador.EncryptoManiac import EncryptoManiac
 from Util.ConstantesEncryptoManiac import ConstanteConsola
-from Util.CustomException import ContraseniaNoValidaException, InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException
+from Util.CustomException import InterrumpirConsola,ComandoNoEncontradoExcepcion,ParametrosComandoIncompletos,ParametrosComandosNullos,CuentaEnBaseDuplicadaException, UsuarioNoAutorizadoException
 import logging
 import re
 
 class ConsolaEncryptoManiac():
 
-	def __init__(self, historalParam: HistorialConsola, encryptadorParam: EncryptoManiac, estadoDeSesionParam: EstadoDeSesion):
+	def __init__(self, historalParam: HistorialConsola, encryptadorParam: EncryptoManiac):
 		logging.info('Iniciando consola')
 		self.historial: HistorialConsola = historalParam
-		self.estadoDeSesion: EstadoDeSesion = estadoDeSesionParam
+		self.estadoDeSesion: EstadoDeSesion = encryptadorParam.estadoSesion
+		self.encriptador: EncryptoManiac = encryptadorParam
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
 		self.prompt = "EM>>"
@@ -37,18 +39,24 @@ class ConsolaEncryptoManiac():
 			'mostrar': ComandoMostrar(encryptadorParam),
 			'cabecera': ComandoEscribirCabeceraDeConsola(encryptadorParam),
 			'vermas': ComandoVerMas(),
+			'ayuda': ComandoAyuda(),
 		}
 
 		self.comandosSinSession: dict[str,Comando] = {
-			'login': ComandoLogin(encryptadorParam,self.estadoDeSesion),
+			'login': ComandoLogin(encryptadorParam),
+			'registrar' : ComandoRegistrar(encryptadorParam),
 			'exit': ComandoExit(encryptadorParam),
-			'ayuda': ComandoAyuda(),
 		}
 
 	def analizarEntrada(self,entrada):
 		valoresEntrada: list[str] = self.patronConsola.findall(entrada)
 		try:
 			self.historial.agregarEntrada(entrada)
+			if(self.estadoDeSesion is None):
+				print('Parece que no estas registrado, vamos a hacerlo antes de continuar.')
+				self.comandosSinSession['registrar'].ejecutar([])
+				self.estadoDeSesion = EstadoDeSesion(self.encriptador.obtenerUsuarioRegistrado())
+
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
 			comando.ejecutar(valoresEntrada[1:])
 			self.comandosEstandar.get('systema').ejecutar([])
@@ -72,12 +80,12 @@ class ConsolaEncryptoManiac():
 		except CuentaEnBaseDuplicadaException as expt:
 			logging.debug('Cuenta en base duplicada '+expt.mensaje)
 			self.escribirError(expt.mensaje)
-		except ContraseniaNoValidaException as expt:
-			logging.debug('Contrasenia no valida')
-			self.escribirError(expt.mensaje)
+		except UsuarioNoAutorizadoException as expt:
+			logging.debug('Usuario no Autorisado para hacer esta accion')
+			self.escribirError('Usuario no Autorisado para hacer esta accion, porfavor registrese o ingrese antes de continuar')
 
 	def obtenerComando(self,entrada):
-		if(entrada in self.comandosEstandar.keys() and self.estadoDeSesion.sesionActiva):
+		if(entrada in self.comandosEstandar.keys() and not self.estadoDeSesion.sesionActiva):
 			return self.comandosEstandar.get(entrada)
 		elif(entrada in self.comandosSinSession.keys()):
 			return self.comandosSinSession.get(entrada)

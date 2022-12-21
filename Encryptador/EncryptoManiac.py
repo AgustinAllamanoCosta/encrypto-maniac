@@ -7,14 +7,14 @@ from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
 
-from Util.CustomException import ContraseniaNoValidaException
+from Util.CustomException import UsuarioNoAutorizadoException
 
 class EncryptoManiac(object):
 
 	def __init__(self,baseRepositoryParam: BaseRepository, keyReposioryParam: KeyRepository):
 		self.baseRepository: BaseRepository = baseRepositoryParam
 		self.keyRepository: KeyRepository = keyReposioryParam
-		self.caracteresEspeciales = ['!','@','#','$','%','^','&','*','(',')','<','>','?','-','_','+','=','[',']','{','}','~']
+		self.estadoSesion: EstadoDeSesion = None
 
 	def iniciarBaseDeClaves(self):
 		logging.info('Iniciando base de claves.....')
@@ -34,11 +34,13 @@ class EncryptoManiac(object):
 		logging.info('Archivos de calve iniciado')
 		
 	def ingresarClave(self,nombreApp,clave):
-		logging.info('Ingresando clave para '+nombreApp)
+		self.validarUsuario()
+		logging.info(f'Ingresando clave para {nombreApp}')
 		nuevaClave = self.keyRepository.encriptarASE(clave)
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarClave,(nombreApp,nuevaClave))
 
 	def buscarClave(self,nombreApp):
+		self.validarUsuario()
 		logging.info('Buscando clave para '+nombreApp)
 		respuesta = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarClave,(nombreApp,))
 		if( respuesta != None and len(respuesta)>0):
@@ -47,6 +49,7 @@ class EncryptoManiac(object):
 			return None
 
 	def listarCuentas(self):
+		self.validarUsuario()
 		respuesta = self.baseRepository.obtenerTodos(CEM.ConsultaDB.listarCuentas)
 		if(len(respuesta)>0):
 			lista = ''
@@ -57,6 +60,7 @@ class EncryptoManiac(object):
 			return None
 
 	def existeCuentaEnBase(self,nombreCuenta):
+		self.validarUsuario()
 		logging.info('Existe la cuenta'+nombreCuenta)
 		respuesta = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.buscarCuenta,(nombreCuenta,))
 		if(len(respuesta)>0):
@@ -65,40 +69,56 @@ class EncryptoManiac(object):
 			return False
 
 	def configurarRutaBBDD(self,rutaBBDD):
+		self.validarUsuario()
 		self.rutaBBDD = rutaBBDD + CEM.ConstantesEM.baseEncryptoManiac
 		self.iniciarBaseDeClaves()
 
 	def configurarRutaKey(self,rutaKey):
+		self.validarUsuario()
 		self.rutaKey = rutaKey + CEM.ConstantesEM.nombreArchivoKey
 		self.keyRepository.generarOCargarArchivoDeCalvesExistente(self.rutaKey)
 
 	def eliminarClave(self,parametro):
+		self.validarUsuario()
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.eliminarClave,(parametro,))
 
 	def actualizarClave(self,nombreApp,calveNueva):
-		logging.info('Se va a actualizar la clave de la cuenta'+nombreApp)
+		self.validarUsuario()
+		logging.info(f'Se va a actualizar la clave de la cuenta {nombreApp}')
 		nuevaClave = self.keyRepository.encriptarASE(calveNueva)
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.actualizarClave,(nuevaClave,nombreApp))
 
 	def iniciarSesion(self,usuario,contrasenia):
-		usuarioEnLaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
-		self.iniciarClaves()
-		if(len(usuarioEnLaBase)>0):
+		if(self.existeUnUsuarioRegistrado()):
 			contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]
 			if(contraseniaEnBase is not None or contraseniaEnBase is not ''):
 				contraseniaLimpia = self.keyRepository.desencriptarASE(contraseniaEnBase)
-				return contraseniaLimpia == contrasenia
+				self.estadoSesion.sesionActiva = contraseniaLimpia == contrasenia
 		else:
-			self.validadorDeContrasenias(contrasenia)
-			contraseniaEncriptada = self.keyRepository.encriptarASE(contrasenia)
-			self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada))
-			return True
+			self.estadoSesion.sesionActiva = False
 
-	def validadorDeContrasenias(self,contrasenia: str):
-		contieneEspeciales = False
-		for caracter in self.caracteresEspeciales:
-			if(caracter in contrasenia):
-				contieneEspeciales = True
-		if( not contieneEspeciales and not len(contrasenia)>8):
-			raise ContraseniaNoValidaException()
+	def existeUnUsuarioRegistrado(self):
+		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
+		return len(respuestaBase)>0
 
+	def obtenerUsuarioRegistrado(self):
+		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
+		return respuestaBase[0]
+
+	def estaAutorizadoElUsuario(self):
+		return self.estadoSesion is not None and self.estadoSesion.sesionActiva
+
+	def cargarSesionSiExiste(self):
+		if(self.existeUnUsuarioRegistrado()):
+			self.estadoSesion = EstadoDeSesion(self.obtenerUsuarioRegistrado())
+
+	def validarUsuario(self):
+		if(not self.estaAutorizadoElUsuario()):
+			raise UsuarioNoAutorizadoException()
+
+	def registrarUsuario(self,usuario: str,contrasenia: str, contraseniaRecupero: str):
+		self.iniciarClaves()
+		contraseniaEncriptada = self.keyRepository.encriptarASE(contrasenia)
+		contraseniaRecuperoEncriptada = self.keyRepository.encriptarASE(contraseniaRecupero)
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada,contraseniaRecuperoEncriptada))
+		self.estadoSesion = EstadoDeSesion(usuario)
