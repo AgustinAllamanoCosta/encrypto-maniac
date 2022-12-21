@@ -52,11 +52,6 @@ class ConsolaEncryptoManiac():
 		valoresEntrada: list[str] = self.patronConsola.findall(entrada)
 		try:
 			self.historial.agregarEntrada(entrada)
-			if(self.estadoDeSesion is None):
-				print('Parece que no estas registrado, vamos a hacerlo antes de continuar.')
-				self.comandosSinSession['registrar'].ejecutar([])
-				self.estadoDeSesion = EstadoDeSesion(self.encriptador.obtenerUsuarioRegistrado())
-
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
 			comando.ejecutar(valoresEntrada[1:])
 			self.comandosEstandar.get('systema').ejecutar([])
@@ -95,7 +90,13 @@ class ConsolaEncryptoManiac():
 	def bucleDeConsola(self):
 		self.escribirCabeceraDeConsola()
 		while self.correrConsola:
-			self.analizarEntrada(self.ingresarEntradas())
+			entrada: str = self.ingresarEntradas()
+			if(self.estadoDeSesion is None):
+				print('Parece que no estas registrado, vamos a hacerlo antes de continuar.')
+				self.analizarEntrada('registrar')
+				self.estadoDeSesion = EstadoDeSesion(self.encriptador.obtenerUsuarioRegistrado())
+			else:
+				self.analizarEntrada(entrada)
 
 	def escribirCabeceraDeConsola(self):
 		comando = self.comandosEstandar['cabecera']

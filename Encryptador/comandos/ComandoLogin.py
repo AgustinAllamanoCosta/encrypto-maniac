@@ -1,7 +1,5 @@
 from getpass import getpass
 from Encryptador.comandos.Comando import Comando
-from Encryptador import EncryptoManiac as EM
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 
 class ComandoLogin(Comando):
 

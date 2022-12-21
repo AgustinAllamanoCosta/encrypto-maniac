@@ -1,5 +1,6 @@
 
 from Encryptador.configuracion.Configuracion import Configuracion
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.repository import BaseRepository, KeyRepository
 from Encryptador import EncryptoManiac as EM
 import os 
@@ -104,6 +105,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.limpiarBase()
 		self.dadoQueInicioCryptoManiac()
 		self.dadoQueTengoUnUsuarioConCredencialesValidasEnLaBase()
+		self.dadoQueNoEstoyLogeado()
 		self.cuandoSeLlamaAlMetodoIniciarSesion()
 		self.seVerificaQueRetornaTrue()
 		self.limpiarBase()
@@ -113,6 +115,8 @@ class TestEncryptoManiac(unittest.TestCase):
 	def dadoQueInicioCryptoManiac(self):
 		self.encryptoManiac = EM.EncryptoManiac(BaseRepository.BaseRepository(),KeyRepository.KeyRepository())
 		self.encryptoManiac.iniciarClaves()
+		self.encryptoManiac.iniciarBaseDeClaves()
+		self.encryptoManiac.estadoSesion = EstadoDeSesion('juan',True)
 	
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.nombreAPP = 'slack'
@@ -132,8 +136,12 @@ class TestEncryptoManiac(unittest.TestCase):
 		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia) VALUES (?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),))
 		baseDeDatos.commit()
 
+	def dadoQueNoEstoyLogeado(self):
+		self.encryptoManiac.estadoSesion.sesionActiva = False
+
 	def cuandoSeLlamaAlMetodoIniciarSesion(self):
-		self.respuestaLogin = self.encryptoManiac.iniciarSesion(self.nombreUsuario,self.contraseniaUsuario)
+		self.encryptoManiac.iniciarSesion(self.nombreUsuario,self.contraseniaUsuario)
+		self.respuestaLogin = self.encryptoManiac.estaAutorizadoElUsuario()
 
 	def caundoGeneraLaClave(self):
 		self.encryptoManiac.keyRepository.generarOCargarArchivoDeCalvesExistente()

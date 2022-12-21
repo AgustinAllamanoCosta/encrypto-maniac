@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
-
 class InterrumpirConsola(Exception):
 	pass
 
