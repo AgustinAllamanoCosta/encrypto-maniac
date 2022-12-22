@@ -4,8 +4,8 @@ class PopUpManiac:
 
     def __init__(self,mostrarVentanaParam, teimpoVidaVentanaParam):
         self.mensajeAMostrar = ""
-        self.tiempoVidaVentana = mostrarVentanaParam
-        self.mostrarVentana = teimpoVidaVentanaParam
+        self.tiempoVidaVentana = teimpoVidaVentanaParam
+        self.mostrarVentana = mostrarVentanaParam
 
     def setMensaje(self, mensaje):
         self.mensajeAMostrar = mensaje
@@ -47,7 +47,7 @@ class PopUpManiac:
         self.botonCopiarContrasenia.pack(expand=True,side="right",pady=5)
 
     def mostrarPopUp(self):
-        if(self.mostarVentana):
+        if(self.mostrarVentana):
             self.ventana = tk.Tk()
             self.ventana.title("Encrypto Maniac")
 

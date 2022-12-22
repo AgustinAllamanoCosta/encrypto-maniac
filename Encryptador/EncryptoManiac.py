@@ -89,6 +89,7 @@ class EncryptoManiac(object):
 
 	def iniciarSesion(self,usuario,contrasenia):
 		if(self.existeUnUsuarioRegistrado()):
+			self.iniciarClaves()
 			contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]
 			if(contraseniaEnBase is not None or contraseniaEnBase is not ''):
 				contraseniaLimpia = self.keyRepository.desencriptarASE(contraseniaEnBase)

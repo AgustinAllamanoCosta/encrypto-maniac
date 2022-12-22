@@ -18,5 +18,5 @@ class ComandoMostrar(Comando):
 	def escribirEnConsolaStrategy(self,historial):
 		try:
 			self.popUp.mostrarPopUp()
-		except:
-			pass
+		except Exception as expt:
+			print(expt)

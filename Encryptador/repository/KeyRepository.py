@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from cryptography.fernet import Fernet as ft
 from Encryptador.configuracion.Configuracion import Configuracion
-from Util import ConstantesEncryptoManiac as CEM
 import logging
 import os
 
