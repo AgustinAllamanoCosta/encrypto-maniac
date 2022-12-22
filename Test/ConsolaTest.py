@@ -10,6 +10,7 @@ from Encryptador.comandos.ComandoMostrar import ComandoMostrar
 from Encryptador.comandos.ComandoExit import ComandoExit
 from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 import threading as t
@@ -143,8 +144,10 @@ class TestConsolaManiac(unittest.TestCase):
 		self.seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola()
 		
 	def dadoQueTengoUnaConsola(self):
+		estadoSesion = EstadoDeSesion('',True)
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
-		self.consola.estadoDeSesion.sesionActiva = True
+		self.consola.encriptador.estadoSesion = estadoSesion
+		self.consola.estadoDeSesion = estadoSesion
 
 	def dadoQueSeSaleDelContextoAlIniciar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'exit'

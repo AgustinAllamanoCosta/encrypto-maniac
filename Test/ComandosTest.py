@@ -18,6 +18,8 @@ class TestComandosManiac(unittest.TestCase):
 
 	def setUp(self):
 		self.encriptoManiac = FactoryEncriptador().obtenerEncripto()
+		estadoSesion = EstadoDeSesion('',True)
+		self.encriptoManiac.estadoSesion = estadoSesion
 		self.funcionesOriginales = {
 			'ingresarClave': EncryptoManiac.ingresarClave,
 			'actualizarClave': EncryptoManiac.actualizarClave,
@@ -115,8 +117,7 @@ class TestComandosManiac(unittest.TestCase):
 		self.seVerificaQueRetornaTrue()
 
 	def dadoQueSeLlamaAlComandoLogin(self):
-		self.estadoSesion = EstadoDeSesion('')
-		self.comando = ComandoLogin(self.encriptoManiac, self.estadoSesion)
+		self.comando = ComandoLogin(self.encriptoManiac)
 		self.comando.obtenerContrasenia = lambda : 'contrasenia'
 		self.comando.obtenerUsuario = lambda : 'usuario'
 		return self
@@ -244,7 +245,7 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seEjecutoConfigurarBBDD == True
 
 	def seVerificaQueRetornaTrue(self):
-		assert self.estadoSesion.sesionActiva == True
+		assert self.comando.mensajeComando == 'Login correcto :)'
 
 	#UTIL
 

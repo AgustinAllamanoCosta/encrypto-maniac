@@ -80,7 +80,7 @@ class ConsolaEncryptoManiac():
 			self.escribirError('Usuario no Autorisado para hacer esta accion, porfavor registrese o ingrese antes de continuar')
 
 	def obtenerComando(self,entrada):
-		if(entrada in self.comandosEstandar.keys() and not self.estadoDeSesion.sesionActiva):
+		if(entrada in self.comandosEstandar.keys() and self.estadoDeSesion.sesionActiva):
 			return self.comandosEstandar.get(entrada)
 		elif(entrada in self.comandosSinSession.keys()):
 			return self.comandosSinSession.get(entrada)

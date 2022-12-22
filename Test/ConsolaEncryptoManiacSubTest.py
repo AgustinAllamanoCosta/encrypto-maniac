@@ -1,5 +1,6 @@
 from os import sys
 from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 import unittest
@@ -33,8 +34,10 @@ class SubTestConsolaEncriptoManiac(unittest.TestCase):
 				self.seVerificaQueSeMuestraLaAyudaDelComandoListar()
 
 	def dadoQueSeTieneUnContexto(self):
+		estadoSesion = EstadoDeSesion('',True)
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
-		self.consola.estadoDeSesion.sesionActiva = True
+		self.consola.encriptador.estadoSesion = estadoSesion
+		self.consola.estadoDeSesion = estadoSesion
 
 	def dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro(self,comandoConParametro):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : comandoConParametro
