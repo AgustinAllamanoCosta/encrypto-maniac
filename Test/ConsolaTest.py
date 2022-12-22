@@ -77,7 +77,7 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEjecutaElComandoVerMas()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
-		self.seVerificaQueSeListanElRestoDeLosComandos()
+		self.seVerificaQueSeMuestraLaAyudaDeLosComandos()
 	
 	def test_dadoQueTengoUnaConsolaConCuentasAgregadasEnLaBaseCuandoSeIngresaElComandoModificarSeVerificaQueSeLlamaALaFuncionComandoModificar(self):
 		self.dadoQueTengoUnaConsola()
@@ -150,18 +150,22 @@ class TestConsolaManiac(unittest.TestCase):
 		self.consola.estadoDeSesion = estadoSesion
 
 	def dadoQueSeSaleDelContextoAlIniciar(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'exit'
+		self.comando = 'exit'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)		
 
 	def dadoQueSeEjecutaElComandoAgregarSinParametros(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar'
+		self.comando = 'agregar'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
 	def dadoQueSeEjecutaElComandoAgregar(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack'
+		self.comando = 'agregar slack'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoAgregar.ejecutar = self.observadorFuncionAgregar
 
 	def dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'agregar slack'
+		self.comando = 'agregar slack'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		EncryptoManiac.existeCuentaEnBase = self.existeCuentaEnBaseMock
 
 	def dadoQueSeEjecutaElComandoListar(self):
@@ -169,31 +173,39 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoListar.ejecutar = self.observadorFuncionListar
 
 	def dadoQueSeEjecutaElComandoVerMas(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'vermas'
+		self.comando = 'vermas'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
 	def dadoQueSeEjecutarElComandoModificar(self):
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'modificar slack'
+		self.comando = 'modificar slack'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoModificar.ejecutar = self.observadorFuncionModificar
 
 	def dadoQueSeEjecutarElComandoModificarSinElParametro(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'modificar'
+		self.comando = 'modificar'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
 	def dadoQueSeEjecutarElComandoEliminar(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'eliminar slack'
+		self.comando = 'eliminar slack'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoEliminar.ejecutar = self.observadorFuncionEliminar
 	
 	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'eliminar'
+		self.comando = 'eliminar'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
 	def dadoQueSeEjecutaElComandoMostrar(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar slack'
+		self.comando = 'mostrar slack'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
 
-	def dadoQueSeEjecutaElComandoMostrarSinParametro(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'mostrar'
+	def dadoQueSeEjecutaElComandoMostrarSinParametro(self):
+		self.comando = 'mostrar'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
-	def dadoQueIngresaUnComandoQueNoExiste(self):		
-		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'asdasdasdsa'
+	def dadoQueIngresaUnComandoQueNoExiste(self):
+		self.comando = 'asdasdasdsa'
+		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
 	def dadoQueSeEnviaUnComandoEnMayuscula(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x :'MOSTRAR'
@@ -228,6 +240,9 @@ class TestConsolaManiac(unittest.TestCase):
 		assert self.seEjecutoListar == True 
 
 	def seVerificaQueSeListanElRestoDeLosComandos(self):
+		assert self.consola.obtenerHistorial()[1] == f'Comando no encontra {self.comando} {ConstanteConsola.mensajeComandosAvanzados}'
+	
+	def seVerificaQueSeMuestraLaAyudaDeLosComandos(self):
 		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeComandosAvanzados
 
 	def seVerifiacaQueSeLlamaALaFuncionComandoModificar(self):

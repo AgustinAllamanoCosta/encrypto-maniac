@@ -1,7 +1,6 @@
-from Encryptador.comandos.ComandoSensible import ComandoSensibles
 import logging
-
-from Util.CustomException import ParametrosComandoIncompletos
+from Encryptador.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoModificar(ComandoSensibles):
@@ -10,7 +9,7 @@ class ComandoModificar(ComandoSensibles):
 		super().validarParametros(parametros)
 		logging.info('Ejecutando el comando modificar')
 		if(len(parametros)==0):
-			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoModificar)
+			raise ParametrosComandoIncompletosException(ConstanteConsola.mensajeAyudaComandoModificar)
 		else:
 			self.encriptoManiac.actualizarClave(parametros[0],self.obtenerContraseña())
 		self.mensajeComando = "Se modifico la contraseña de la cuenta "+parametros[0]

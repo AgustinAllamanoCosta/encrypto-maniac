@@ -1,6 +1,7 @@
 import logging
 from Encryptador.comandos.ComandoSensible import ComandoSensibles
-from Util.CustomException import CuentaEnBaseDuplicadaException, ParametrosComandoIncompletos
+from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
+from Encryptador.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoAgregar(ComandoSensibles):
@@ -9,7 +10,7 @@ class ComandoAgregar(ComandoSensibles):
 		logging.info('Se ejecuta comando agregar.')
 		if(len(parametros)==0):
 			logging.debug('Parametros insuficiente para el comando agregar.')
-			raise ParametrosComandoIncompletos(ConstanteConsola.mensajeAyudaComandoAgregar)
+			raise ParametrosComandoIncompletosException(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
 			if(self.encriptoManiac.existeCuentaEnBase(parametros[0]) != True):
 				self.encriptoManiac.ingresarClave(parametros[0],self.obtenerContraseña())

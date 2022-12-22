@@ -3,11 +3,10 @@
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.repository.BaseRepository import BaseRepository
 from Encryptador.repository.KeyRepository import KeyRepository
+from Encryptador.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutorizadoException
 from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
-
-from Util.CustomException import UsuarioNoAutorizadoException
 
 class EncryptoManiac(object):
 

@@ -10,7 +10,7 @@ from Encryptador.comandos.ComandoConfigurar import ComandoConfigurar
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.factory.ManiacFactory import FactoryEncriptador
 from Encryptador.EncryptoManiac import EncryptoManiac
-from Util.CustomException import CuentaEnBaseDuplicadaException
+from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
 from Util.UIManiac import PopUpManiac
 import unittest
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*
 from Encryptador import EncryptoManiac as EM
 from Encryptador.consola.Historial import HistorialConsola
-from Util.CustomException import ParametrosComandosNullos
+from Encryptador.exceptions.ParametrosComandosNullosException import ParametrosComandosNullosException
 
 class Comando(object):
 
@@ -15,7 +15,7 @@ class Comando(object):
 
 	def validarParametros(self,parametros):
 		if(parametros == []):
-			raise ParametrosComandosNullos()
+			raise ParametrosComandosNullosException('Parametros Nullos')
 
 	def escribirEnConsolaStrategy(self,historial: HistorialConsola):
 		if(self.mensajeComando != None):
