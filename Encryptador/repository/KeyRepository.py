@@ -7,15 +7,10 @@ import os
 
 class KeyRepository(object):
 
-    def __init__(self):
-        self.baseIniciada = False
-
     def generarOCargarArchivoDeCalvesExistente(self, rutaKeysParams = Configuracion.rutaAlArchivoDeConfiguracion):
-        if(os.path.exists(rutaKeysParams)):
-            self.fernet = ft(self._cargarClave(rutaKeysParams))
-        else:
+        if(not os.path.exists(rutaKeysParams)):
             self._generarClave(rutaKeysParams)
-            self.fernet = ft(self._cargarClave(rutaKeysParams))
+        self._cargarClave(rutaKeysParams)
 
     def _generarClave(self,rutaKeyParams: str):
         logging.info('Generando clave')
@@ -24,10 +19,11 @@ class KeyRepository(object):
 
     def _cargarClave(self,rutaKeyParams):
         logging.info('Cargando clave')
+        print(rutaKeyParams)
         archivoKey = open(rutaKeyParams,'rb') 
         key = archivoKey.read()
         archivoKey.close()
-        return key
+        self.fernet = ft(key)
 
     def encriptarASE(self, palabraAEncriptar):
         return self.fernet.encrypt(palabraAEncriptar.encode())

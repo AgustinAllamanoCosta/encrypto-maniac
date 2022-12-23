@@ -20,7 +20,7 @@ class ComandoRegistrar(Comando):
 
 	def obtenerCredenciales(self):
 		contrasenia = self.obtenerContrasenias()
-		contraseniaRecupero = self.obtenerContraseniaDeRecupero()
+		contraseniaRecupero = self.obtenerContraseniaDeRecupero(contrasenia)
 		return (contrasenia,contraseniaRecupero)
 
 	def obtenerContrasenias(self):
@@ -31,10 +31,11 @@ class ComandoRegistrar(Comando):
 		else:
 			return self.obtenerContrasenias()
 
-	def obtenerContraseniaDeRecupero(self):
+	def obtenerContraseniaDeRecupero(self,contraseniaEnterior):
 		print('Bien ahora vamos a generar la contrasenia de recupero, anotala y no la pierdas, la vas a necesitar para recuperar esta cuenta en caso de que te olvides de la anterior ;)')
 		contraseniaRecupero = getpass('contrasenia de recupero:')
-		if(self.validadorDeFormatoContrasenias(contraseniaRecupero)):
+		if(self.validadorDeFormatoContrasenias(contraseniaRecupero) and contraseniaEnterior != contraseniaRecupero):
+			print('y tiene que ser distinte a la contrasenia original')
 			return contraseniaRecupero
 		else:
 			return self.obtenerContraseniaDeRecupero()

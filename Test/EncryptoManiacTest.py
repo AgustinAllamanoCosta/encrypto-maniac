@@ -133,7 +133,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		keyRepo = KeyRepository.KeyRepository()
 		keyRepo.generarOCargarArchivoDeCalvesExistente()
 		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
-		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia) VALUES (?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),))
+		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia,contraseniaRecupero,rutaArchivoKey) VALUES (?,?,?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),keyRepo.encriptarASE(self.contraseniaUsuario),Configuracion.rutaAlArchivoDeConfiguracion))
 		baseDeDatos.commit()
 
 	def dadoQueNoEstoyLogeado(self):

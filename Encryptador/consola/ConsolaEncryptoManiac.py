@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from Encryptador.comandos.ComandoMostrar import ComandoMostrar
 from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 from Encryptador.comandos.ComandoExit import ComandoExit
@@ -12,6 +10,7 @@ from Encryptador.comandos.ComandoModificar import ComandoModificar
 from Encryptador.comandos.ComandoAgregar import ComandoAgregar
 from Encryptador.comandos.ComandoListar import ComandoListar
 from Encryptador.comandos.Comando import Comando
+from Encryptador.configuracion.Configuracion import Configuracion
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.consola.Historial import HistorialConsola
 from Encryptador.exceptions.InterrumpirConsolaException import InterrumpirConsolaException
@@ -27,7 +26,6 @@ class ConsolaEncryptoManiac():
 	def __init__(self, historalParam: HistorialConsola, encryptadorParam: EncryptoManiac):
 		logging.info('Iniciando consola')
 		self.historial: HistorialConsola = historalParam
-		self.estadoDeSesion: EstadoDeSesion = encryptadorParam.estadoSesion
 		self.encriptador: EncryptoManiac = encryptadorParam
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
@@ -56,7 +54,8 @@ class ConsolaEncryptoManiac():
 			self.historial.agregarEntrada(entrada)
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
 			comando.ejecutar(valoresEntrada[1:])
-			self.comandosEstandar.get('systema').ejecutar([])
+			if(False):
+				self.comandosEstandar.get('systema').ejecutar([])
 			comando.escribirEnConsolaStrategy(self.historial)
 
 		except InterrumpirConsolaException:
@@ -66,10 +65,11 @@ class ConsolaEncryptoManiac():
 			logging.debug('Index error '+entrada)
 			self.escribirError(ConstanteConsola.mensajeAyudaComandoAgregar)
 		except ManiacException as expt:
+			logging.error(expt)
 			self.escribirError(expt.mensaje)
 
 	def obtenerComando(self,entrada):
-		if(entrada in self.comandosEstandar.keys() and self.estadoDeSesion.sesionActiva):
+		if(entrada in self.comandosEstandar.keys() and self.encriptador.estadoSesion.sesionActiva):
 			return self.comandosEstandar.get(entrada)
 		elif(entrada in self.comandosSinSession.keys()):
 			return self.comandosSinSession.get(entrada)
@@ -80,7 +80,7 @@ class ConsolaEncryptoManiac():
 		self.escribirCabeceraDeConsola()
 		while self.correrConsola:
 			entrada: str = self.ingresarEntradas()
-			if(self.estadoDeSesion is None):
+			if(self.encriptador.estadoSesion is None):
 				print('Parece que no estas registrado, vamos a hacerlo antes de continuar.')
 				self.analizarEntrada('registrar')
 				self.estadoDeSesion = EstadoDeSesion(self.encriptador.obtenerUsuarioRegistrado())

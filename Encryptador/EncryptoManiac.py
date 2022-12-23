@@ -1,12 +1,12 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+import sqlite3
+from Encryptador.configuracion.Configuracion import Configuracion
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.exceptions.LoginErrorException import LoginErrorException
 from Encryptador.repository.BaseRepository import BaseRepository
 from Encryptador.repository.KeyRepository import KeyRepository
 from Encryptador.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutorizadoException
 from Util import ConstantesEncryptoManiac as CEM
-import logging
-import sqlite3
 
 class EncryptoManiac(object):
 
@@ -89,13 +89,22 @@ class EncryptoManiac(object):
 
 	def iniciarSesion(self,usuario,contrasenia):
 		if(self.existeUnUsuarioRegistrado()):
-			self.iniciarClaves()
+			archivoDelUsuario = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarArchivo,(usuario,))[0]
+			self.keyRepository._cargarClave(archivoDelUsuario)
 			contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]
 			if(contraseniaEnBase is not None or contraseniaEnBase is not ''):
 				contraseniaLimpia = self.keyRepository.desencriptarASE(contraseniaEnBase)
 				self.estadoSesion.sesionActiva = contraseniaLimpia == contrasenia
 		else:
 			self.estadoSesion.sesionActiva = False
+			raise LoginErrorException('Usuario o contrasena incorrectos')
+
+	def registrarUsuario(self,usuario: str,contrasenia: str, contraseniaRecupero: str):
+		self.iniciarClaves()
+		contraseniaEncriptada = self.keyRepository.encriptarASE(contrasenia)
+		contraseniaRecuperoEncriptada = self.keyRepository.encriptarASE(contraseniaRecupero)
+		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada,contraseniaRecuperoEncriptada, Configuracion.rutaAlArchivoDeConfiguracion))
+		self.estadoSesion = EstadoDeSesion(usuario)
 
 	def existeUnUsuarioRegistrado(self):
 		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
@@ -115,10 +124,3 @@ class EncryptoManiac(object):
 	def validarUsuario(self):
 		if(not self.estaAutorizadoElUsuario()):
 			raise UsuarioNoAutorizadoException()
-
-	def registrarUsuario(self,usuario: str,contrasenia: str, contraseniaRecupero: str):
-		self.iniciarClaves()
-		contraseniaEncriptada = self.keyRepository.encriptarASE(contrasenia)
-		contraseniaRecuperoEncriptada = self.keyRepository.encriptarASE(contraseniaRecupero)
-		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarUsuario,(usuario,contraseniaEncriptada,contraseniaRecuperoEncriptada))
-		self.estadoSesion = EstadoDeSesion(usuario)

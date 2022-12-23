@@ -30,7 +30,7 @@ class FactoryEncriptador(object):
 class FactoryConsolaEncriptoManiac(object):
 
 	def __init__(self):
-		logging.basicConfig(filename='encrypto.log', level=logging.DEBUG)
+		logging.basicConfig(filename='./Encryptador/logs/encrypto.log', level=logging.DEBUG)
 
 	def obtenerConsola(self, plataforma):
 		encriptador = FactoryEncriptador().obtenerEncripto()
