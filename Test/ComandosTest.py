@@ -8,10 +8,11 @@ from Encryptador.comandos.ComandoListar import ComandoListar
 from Encryptador.comandos.ComandoMostrar import ComandoMostrar
 from Encryptador.comandos.ComandoConfigurar import ComandoConfigurar
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.consola.Historial import HistorialConsola
 from Encryptador.factory.ManiacFactory import FactoryEncriptador
 from Encryptador.EncryptoManiac import EncryptoManiac
 from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
-from Util.UIManiac import PopUpManiac
+from Util.Portapapeles import PortaPapeles
 import unittest
 
 class TestComandosManiac(unittest.TestCase):
@@ -157,7 +158,7 @@ class TestComandosManiac(unittest.TestCase):
 	def dadoQueSeMuestraLaContraseña(self):
 		self.seMostroElPopUp = False
 		EncryptoManiac.buscarClave = self.buscarClaveMock
-		PopUpManiac.mostrarPopUp = self.runPopUpMock
+		PortaPapeles.copiarPortaPapeles = self.runPopUpMock
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
@@ -197,7 +198,7 @@ class TestComandosManiac(unittest.TestCase):
 
 	def cuandoSeLlamaALaFuncionEscribirDelComando(self):
 		self.comando.ejecutar(self.parametroComando)
-		self.comando.escribirEnConsolaStrategy(None)
+		self.comando.escribirEnConsolaStrategy(HistorialConsola())
 
 	def cuandoSeLlamaALaFuncionEjecutarDelComandoConfigurar(self):
 		self.seEjecutoConfigurarKey = False
@@ -227,7 +228,7 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.seEjecutoIngresarClave == False
 
 	def seVerficaQueSeMuestraUnPopUpConLaMisma(self):
-		assert self.comando.mensajeComando == '123455'
+		assert self.comando.mensajeComando == 'Se copia la calve al portapapeles :D la puedes pegar con ctrl + v'
 
 	def seVerificaSeDesactivaElEchoDeLaConsola(self):
 		assert self.seDesactivaElEcho == True
@@ -285,7 +286,7 @@ class TestComandosManiac(unittest.TestCase):
 	def observadorComandoConfigurarKey(self,rutaAConfigurar):
 		self.seEjecutoConfigurarKey = True
 	
-	def runPopUpMock(self):
+	def runPopUpMock(self,mensaje):
 		self.seMostroElPopUp = True
 
 	def buscarClaveMock(self,nombreCuenta):

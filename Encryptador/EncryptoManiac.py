@@ -95,6 +95,8 @@ class EncryptoManiac(object):
 			if(contraseniaEnBase is not None or contraseniaEnBase is not ''):
 				contraseniaLimpia = self.keyRepository.desencriptarASE(contraseniaEnBase)
 				self.estadoSesion.sesionActiva = contraseniaLimpia == contrasenia
+			else:
+				raise LoginErrorException('Usuario o contrasena incorrectos')
 		else:
 			self.estadoSesion.sesionActiva = False
 			raise LoginErrorException('Usuario o contrasena incorrectos')
@@ -108,7 +110,7 @@ class EncryptoManiac(object):
 
 	def existeUnUsuarioRegistrado(self):
 		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
-		return len(respuestaBase)>0
+		return len(respuestaBase)>0 and respuestaBase[0] is not None
 
 	def obtenerUsuarioRegistrado(self):
 		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
