@@ -12,7 +12,6 @@ from Encryptador.consola.Historial import HistorialConsola
 from Encryptador.factory.ManiacFactory import FactoryEncriptador
 from Encryptador.EncryptoManiac import EncryptoManiac
 from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
-from Util.Portapapeles import PortaPapeles
 import unittest
 
 class TestComandosManiac(unittest.TestCase):
@@ -158,7 +157,6 @@ class TestComandosManiac(unittest.TestCase):
 	def dadoQueSeMuestraLaContraseña(self):
 		self.seMostroElPopUp = False
 		EncryptoManiac.buscarClave = self.buscarClaveMock
-		PortaPapeles.copiarPortaPapeles = self.runPopUpMock
 
 	def conParametros(self,parametros):
 		self.parametroComando = parametros
@@ -189,7 +187,7 @@ class TestComandosManiac(unittest.TestCase):
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoMostrar(self):
 		self.seEjecutoBuscarClave = False
 		EncryptoManiac.buscarClave = self.observadorBuscarClave
-		self.comando.ejecutar(self.parametroComando)	
+		self.comando.ejecutar(self.parametroComando)
 
 	def cuandoSeLlamanALaFuncionEjecutarDelComandoListar(self):
 		self.seEjecutoListarCuentas = False
@@ -261,6 +259,7 @@ class TestComandosManiac(unittest.TestCase):
 
 	def observadorBuscarClave(self,parametro):
 		self.seEjecutoBuscarClave = True
+		return 'contrasena'
 
 	def observadorListarCuentas(self):
 		self.seEjecutoListarCuentas = True

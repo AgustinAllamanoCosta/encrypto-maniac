@@ -54,7 +54,7 @@ class ConsolaEncryptoManiac():
 			self.historial.agregarEntrada(entrada)
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
 			comando.ejecutar(valoresEntrada[1:])
-			if(False):
+			if(Configuracion.limpiarTerminal):
 				self.comandosEstandar.get('systema').ejecutar([])
 			comando.escribirEnConsolaStrategy(self.historial)
 

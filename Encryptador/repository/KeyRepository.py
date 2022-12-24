@@ -19,7 +19,6 @@ class KeyRepository(object):
 
     def _cargarClave(self,rutaKeyParams):
         logging.info('Cargando clave')
-        print(rutaKeyParams)
         archivoKey = open(rutaKeyParams,'rb') 
         key = archivoKey.read()
         archivoKey.close()
