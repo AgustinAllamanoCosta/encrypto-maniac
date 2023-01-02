@@ -6,16 +6,12 @@ from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoAgregar(ComandoSensibles):
 
-	def ejecutar(self,parametros):
+	def ejecutar(self,parametros,sesion):
 		logging.info('Se ejecuta comando agregar.')
 		if(len(parametros)==0):
 			logging.debug('Parametros insuficiente para el comando agregar.')
 			raise ParametrosComandoIncompletosException(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
-			if(self.encriptoManiac.existeCuentaEnBase(parametros[0]) != True):
-				self.encriptoManiac.ingresarClave(parametros[0],self.obtenerContraseña())
-			else:
-				logging.debug('La cuenta esta duplicada')
-				raise CuentaEnBaseDuplicadaException(parametros[0])
+			self.encriptoManiac.ingresarClave(parametros[0],self.obtenerContraseña(),self.obtenerCredenciales())
 		self.mensajeComando = "Se agrego la contraseña"
-		return 0
+		return self.encriptoManiac.obtenerSesion()

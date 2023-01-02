@@ -1,4 +1,4 @@
-from Encryptador.EncryptoManiac import EncryptoManiac
+from Encryptador.servicio.EncryptoManiac import EncryptoManiac
 from Encryptador.comandos.ComandoUnix import ComandoUnix
 from Encryptador.comandos.ComandoWin import ComandoWin
 from Encryptador.comandos.ComandoAgregar import ComandoAgregar

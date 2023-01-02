@@ -7,7 +7,7 @@ import sqlite3
 class BaseRepository(object):
 
     def __init__(self):
-        self.rutaBBDD = Configuracion.rutaALaBaseDeDatos
+        self.rutaBBDD = Configuracion.rutaAlArchivoLaBaseDeDatos
 
     def _ejcutarConsultaBase(self,conexion: sqlite3.Connection, query: str,params: tuple):
         try:

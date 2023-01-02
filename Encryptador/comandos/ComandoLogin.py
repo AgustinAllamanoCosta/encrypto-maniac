@@ -1,15 +1,11 @@
 from getpass import getpass
-from Encryptador.comandos.Comando import Comando
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 
-class ComandoLogin(Comando):
+class ComandoLogin(ComandoSensibles):
 
-	def ejecutar(self,parametros):
+	def ejecutar(self,parametros: list = [], sesion: EstadoDeSesion = None)-> EstadoDeSesion:
 		usuario = self.obtenerUsuario()
-		self.encriptoManiac.iniciarSesion(usuario,self.obtenerContrasenia())
+		self.encriptoManiac.iniciarSesion(usuario,self.obtenerContraseña())
 		self.mensajeComando = 'Login correcto :)'
-
-	def obtenerUsuario(self):
-		return input('Usuario: ')
-
-	def obtenerContrasenia(self):
-		return getpass('Contrasenia: ')
+		return self.encriptoManiac.obtenerSesion()

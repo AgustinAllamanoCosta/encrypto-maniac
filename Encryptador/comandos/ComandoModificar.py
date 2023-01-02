@@ -1,11 +1,12 @@
 import logging
+from Encryptador.consola import EstadoDeSesion
 from Encryptador.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
 from Encryptador.comandos.ComandoSensible import ComandoSensibles
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoModificar(ComandoSensibles):
 
-	def ejecutar(self,parametros):
+	def ejecutar(self,parametros: list = [], sesion: EstadoDeSesion = None):
 		super().validarParametros(parametros)
 		logging.info('Ejecutando el comando modificar')
 		if(len(parametros)==0):
@@ -13,4 +14,4 @@ class ComandoModificar(ComandoSensibles):
 		else:
 			self.encriptoManiac.actualizarClave(parametros[0],self.obtenerContraseña())
 		self.mensajeComando = "Se modifico la contraseña de la cuenta "+parametros[0]
-		return 0
+		return self.encriptoManiac.obtenerSesion()

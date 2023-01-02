@@ -116,7 +116,6 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.encryptoManiac = EM.EncryptoManiac(BaseRepository.BaseRepository(),KeyRepository.KeyRepository())
 		self.encryptoManiac.iniciarClaves()
 		self.encryptoManiac.iniciarBaseDeClaves()
-		self.encryptoManiac.estadoSesion = EstadoDeSesion('juan',True)
 	
 	def dadoQueExisteUnaCuentaEnLaBase(self):
 		self.nombreAPP = 'slack'
@@ -133,7 +132,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		keyRepo = KeyRepository.KeyRepository()
 		keyRepo.generarOCargarArchivoDeCalvesExistente()
 		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
-		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia,contraseniaRecupero,rutaArchivoKey) VALUES (?,?,?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),keyRepo.encriptarASE(self.contraseniaUsuario),Configuracion.rutaAlArchivoDeConfiguracion))
+		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia,contraseniaRecupero,rutaArchivoKey) VALUES (?,?,?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),keyRepo.encriptarASE(self.contraseniaUsuario),Configuracion.rutaAlArchivoDeCredenciales))
 		baseDeDatos.commit()
 
 	def dadoQueNoEstoyLogeado(self):
@@ -188,7 +187,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.encryptoManiac.configurarRutaKey(parametros)
 
 	def seVerificaQueSeCrearElArchivoPuntoKey(self):
-		self.assertTrue(os.path.exists(Configuracion.rutaAlArchivoDeConfiguracion))
+		self.assertTrue(os.path.exists(Configuracion.rutaAlArchivoDeCredenciales))
 
 	def seVerificaQueSeCargaUnaClave(self):
 		self.assertNotEqual(self.encryptoManiac.keyRepository.fernet, None)
@@ -237,7 +236,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		assert self.archvioIniciado == True
 
 	def seVerificaQueCambiaElOrigenDelArchivoDeClaves(self):
-		assert self.encryptoManiac.rutaKey != Configuracion.rutaAlArchivoDeConfiguracion
+		assert self.encryptoManiac.rutaKey != Configuracion.rutaAlArchivoDeCredenciales
 
 	def seVerificaQueRetornaTrue(self):
 		assert self.respuestaLogin == True

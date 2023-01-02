@@ -1,19 +1,20 @@
 from getpass import getpass
-from Encryptador.comandos.Comando import Comando
-from Encryptador import EncryptoManiac as EM
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
 
-class ComandoRegistrar(Comando):
+class ComandoRegistrar(ComandoSensibles):
 
-	def __init__(self, encryptador: EM.EncryptoManiac):
+	def __init__(self, encryptador: ServicioEncrypto):
 		super().__init__(encryptador)
 		self.caracteresEspeciales = ['!','@','#','$','%','^','&','*','(',')','<','>','?','-','_','+','=','[',']','{','}','~']
 
-	def ejecutar(self,parametros) -> EstadoDeSesion:
+	def ejecutar(self,parametros: list = [], sesion: EstadoDeSesion = None) -> EstadoDeSesion:
 		usuario = self.obtenerUsuario()
 		credenciales = self.obtenerCredenciales()
-		self.encriptoManiac.registrarUsuario(usuario,credenciales[0],credenciales[1])
+		self.encriptoManiac.registrarNuevoUsuario(usuario,credenciales[0],credenciales[1])
 		self.mensajeComando = 'Usuario Registrado con exito'
+		return self.encriptoManiac.obtenerSesion()
 
 	def obtenerUsuario(self):
 		return input('Usuario: ')

@@ -1,9 +1,10 @@
 import logging
-from Encryptador.comandos.Comando import Comando
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 
-class ComandoListar(Comando):
+class ComandoListar(ComandoSensibles):
 
-	def ejecutar(self, parametros = []):
+	def ejecutar(self, parametros: list = [], sesion: EstadoDeSesion = None):
 		logging.info('Ejecutando el comando listar')
-		self.mensajeComando = self.encriptoManiac.listarCuentas()
-		return 0
+		self.mensajeComando = self.encriptoManiac.listarCuentas(self.obtenerCredenciales())
+		return self.encriptoManiac.obtenerSesion()

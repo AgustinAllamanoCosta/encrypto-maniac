@@ -3,6 +3,7 @@ from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 from Encryptador.comandos.ComandoExit import ComandoExit
 from Encryptador.comandos.ComandoLogin import ComandoLogin
 from Encryptador.comandos.ComandoRegistrar import ComandoRegistrar
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
 from Encryptador.comandos.ComandoVerMas import ComandoVerMas
 from Encryptador.comandos.ComandoEscribirCabeceraDeConsola import ComandoEscribirCabeceraDeConsola
 from Encryptador.comandos.ComandoEliminar import ComandoEliminar
@@ -16,44 +17,49 @@ from Encryptador.consola.Historial import HistorialConsola
 from Encryptador.exceptions.InterrumpirConsolaException import InterrumpirConsolaException
 from Encryptador.exceptions.ComandoNoEncontradoException import ComandoNoEncontradoException
 from Encryptador.exceptions.ManiacException import ManiacException
-from Encryptador.EncryptoManiac import EncryptoManiac
+from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 import logging
 import re
 
 class ConsolaEncryptoManiac():
 
-	def __init__(self, historalParam: HistorialConsola, encryptadorParam: EncryptoManiac):
+	def __init__(self, historalParam: HistorialConsola, servicioEncripto: ServicioEncrypto):
 		logging.info('Iniciando consola')
 		self.historial: HistorialConsola = historalParam
-		self.encriptador: EncryptoManiac = encryptadorParam
+		self.sesion: EstadoDeSesion = servicioEncripto.obtenerSesion()
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
 		self.prompt = "EM>>"
 
 		self.comandosEstandar: dict[str,Comando] = {
-			'listar': ComandoListar(encryptadorParam),
-			'agregar': ComandoAgregar(encryptadorParam),
-			'modificar': ComandoModificar(encryptadorParam),
-			'eliminar': ComandoEliminar(encryptadorParam),
-			'mostrar': ComandoMostrar(encryptadorParam),
-			'cabecera': ComandoEscribirCabeceraDeConsola(encryptadorParam),
+			'listar': ComandoListar(servicioEncripto),
+			'agregar': ComandoAgregar(servicioEncripto),
+			'modificar': ComandoModificar(servicioEncripto),
+			'eliminar': ComandoEliminar(servicioEncripto),
+			'mostrar': ComandoMostrar(servicioEncripto),
+			'cabecera': ComandoEscribirCabeceraDeConsola(servicioEncripto),
 			'vermas': ComandoVerMas(),
 			'ayuda': ComandoAyuda(),
 		}
 
 		self.comandosSinSession: dict[str,Comando] = {
-			'login': ComandoLogin(encryptadorParam),
-			'registrar' : ComandoRegistrar(encryptadorParam),
-			'exit': ComandoExit(encryptadorParam),
+			'login': ComandoLogin(servicioEncripto),
+			'registrar' : ComandoRegistrar(servicioEncripto),
+			'exit': ComandoExit(servicioEncripto),
 		}
 
 	def analizarEntrada(self,entrada):
 		valoresEntrada: list[str] = self.patronConsola.findall(entrada)
 		try:
 			self.historial.agregarEntrada(entrada)
+
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
-			comando.ejecutar(valoresEntrada[1:])
+			if(isinstance(comando,ComandoSensibles)):
+				self.sesion = comando.ejecutar(valoresEntrada[1:], self.sesion)
+			else:
+				comando.ejecutar(valoresEntrada[1:])
+
 			if(Configuracion.limpiarTerminal):
 				self.comandosEstandar.get('systema').ejecutar([])
 			comando.escribirEnConsolaStrategy(self.historial)
@@ -69,7 +75,7 @@ class ConsolaEncryptoManiac():
 			self.escribirError(expt.mensaje)
 
 	def obtenerComando(self,entrada):
-		if(entrada in self.comandosEstandar.keys() and self.encriptador.estadoSesion.sesionActiva):
+		if(entrada in self.comandosEstandar.keys() and self.sesion.sesionActiva):
 			return self.comandosEstandar.get(entrada)
 		elif(entrada in self.comandosSinSession.keys()):
 			return self.comandosSinSession.get(entrada)
@@ -80,10 +86,9 @@ class ConsolaEncryptoManiac():
 		self.escribirCabeceraDeConsola()
 		while self.correrConsola:
 			entrada: str = self.ingresarEntradas()
-			if(self.encriptador.estadoSesion is None):
+			if(self.sesion is None):
 				print('Parece que no estas registrado, vamos a hacerlo antes de continuar.')
 				self.analizarEntrada('registrar')
-				self.estadoDeSesion = EstadoDeSesion(self.encriptador.obtenerUsuarioRegistrado())
 			else:
 				self.analizarEntrada(entrada)
 

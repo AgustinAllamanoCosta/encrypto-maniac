@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 class ConstanteConsola:
 
 	mensajeBienvenida = 'ENCRYPTO MANIAC'
@@ -31,7 +29,7 @@ class ConstanteConsola:
 
 class ConstantesEM:
 	baseEncryptoManiac = 'manicaDB.db'
-	nombreArchivoKey = 'encriptoKey.key'
+	nombreArchivoKey = 'Key.key'
 
 class ConsultaDB:
 	actualizarClave = 'UPDATE clavesYAplicaciones SET clave = ? WHERE nombreApp = ?'

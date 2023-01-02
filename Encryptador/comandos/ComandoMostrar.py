@@ -1,12 +1,14 @@
-from Encryptador.comandos.Comando import Comando
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
 import logging, pyperclip
 
-class ComandoMostrar(Comando):
+from Encryptador.consola import EstadoDeSesion
 
-	def ejecutar(self,parametros):
+class ComandoMostrar(ComandoSensibles):
+
+	def ejecutar(self,parametros: list = [],sesion: EstadoDeSesion = None):
 		logging.info('Ejecutando el comando mostrar')
 		super().validarParametros(parametros)
-		contraseniaLimpia = self.encriptoManiac.buscarClave(parametros[0])
+		contraseniaLimpia = self.encriptoManiac.buscarClave(parametros[0],self.obtenerCredenciales())
 		pyperclip.copy(contraseniaLimpia)
 		self.mensajeComando = 'Se copia la calve al portapapeles :D la puedes pegar con ctrl + v'
-		return 0
+		return self.encriptoManiac.obtenerSesion()

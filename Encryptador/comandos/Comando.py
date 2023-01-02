@@ -1,19 +1,17 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*
-from Encryptador import EncryptoManiac as EM
+from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
 from Encryptador.consola.Historial import HistorialConsola
 from Encryptador.exceptions.ParametrosComandosNullosException import ParametrosComandosNullosException
 
 class Comando(object):
 
-	def __init__(self, encryptador: EM.EncryptoManiac):
-		self.encriptoManiac = encryptador
-		self.mensajeComando = ""
+	def __init__(self, servicioEncripto: ServicioEncrypto):
+		self.encriptoManiac: ServicioEncrypto = servicioEncripto
+		self.mensajeComando: str = ""
 
-	def ejecutar(self,parametros = []):
+	def ejecutar(self,parametros: list = []) -> int:
 		return 0
 
-	def validarParametros(self,parametros):
+	def validarParametros(self,parametros: list):
 		if(parametros == []):
 			raise ParametrosComandosNullosException('Parametros Nullos')
 
