@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { Container } from 'react-bootstrap';
+import Login from './views/login/Login';
+import Styles from "./App.module.css";
 
 const App = () => {
-    const [isLogged, setIsLogged] = useState(false);
-
     if (isLogged) {
         return (<></>);
     } else {
         return (
-            <>
-                <Login setIsLogged={setIsLogged} />
-            </>
+            <Container className={Styles.contenedorLogin}>
+                <Login />
+            </Container>
         );
     }
 };
