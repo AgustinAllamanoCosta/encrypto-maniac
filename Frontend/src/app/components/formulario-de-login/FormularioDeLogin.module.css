@@ -11,6 +11,13 @@
     align-items: center;
 }
 
+.logo {
+    width: auto;
+    height: auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
 .input {
     width: 80%;
     font-size: 14px;

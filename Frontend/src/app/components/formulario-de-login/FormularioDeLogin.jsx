@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Row, Button, Form } from 'react-bootstrap';
+import { Container, Col, Row, Image, Button, Form } from 'react-bootstrap';
+import Logo from "../../img/logo-encrypto-maniac.png";
 import Styles from './FormularioDeLogin.module.css';
 
 const FormularioDeLogin = () => {
@@ -7,6 +8,7 @@ const FormularioDeLogin = () => {
     return (
         <Form className={Styles.formulario}>
             <Container className={Styles.contenedor}>
+                <Image className={Styles.logo} src={Logo} as={Col} />
                 <Form.Group className={Styles.input}>
                     <Form.Label> Usuario </Form.Label>
                     <Form.Control className={Styles.textInput} type='text' placeholder='Ingresar usuario...' />
