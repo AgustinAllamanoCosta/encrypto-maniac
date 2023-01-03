@@ -1,8 +1,8 @@
 .formulario {
-    background: rgba(233, 233, 233, 0.9);
-    border-radius: 0.25rem;
     width: 500px;
-    box-shadow: 0 0 30px 0 #c5c5c5;
+    border-radius: 0.55rem;
+    background: rgb(80, 87, 122, 0.9);
+    box-shadow: 0 0 30px 0 rgb(45, 52, 82);
 }
 
 .contenedor {
@@ -22,6 +22,7 @@
     width: 80%;
     font-size: 14px;
     padding: 10px 0 10px 0;
+    color: white;
 }
 
 .textInput {
@@ -34,6 +35,8 @@
 }
 
 .boton {
+    border: inherit;
+    background-color: #404258;
     font-size: 14px;
     width: 200px;
     margin: 50px 0 50px 0;
