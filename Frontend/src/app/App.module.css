@@ -8,11 +8,3 @@
     min-height: 930px;
     background-size: cover;
 }
-
-@media screen and (max-width: 500px) {
-    .contenedorLogin {
-        display: block;
-        margin: 0;
-        padding: 0;
-    }
-}
