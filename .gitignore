@@ -120,3 +120,4 @@ encriptoKey.key
 %SystemDrive%/ProgramData/Microsoft/Windows/Caches/cversions.2.db
 /.metadata/
 encryptoEnv/* 
+*.key

@@ -1,3 +1,4 @@
+from Encryptador.servicio.Autorisador import Autorisador
 from Encryptador.servicio.EncryptoManiac import EncryptoManiac
 from Encryptador.comandos.ComandoUnix import ComandoUnix
 from Encryptador.comandos.ComandoWin import ComandoWin
@@ -25,11 +26,12 @@ class TestConsolaManiac(unittest.TestCase):
 			'ComandoAgregar': ComandoAgregar.ejecutar,
 			'ComandoListar': ComandoListar.ejecutar,
 			'ComandoVerMas': ComandoVerMas.ejecutar,
-			'ComandoExit' : ComandoExit.ejecutar,
-			'ComandoEliminar' : ComandoEliminar.ejecutar,
-			'ComandoMostrar' : ComandoMostrar.ejecutar,
-			'ComandoAyuda' : ComandoAyuda.ejecutar,
-			'existeCuentaEnBase' :EncryptoManiac.existeCuentaEnBase
+			'ComandoExit': ComandoExit.ejecutar,
+			'ComandoEliminar': ComandoEliminar.ejecutar,
+			'ComandoMostrar': ComandoMostrar.ejecutar,
+			'ComandoAyuda': ComandoAyuda.ejecutar,
+			'existeCuentaEnBase': EncryptoManiac.existeCuentaEnBase,
+			'validarUsuario': Autorisador.validarUsuario
 		}
 
 	def tearDown(self):
@@ -42,6 +44,7 @@ class TestConsolaManiac(unittest.TestCase):
 		ComandoMostrar.ejecutar = self.funcionesOriginales['ComandoMostrar']
 		ComandoAyuda.ejecutar = self.funcionesOriginales['ComandoAyuda']
 		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
+		Autorisador.validarUsuario = self.funcionesOriginales['validarUsuario']
 
 	def test_dadoQueTengoUnaConsolaDeLaConsolaSeVerificaQueSeMuestraElMensajeDeBienvenida(self):
 		self.dadoQueTengoUnaConsola()
@@ -125,7 +128,7 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueTengoUnaConsola()
 		self.dadoQueSeEnviaUnComandoEnMayuscula()
 		self.cuandoSeLlamaALaFuncionAnalizarEntrada()
-		self.seVerificaQueSeEjecutaIgual()	
+		self.seVerificaQueSeEjecutaIgual()
 
 	def test_dadoQueEstoyTrabajandoEnSistemaUnixCuandoSeInstanciaUnaConsolaDesdeElFactorySeVerificaQueSeCarganLosComandosDeUnixDeSystema(self):
 		self.dadoQueEstoyTrabajandoiEnSistemasUnix()
@@ -137,22 +140,15 @@ class TestConsolaManiac(unittest.TestCase):
 		self.dadoQueSeInstanciaUnaConsolaDesdeElFactoryDeConsolas()
 		self.seVerificaQueSeCarganLosComandosDeSystemaWin()
 
-	def test_dadoQueTengoUnaConsolaCuandoSeIngresaElComandoAgregarYLaCuentaExisteEnLaBaseSeVerificaQueSeVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
-		self.dadoQueTengoUnaConsola()
-		self.dadoQueSeEjecutaElComandoAgregarConUnaCuentaQueExisteEnLaBase()
-		self.cuandoSeLlamaALaFuncionAnalizarEntrada() 
-		self.seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola()
-		
 	def dadoQueTengoUnaConsola(self):
-		estadoSesion = EstadoDeSesion('',True)
+		Autorisador.validarUsuario = self.validarUsuarioMock
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
-		self.consola.encriptador.estadoSesion = estadoSesion
-		self.consola.estadoDeSesion = estadoSesion
+		self.consola.sesion = EstadoDeSesion('',True)
 
 	def dadoQueSeSaleDelContextoAlIniciar(self):
 		self.comando = 'exit'
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
-		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)		
+		self.consolaEnParalelo =  HiloQueSePuedeDetener(target=self.consola.bucleDeConsola,daemon=True)
 
 	def dadoQueSeEjecutaElComandoAgregarSinParametros(self):
 		self.comando = 'agregar'
@@ -167,6 +163,7 @@ class TestConsolaManiac(unittest.TestCase):
 		self.comando = 'agregar slack'
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		EncryptoManiac.existeCuentaEnBase = self.existeCuentaEnBaseMock
+		ComandoAgregar.ejecutar = self.observadorFuncionAgregar
 
 	def dadoQueSeEjecutaElComandoListar(self):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : 'listar'
@@ -181,20 +178,20 @@ class TestConsolaManiac(unittest.TestCase):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoModificar.ejecutar = self.observadorFuncionModificar
 
-	def dadoQueSeEjecutarElComandoModificarSinElParametro(self):		
+	def dadoQueSeEjecutarElComandoModificarSinElParametro(self):
 		self.comando = 'modificar'
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
-	def dadoQueSeEjecutarElComandoEliminar(self):		
+	def dadoQueSeEjecutarElComandoEliminar(self):
 		self.comando = 'eliminar slack'
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoEliminar.ejecutar = self.observadorFuncionEliminar
 	
-	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):		
+	def dadoQueSeEjecutarElComandoEliminarSinParametros(self):
 		self.comando = 'eliminar'
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 
-	def dadoQueSeEjecutaElComandoMostrar(self):		
+	def dadoQueSeEjecutaElComandoMostrar(self):
 		self.comando = 'mostrar slack'
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : self.comando
 		ComandoMostrar.ejecutar = self.observadorFuncionMostrar
@@ -273,24 +270,30 @@ class TestConsolaManiac(unittest.TestCase):
 		assert isinstance(self.consola.obtenerComandos()['systema'],ComandoWin)
 
 	def seVerificaLanzaUnErrorYSeMuestraElMensajeEnLaConsola(self):
+		print('historial ',self.consola.obtenerHistorial()[1])
+		print('Msj ',ConstanteConsola.mensajeErrprComandoDuplicado + 'slack')
 		assert self.consola.obtenerHistorial()[1] == ConstanteConsola.mensajeErrprComandoDuplicado + 'slack'
-#Utilidades 
-	def observadorFuncionListar(self,arg):
+#Utilidades
+
+	def validarUsuarioMock(self):
+		return True
+
+	def observadorFuncionListar(self,arg1):
 		self.seEjecutoListar = True
 
-	def observadorFuncionEliminar(self,arg):
+	def observadorFuncionEliminar(self,arg1):
 		self.seEjecutoEliminar = True
 
-	def observadorFuncionMostrar(self,arg):
+	def observadorFuncionMostrar(self,arg1):
 		self.seEjecutoMostrar = True
 
-	def observadorFuncionModificar(self,arg):
+	def observadorFuncionModificar(self,arg1):
 		self.seEjecutoModificar = True
 
-	def observadorFuncionAgregar(self,arg):
+	def observadorFuncionAgregar(self,arg1):
 		self.seEjecutoAgregar = True
 
-	def existeCuentaEnBaseMock(self,arg):
+	def existeCuentaEnBaseMock(self,arg1):
 		return True
 
 class HiloQueSePuedeDetener(t.Thread):

@@ -9,7 +9,7 @@ class ComandoRegistrar(ComandoSensibles):
 		super().__init__(encryptador)
 		self.caracteresEspeciales = ['!','@','#','$','%','^','&','*','(',')','<','>','?','-','_','+','=','[',']','{','}','~']
 
-	def ejecutar(self,parametros: list = [], sesion: EstadoDeSesion = None) -> EstadoDeSesion:
+	def ejecutar(self,parametros: list = []) -> EstadoDeSesion:
 		usuario = self.obtenerUsuario()
 		credenciales = self.obtenerCredenciales()
 		self.encriptoManiac.registrarNuevoUsuario(usuario,credenciales[0],credenciales[1])

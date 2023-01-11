@@ -56,7 +56,7 @@ class ConsolaEncryptoManiac():
 
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
 			if(isinstance(comando,ComandoSensibles)):
-				self.sesion = comando.ejecutar(valoresEntrada[1:], self.sesion)
+				self.sesion = comando.ejecutar(valoresEntrada[1:])
 			else:
 				comando.ejecutar(valoresEntrada[1:])
 

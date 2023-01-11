@@ -8,7 +8,7 @@ from Encryptador.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutoriz
 from Util import ConstantesEncryptoManiac as CEM
 
 class Autorisador(object):
-    
+
 	def __init__(self,baseRepositoryParam: BaseRepository, keyReposioryParam: KeyRepository):
 		self.baseRepository: BaseRepository = baseRepositoryParam
 		self.keyRepository: KeyRepository = keyReposioryParam
@@ -66,10 +66,6 @@ class Autorisador(object):
 			raise LoginErrorException('Usuario o contrasena incorrectos')
 
 	def validarUsuario(self, credencialesDeLaAccion: Credenciales):
-		print('credenciales ',credencialesDeLaAccion)
-		print('contrasena ',credencialesDeLaAccion.contrasena)
-		print('token ',credencialesDeLaAccion.token)
-		print('usuario ',credencialesDeLaAccion.usuario)
 		contraseniaValida = self.confirmarContrasena(credencialesDeLaAccion.usuario,credencialesDeLaAccion.contrasena)
 		tokenValido = credencialesDeLaAccion.token == self.estadoSesion.tokenDelUsuario
 		usuarioValido = self.estaAutorizadoElUsuario() and tokenValido and contraseniaValida

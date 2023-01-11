@@ -28,7 +28,7 @@ class ServicioEncrypto(object):
 
 	def eliminarClave(self,parametro,credenciales: Credenciales):
 		self.autorisador.validarUsuario(credenciales)
-		return self.eliminarClave(parametro)
+		return self.encryptador.eliminarClave(parametro)
 
 	def actualizarClave(self,nombreApp,claveNueva, credenciales: Credenciales):
 		self.autorisador.validarUsuario(credenciales)
@@ -47,4 +47,4 @@ class ServicioEncrypto(object):
 		self.encryptador.configurarRutaBBDD(nuevaRuta)
 
 	def configurarRutaKey(self, nuevaRuta: str):
-		self.configurarRutaKey(nuevaRuta)
+		self.encryptador.configurarRutaKey(nuevaRuta)

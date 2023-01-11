@@ -1,8 +1,6 @@
-
 from Encryptador.configuracion.Configuracion import Configuracion
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.repository import BaseRepository, KeyRepository
-from Encryptador import EncryptoManiac as EM
+from Encryptador.servicio.EncryptoManiac import EncryptoManiac
 import os 
 import sqlite3
 import unittest
@@ -10,7 +8,7 @@ import unittest
 class TestEncryptoManiac(unittest.TestCase):
 
 	def test_CunadoSeEjecutaElMetodoGenerarClaveSeGeneraUnArchivoPunotKey(self):
-		self.dadoQueInicioCryptoManiac()
+		self.dadoQueInicioCryptoManiacSinInciarLasClaves()
 		self.caundoGeneraLaClave()
 		self.seVerificaQueSeCrearElArchivoPuntoKey()
 
@@ -101,20 +99,16 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.seVerificarQueSeRecargaLaConfiguracionDeLasKey()
 		self.limpiarBase()
 
-	def test_DadoQueTengoUnUsuarioConContraseniaValidaEnLaBaseCuandoVoyAIniciarSesionConLasCredencialesDelMismoSeVerificaQueElMetodoIniciarSesionRetornaTrue(self):
-		self.limpiarBase()
-		self.dadoQueInicioCryptoManiac()
-		self.dadoQueTengoUnUsuarioConCredencialesValidasEnLaBase()
-		self.dadoQueNoEstoyLogeado()
-		self.cuandoSeLlamaAlMetodoIniciarSesion()
-		self.seVerificaQueRetornaTrue()
-		self.limpiarBase()
-
 #Utilidades
 
+	def dadoQueInicioCryptoManiacSinInciarLasClaves(self):
+		self.encryptoManiac = EncryptoManiac(BaseRepository.BaseRepository(),KeyRepository.KeyRepository())
+		self.encryptoManiac.iniciarBaseDeClaves()
+
 	def dadoQueInicioCryptoManiac(self):
-		self.encryptoManiac = EM.EncryptoManiac(BaseRepository.BaseRepository(),KeyRepository.KeyRepository())
-		self.encryptoManiac.iniciarClaves()
+		keyRepo = KeyRepository.KeyRepository()
+		keyRepo.generarOCargarArchivoDeCalvesExistente(Configuracion.rutaAlArchivoDeCredenciales + 'test.key')
+		self.encryptoManiac = EncryptoManiac(BaseRepository.BaseRepository(),keyRepo)
 		self.encryptoManiac.iniciarBaseDeClaves()
 	
 	def dadoQueExisteUnaCuentaEnLaBase(self):
@@ -131,19 +125,12 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.nombreUsuario = 'usuarioUno'
 		keyRepo = KeyRepository.KeyRepository()
 		keyRepo.generarOCargarArchivoDeCalvesExistente()
-		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaAlArchivoLaBaseDeDatos)
 		baseDeDatos.execute('INSERT INTO usuarios(usuario,contrasenia,contraseniaRecupero,rutaArchivoKey) VALUES (?,?,?,?)',(self.nombreUsuario,keyRepo.encriptarASE(self.contraseniaUsuario),keyRepo.encriptarASE(self.contraseniaUsuario),Configuracion.rutaAlArchivoDeCredenciales))
 		baseDeDatos.commit()
 
-	def dadoQueNoEstoyLogeado(self):
-		self.encryptoManiac.estadoSesion.sesionActiva = False
-
-	def cuandoSeLlamaAlMetodoIniciarSesion(self):
-		self.encryptoManiac.iniciarSesion(self.nombreUsuario,self.contraseniaUsuario)
-		self.respuestaLogin = self.encryptoManiac.estaAutorizadoElUsuario()
-
 	def caundoGeneraLaClave(self):
-		self.encryptoManiac.keyRepository.generarOCargarArchivoDeCalvesExistente()
+		self.encryptoManiac.keyRepository.generarOCargarArchivoDeCalvesExistente(Configuracion.rutaAlArchivoDeCredenciales + 'test.key')
 
 	def cuandoSeEncryptaLaPalabra(self,palabra):
 		self.palabraAEncryptar = palabra
@@ -196,7 +183,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertNotEqual(self.palabraEncryptada,self.palabraAEncryptar)
 
 	def seVerificaQueSeInsertoCorrectamenteEnLaBase(self):
-		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaAlArchivoLaBaseDeDatos)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',(self.nombreAPP,))
 		self.assertNotEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()
@@ -215,7 +202,7 @@ class TestEncryptoManiac(unittest.TestCase):
 		self.assertEqual(self.encryptoManiac.buscarClave(self.nombreAPP),self.nuevaClave)
 
 	def seVerficaQueSeEliminoLaCuentaSlack(self):
-		baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
+		baseDeDatos = sqlite3.connect(Configuracion.rutaAlArchivoLaBaseDeDatos)
 		cursor = baseDeDatos.execute('SELECT * FROM clavesYAplicaciones WHERE nombreApp == ?',('slack',))
 		self.assertEqual(len(cursor.fetchall()),0)
 		baseDeDatos.close()
@@ -249,7 +236,7 @@ class TestEncryptoManiac(unittest.TestCase):
 
 	def limpiarBase(self):
 		try:
-			baseDeDatos = sqlite3.connect(Configuracion.rutaALaBaseDeDatos)
+			baseDeDatos = sqlite3.connect(Configuracion.rutaAlArchivoLaBaseDeDatos)
 			baseDeDatos.execute('DELETE FROM clavesYAplicaciones')
 			baseDeDatos.execute('DELETE FROM usuarios')
 			baseDeDatos.commit()

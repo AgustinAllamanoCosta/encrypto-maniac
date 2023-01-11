@@ -17,7 +17,7 @@ class ComandoAyuda(Comando):
 		'modificar':ConstanteConsola.mensajeAyudaComandoModificar
 		}
 
-	def ejecutar(self,parametros):
+	def ejecutar(self,parametros) -> int:
 		super().validarParametros(parametros)
 		logging.info('Ejecutando el comando ayuda')
 		self.mensajeComando = self.mensajeAyuda[parametros[0]]

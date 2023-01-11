@@ -5,7 +5,7 @@ from Encryptador.consola import EstadoDeSesion
 
 class ComandoMostrar(ComandoSensibles):
 
-	def ejecutar(self,parametros: list = [],sesion: EstadoDeSesion = None):
+	def ejecutar(self,parametros: list = []) -> EstadoDeSesion:
 		logging.info('Ejecutando el comando mostrar')
 		super().validarParametros(parametros)
 		contraseniaLimpia = self.encriptoManiac.buscarClave(parametros[0],self.obtenerCredenciales())

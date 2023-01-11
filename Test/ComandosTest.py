@@ -1,4 +1,3 @@
-
 from getpass import getpass
 from Encryptador.comandos.ComandoAgregar import ComandoAgregar
 from Encryptador.comandos.ComandoLogin import ComandoLogin
@@ -7,19 +6,22 @@ from Encryptador.comandos.ComandoEliminar import ComandoEliminar
 from Encryptador.comandos.ComandoListar import ComandoListar
 from Encryptador.comandos.ComandoMostrar import ComandoMostrar
 from Encryptador.comandos.ComandoConfigurar import ComandoConfigurar
+from Encryptador.comandos.ComandoSensible import ComandoSensibles
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.consola.Historial import HistorialConsola
-from Encryptador.factory.ManiacFactory import FactoryEncriptador
-from Encryptador.EncryptoManiac import EncryptoManiac
+from Encryptador.factory.ManiacFactory import FactoryServicio
+from Encryptador.servicio.CredencialesManiac import Credenciales
+from Encryptador.servicio.EncryptoManiac import EncryptoManiac
+from Encryptador.servicio.Autorisador import Autorisador
 from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
 import unittest
 
 class TestComandosManiac(unittest.TestCase):
 
 	def setUp(self):
-		self.encriptoManiac = FactoryEncriptador().obtenerEncripto()
+		self.encriptoManiac = FactoryServicio().obtenerServicio()
 		estadoSesion = EstadoDeSesion('',True)
-		self.encriptoManiac.estadoSesion = estadoSesion
+		self.encriptoManiac.autorisador.estadoSesion = estadoSesion
 		self.funcionesOriginales = {
 			'ingresarClave': EncryptoManiac.ingresarClave,
 			'actualizarClave': EncryptoManiac.actualizarClave,
@@ -30,8 +32,14 @@ class TestComandosManiac(unittest.TestCase):
 			'configurarBBDD' : EncryptoManiac.configurarRutaBBDD,
 			'configurarKey' : EncryptoManiac.configurarRutaKey,
 			'getpass' : getpass,
-			'iniciarSesion': EncryptoManiac.iniciarSesion,
+			'iniciarSesion': Autorisador.iniciarSesion,
+			'validarUsuario': Autorisador.validarUsuario,
 		}
+		self.credenciales = Credenciales()
+		self.credenciales.usuario = estadoSesion.usuario
+		self.credenciales.token = estadoSesion.tokenDelUsuario
+		self.credenciales.contrasena = 'contrasenia'
+		Autorisador.validarUsuario = self.validarCredencialesMock
 
 	def tearDown(self):
 		EncryptoManiac.ingresarClave = self.funcionesOriginales['ingresarClave']
@@ -42,7 +50,8 @@ class TestComandosManiac(unittest.TestCase):
 		EncryptoManiac.existeCuentaEnBase = self.funcionesOriginales['existeCuentaEnBase']
 		EncryptoManiac.configurarRutaBBDD = self.funcionesOriginales['configurarBBDD']
 		EncryptoManiac.configurarRutaKey = self.funcionesOriginales['configurarKey']
-		EncryptoManiac.iniciarSesion = self.funcionesOriginales['iniciarSesion']
+		Autorisador.iniciarSesion = self.funcionesOriginales['iniciarSesion']
+		Autorisador.validarUsuario = self.funcionesOriginales['validarUsuario']
 		getpass = self.funcionesOriginales['getpass']
 
 	def test_dadoQueSeLlamaAlComandoModificarConParametrosNombreDeCuentaYContraseñaSeVerifiacaQueSeLlamaALaFuncionActualizarClave(self):
@@ -117,32 +126,37 @@ class TestComandosManiac(unittest.TestCase):
 		self.seVerificaQueRetornaTrue()
 
 	def dadoQueSeLlamaAlComandoLogin(self):
-		self.comando = ComandoLogin(self.encriptoManiac)
-		self.comando.obtenerContrasenia = lambda : 'contrasenia'
+		self.comando:ComandoSensibles = ComandoLogin(self.encriptoManiac)
+		self.comando.obtenerContraseña = lambda : 'contrasenia'
 		self.comando.obtenerUsuario = lambda : 'usuario'
 		return self
 
 	def dadoQueSeLlamaAlComandoAgregar(self):
 		self.comando = ComandoAgregar(self.encriptoManiac)
+		self.comando.obtenerCredenciales = lambda : self.credenciales
 		return self
 
 	def dadoQueSeLlamaAlComandoModificarClave(self):
 		self.comando = ComandoModificar(self.encriptoManiac)
 		self.comando.obtenerContraseña = self.observadorGetPass
+		self.comando.obtenerCredenciales = lambda : self.credenciales
 		return self
 
 	def dadoQueSeLlamaAlComandoEliminarClave(self):
 		self.comando = ComandoEliminar(self.encriptoManiac)
+		self.comando.obtenerCredenciales = lambda : self.credenciales
 		return self
 
 	def dadoQueSeLlamaAlComandoListar(self):
 		self.comando = ComandoListar(self.encriptoManiac)
+		self.comando.obtenerCredenciales = lambda : self.credenciales
 
 	def dadoQueSeLlamaAlComandoMostrar(self):
 		self.comando = ComandoMostrar(self.encriptoManiac)
+		self.comando.obtenerCredenciales = lambda : 'contrasenia'
 		return self
 
-	def dadoQueSeLlamaAlComandoConfigurar(self):
+	def dadoQueSeLlamaAlComandoConfigurar(self): #No sensible 
 		self.comando = ComandoConfigurar(self.encriptoManiac)
 		return self
 
@@ -162,7 +176,7 @@ class TestComandosManiac(unittest.TestCase):
 		self.parametroComando = parametros
 
 	def conUsuarioYContraseniaValidos(self):
-		EncryptoManiac.iniciarSesion = self.iniciarSessionMock
+		Autorisador.iniciarSesion = self.iniciarSessionMock
 
 	def cuandoSeLlamaAlComandoLogin(self):
 		self.restpuestaComando = self.comando.ejecutar([])
@@ -247,6 +261,9 @@ class TestComandosManiac(unittest.TestCase):
 		assert self.comando.mensajeComando == 'Login correcto :)'
 
 	#UTIL
+
+	def validarCredencialesMock(self,credenciales):
+		print('validando crendenciales del usuario')
 
 	def observadorActualizarClave(self,param1,param2):
 		self.seEjecutoActualizarClave = True

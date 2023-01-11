@@ -5,6 +5,8 @@ from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 from Encryptador.comandos.ComandoAyuda import ComandoAyuda
 import unittest
 
+from Encryptador.servicio.Autorisador import Autorisador
+
 class SubTestConsolaEncriptoManiac(unittest.TestCase):
 	
 	def setUp(self):
@@ -19,11 +21,14 @@ class SubTestConsolaEncriptoManiac(unittest.TestCase):
 		Comando eliminar-> eliminar parametro1 \n parametro1: nombre de la cuenta a elimnar de la base, la misma despues no se puede recuperar :D,
 		Comando modificar-> modificar parametro1 parametro2 \n parametro1: nombre de la cuenta a modificar \n parametro2 nueva calve a ingresar'''
 		self.funcionesOriginales = {
-			'ComandoAyuda' : ComandoAyuda.ejecutar
+			'ComandoAyuda' : ComandoAyuda.ejecutar,
+			'validarUsuario': Autorisador.validarUsuario,
 		}
+		Autorisador.validarUsuario = self.validarCredencialesMock
 
 	def tearDown(self):
 		ComandoAyuda.ejecutar = self.funcionesOriginales['ComandoAyuda']
+		Autorisador.validarUsuario = self.funcionesOriginales['validarUsuario']
 
 	def test_ComandoAyudaConsola(self):
 		self.dadoQueSeTieneUnContexto()
@@ -36,7 +41,7 @@ class SubTestConsolaEncriptoManiac(unittest.TestCase):
 	def dadoQueSeTieneUnContexto(self):
 		estadoSesion = EstadoDeSesion('',True)
 		self.consola = FactoryConsolaEncriptoManiac().obtenerConsola(sys.platform)
-		self.consola.estadoDeSesion = estadoSesion
+		self.consola.sesion = estadoSesion
 
 	def dadoQueSeIngresaElComandoAyudaConElNombreDelComdoLisatarComoParametro(self,comandoConParametro):
 		ConsolaEncryptoManiac.ingresarEntradas = lambda x : comandoConParametro
@@ -45,7 +50,10 @@ class SubTestConsolaEncriptoManiac(unittest.TestCase):
 		self.consola.analizarEntrada(self.consola.ingresarEntradas())
 
 	def seVerificaQueSeMuestraLaAyudaDelComandoListar(self):
-		self.assertRegex(self.mensajesEsperados, self.consola.obtenerHistorial()[1]) 
+		self.assertRegex(self.mensajesEsperados, self.consola.obtenerHistorial()[1])
+
+	def validarCredencialesMock(self,credenciales):
+		print('validando crendenciales del usuario')
 
 if __name__ == "__main__":
 	suite = unittest.TestLoader().loadTestsFromTestCase(SubTestConsolaEncriptoManiac)

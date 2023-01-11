@@ -5,7 +5,7 @@ from Encryptador.servicio.CredencialesManiac import Credenciales
 
 class ComandoSensibles(Comando):
 
-	def ejecutar(self, parametros: list = ..., sesion: EstadoDeSesion = None) -> EstadoDeSesion:
+	def ejecutar(self, parametros: list = ...) -> EstadoDeSesion:
 		super().ejecutar(parametros)
 		return self.encriptoManiac.obtenerSesion()
 

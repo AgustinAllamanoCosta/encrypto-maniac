@@ -1,4 +1,3 @@
-import logging
 from Encryptador.repository.BaseRepository import BaseRepository
 from Encryptador.repository.KeyRepository import KeyRepository
 from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
@@ -8,6 +7,7 @@ from Encryptador.servicio.EncryptoManiac import EncryptoManiac
 from Encryptador.servicio.Autorisador import Autorisador
 from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
 from Encryptador.consola.Historial import HistorialConsola
+import logging
 
 class ConsolaEncryptoManiacWin(ConsolaEncryptoManiac):
 
