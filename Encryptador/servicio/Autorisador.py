@@ -6,6 +6,7 @@ from Encryptador.repository.BaseRepository import BaseRepository
 from Encryptador.repository.KeyRepository import KeyRepository
 from Encryptador.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutorizadoException
 from Util import ConstantesEncryptoManiac as CEM
+import secrets
 
 class Autorisador(object):
 
@@ -20,7 +21,7 @@ class Autorisador(object):
 			archivoDelUsuario = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarArchivo,(usuario,))[0]
 			self.keyRepository._cargarClave(archivoDelUsuario)
 			self.estadoSesion.sesionActiva = self.confirmarContrasena(usuario,contrasenia)
-			self.estadoSesion.tokenDelUsuario = f'someUUID.{usuario}'
+			self.estadoSesion.tokenDelUsuario = secrets.token_urlsafe()
 		else:
 			self.estadoSesion.sesionActiva = False
 			raise LoginErrorException('Usuario o contrasena incorrectos')
