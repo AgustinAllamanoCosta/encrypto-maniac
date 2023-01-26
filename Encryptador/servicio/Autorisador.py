@@ -2,6 +2,7 @@ from Encryptador.servicio.CredencialesManiac import Credenciales
 from Encryptador.configuracion.Configuracion import Configuracion
 from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 from Encryptador.exceptions.LoginErrorException import LoginErrorException
+from Encryptador.exceptions.NoUsuariosRegistradosException import NoUsuarioRegistradosException
 from Encryptador.repository.BaseRepository import BaseRepository
 from Encryptador.repository.KeyRepository import KeyRepository
 from Encryptador.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutorizadoException
@@ -13,18 +14,19 @@ class Autorisador(object):
 	def __init__(self,baseRepositoryParam: BaseRepository, keyReposioryParam: KeyRepository):
 		self.baseRepository: BaseRepository = baseRepositoryParam
 		self.keyRepository: KeyRepository = keyReposioryParam
-		self.estadoSesion: EstadoDeSesion = None
+		self.tokensDeSesion: dict = {}
 
 	def iniciarSesion(self,usuario,contrasenia):
 
 		if(self.existeUnUsuarioRegistrado()):
 			archivoDelUsuario = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarArchivo,(usuario,))[0]
+			if(archivoDelUsuario == None):
+				raise NoUsuarioRegistradosException()	
 			self.keyRepository._cargarClave(archivoDelUsuario)
-			self.estadoSesion.sesionActiva = self.confirmarContrasena(usuario,contrasenia)
-			self.estadoSesion.tokenDelUsuario = secrets.token_urlsafe()
+			self.confirmarContrasena(usuario,contrasenia)
+			self.tokensDeSesion[usuario] = secrets.token_urlsafe()
 		else:
-			self.estadoSesion.sesionActiva = False
-			raise LoginErrorException('Usuario o contrasena incorrectos')
+			raise NoUsuarioRegistradosException()
 
 	def registrarUsuario(self,usuario: str,contrasenia: str, contraseniaRecupero: str):
 
@@ -39,7 +41,7 @@ class Autorisador(object):
 		datosARegistrar = (usuario,contraseniaEncriptada,contraseniaRecuperoEncriptada, nombreArchivosDeCrendenciales)
 
 		self.baseRepository.ejecutarConsultaConParametros(CEM.ConsultaDB.ingresarUsuario,datosARegistrar)
-		self.estadoSesion = EstadoDeSesion(usuario)
+		self.tokensDeSesion[usuario] = ''
 
 	def existeUnUsuarioRegistrado(self):
 		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
@@ -49,14 +51,11 @@ class Autorisador(object):
 		respuestaBase = self.baseRepository.obtenerUnGrupoDeElementos(CEM.ConsultaDB.listarUsuarios,())
 		return respuestaBase[0]
 
-	def estaAutorizadoElUsuario(self):
-		return self.estadoSesion is not None and self.estadoSesion.sesionActiva
+	def obtenerSesionToken(self,nombreUsuario:str):
+		return self.tokensDeSesion[nombreUsuario]
 
-	def cargarSesionSiExiste(self):
-		if(self.existeUnUsuarioRegistrado()):
-			self.estadoSesion = EstadoDeSesion(self.obtenerUsuarioRegistrado()[0])
-		else:
-			self.estadoSesion = None
+	def estaAutorizadoElUsuario(self):
+		return self.tokensDeSesion is not None
 
 	def confirmarContrasena(self,usuario,contrasenia) -> bool:
 		contraseniaEnBase = self.baseRepository.obtenerUnElemento(CEM.ConsultaDB.buscarUsuario,(usuario,))[0]
@@ -68,7 +67,7 @@ class Autorisador(object):
 
 	def validarUsuario(self, credencialesDeLaAccion: Credenciales):
 		contraseniaValida = self.confirmarContrasena(credencialesDeLaAccion.usuario,credencialesDeLaAccion.contrasena)
-		tokenValido = credencialesDeLaAccion.token == self.estadoSesion.tokenDelUsuario
+		tokenValido = credencialesDeLaAccion.token == self.tokensDeSesion[credencialesDeLaAccion.usuario]
 		usuarioValido = self.estaAutorizadoElUsuario() and tokenValido and contraseniaValida
 		if(not usuarioValido ):
 			raise UsuarioNoAutorizadoException()

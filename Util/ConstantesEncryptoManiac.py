@@ -9,8 +9,15 @@ class ConstanteConsola:
 	listar    -> para ver todas las cuentas en la base
 	agregar   -> para agregar una nueva cuenta y contraseña en la base
 	login     -> para logearse dentro de la app
+	registrar -> registrar un nuevo usuario dentro de la app
+	exit      -> para salir de la terminal 
 	vermas    -> para ver este mensaje :D
 	Pd: para ver como usar un comando escribi -> ayuda nombreComando <- ej: ayuda modificar'''
+	mensajeComandosSinAutorizacion = '''Escribi: 
+	login     -> para logearse dentro de la app
+	registrar -> registrar un nuevo usuario dentro de la app
+	exit      -> para salir de la terminal 
+	'''
 	
 	
 	mensajeAyudaComandoAgregar = '''Comando agregar-> agregar parametro1 

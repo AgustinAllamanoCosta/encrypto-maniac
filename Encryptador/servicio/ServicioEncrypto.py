@@ -34,8 +34,8 @@ class ServicioEncrypto(object):
 		self.autorisador.validarUsuario(credenciales)
 		return self.encryptador.actualizarClave(nombreApp,claveNueva)
 
-	def obtenerSesion(self):
-		return self.autorisador.estadoSesion
+	def obtenerToken(self,nombreUsuario):
+		return self.autorisador.obtenerSesionToken(nombreUsuario)
 
 	def iniciarSesion(self,usuario: str, contrasena: str):
 		self.autorisador.iniciarSesion(usuario,contrasena)

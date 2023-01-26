@@ -4,8 +4,12 @@ from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
 
 class ComandoLogin(ComandoSensibles):
 
-	def ejecutar(self,parametros: list = [])-> EstadoDeSesion:
+	def ejecutar(self,sesion:EstadoDeSesion,parametros: list = [])-> EstadoDeSesion:
 		usuario = self.obtenerUsuario()
 		self.encriptoManiac.iniciarSesion(usuario,self.obtenerContraseña())
 		self.mensajeComando = 'Login correcto :)'
-		return self.encriptoManiac.obtenerSesion()
+		estadoDeSession = EstadoDeSesion()
+		estadoDeSession.usuario = usuario
+		estadoDeSession.sesionActiva = True
+		estadoDeSession.tokenDelUsuario = self.encriptoManiac.obtenerToken(usuario)
+		return estadoDeSession

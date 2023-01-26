@@ -9,12 +9,17 @@ class ComandoRegistrar(ComandoSensibles):
 		super().__init__(encryptador)
 		self.caracteresEspeciales = ['!','@','#','$','%','^','&','*','(',')','<','>','?','-','_','+','=','[',']','{','}','~']
 
-	def ejecutar(self,parametros: list = []) -> EstadoDeSesion:
+	def ejecutar(self,sesion:EstadoDeSesion,parametros: list = []) -> EstadoDeSesion:
 		usuario = self.obtenerUsuario()
 		credenciales = self.obtenerCredenciales()
 		self.encriptoManiac.registrarNuevoUsuario(usuario,credenciales[0],credenciales[1])
 		self.mensajeComando = 'Usuario Registrado con exito'
-		return self.encriptoManiac.obtenerSesion()
+
+		estadoDeSession = EstadoDeSesion()
+		estadoDeSession.usuario = usuario
+		estadoDeSession.sesionActiva = False
+		estadoDeSession.tokenDelUsuario = self.encriptoManiac.obtenerToken(usuario)
+		return estadoDeSession
 
 	def obtenerUsuario(self):
 		return input('Usuario: ')
@@ -34,9 +39,9 @@ class ComandoRegistrar(ComandoSensibles):
 
 	def obtenerContraseniaDeRecupero(self,contraseniaEnterior):
 		print('Bien ahora vamos a generar la contrasenia de recupero, anotala y no la pierdas, la vas a necesitar para recuperar esta cuenta en caso de que te olvides de la anterior ;)')
+		print('y tiene que ser distinte a la contrasenia original')
 		contraseniaRecupero = getpass('contrasenia de recupero:')
 		if(self.validadorDeFormatoContrasenias(contraseniaRecupero) and contraseniaEnterior != contraseniaRecupero):
-			print('y tiene que ser distinte a la contrasenia original')
 			return contraseniaRecupero
 		else:
 			return self.obtenerContraseniaDeRecupero()

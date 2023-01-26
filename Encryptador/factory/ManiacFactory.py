@@ -29,7 +29,6 @@ class FactoryServicio(object):
 		encriptador = EncryptoManiac(baseRepo,keyRepo)
 		encriptador.iniciarBaseDeClaves()
 		autorizador: Autorisador = Autorisador(baseRepo,keyRepo)
-		autorizador.cargarSesionSiExiste()
 		servicio: ServicioEncrypto = ServicioEncrypto(autorizador,encriptador)
 		return servicio
 

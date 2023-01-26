@@ -7,12 +7,11 @@ from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoAgregar(ComandoSensibles):
 
-	def ejecutar(self,parametros) -> EstadoDeSesion:
+	def ejecutar(self,token,parametros) -> EstadoDeSesion:
 		logging.info('Se ejecuta comando agregar.')
 		if(len(parametros)==0):
 			logging.debug('Parametros insuficiente para el comando agregar.')
 			raise ParametrosComandoIncompletosException(ConstanteConsola.mensajeAyudaComandoAgregar)
 		else:
-			self.encriptoManiac.ingresarClave(parametros[0],self.obtenerContraseña(),self.obtenerCredenciales())
+			self.encriptoManiac.ingresarClave(parametros[0],self.obtenerContraseña(),self.obtenerCredenciales(token))
 		self.mensajeComando = "Se agrego la contraseña"
-		return self.encriptoManiac.obtenerSesion()

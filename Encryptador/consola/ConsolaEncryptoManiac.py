@@ -17,6 +17,7 @@ from Encryptador.consola.Historial import HistorialConsola
 from Encryptador.exceptions.InterrumpirConsolaException import InterrumpirConsolaException
 from Encryptador.exceptions.ComandoNoEncontradoException import ComandoNoEncontradoException
 from Encryptador.exceptions.ManiacException import ManiacException
+from Encryptador.exceptions.NoUsuariosRegistradosException import NoUsuarioRegistradosException
 from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 import logging
@@ -27,7 +28,7 @@ class ConsolaEncryptoManiac():
 	def __init__(self, historalParam: HistorialConsola, servicioEncripto: ServicioEncrypto):
 		logging.info('Iniciando consola')
 		self.historial: HistorialConsola = historalParam
-		self.sesion: EstadoDeSesion = servicioEncripto.obtenerSesion()
+		self.sesion: EstadoDeSesion = EstadoDeSesion()
 		self.patronConsola = re.compile('\S+')
 		self.correrConsola = True
 		self.prompt = "EM>>"
@@ -41,9 +42,10 @@ class ConsolaEncryptoManiac():
 			'cabecera': ComandoEscribirCabeceraDeConsola(servicioEncripto),
 			'vermas': ComandoVerMas(),
 			'ayuda': ComandoAyuda(),
+			'exit': ComandoExit(servicioEncripto),
 		}
 
-		self.comandosSinSession: dict[str,Comando] = {
+		self.comandosSinSesion: dict[str,Comando] = {
 			'login': ComandoLogin(servicioEncripto),
 			'registrar' : ComandoRegistrar(servicioEncripto),
 			'exit': ComandoExit(servicioEncripto),
@@ -53,10 +55,13 @@ class ConsolaEncryptoManiac():
 		valoresEntrada: list[str] = self.patronConsola.findall(entrada)
 		try:
 			self.historial.agregarEntrada(entrada)
-
 			comando: Comando = self.obtenerComando(valoresEntrada[0].lower())
+
 			if(isinstance(comando,ComandoSensibles)):
-				self.sesion = comando.ejecutar(valoresEntrada[1:])
+				if(isinstance(comando,ComandoRegistrar) or isinstance(comando,ComandoLogin)):
+					self.sesion = comando.ejecutar(self.sesion,valoresEntrada[1:])
+				else:
+					comando.ejecutar(self.sesion,valoresEntrada[1:])
 			else:
 				comando.ejecutar(valoresEntrada[1:])
 
@@ -70,27 +75,31 @@ class ConsolaEncryptoManiac():
 		except IndexError:
 			logging.debug('Index error '+entrada)
 			self.escribirError(ConstanteConsola.mensajeAyudaComandoAgregar)
+		except NoUsuarioRegistradosException as expt:
+			logging.error(expt)
+			self.escribirError('Parece que tu usuario no esta registrado... puedes registrarlo escribiendo registrar')
 		except ManiacException as expt:
 			logging.error(expt)
 			self.escribirError(expt.mensaje)
 
 	def obtenerComando(self,entrada):
-		if(entrada in self.comandosEstandar.keys() and self.sesion.sesionActiva):
-			return self.comandosEstandar.get(entrada)
-		elif(entrada in self.comandosSinSession.keys()):
-			return self.comandosSinSession.get(entrada)
+		if(self.sesion.tokenDelUsuario is not None):
+			if(entrada in self.comandosEstandar.keys()):
+				return self.comandosEstandar.get(entrada)
+			else:
+				raise ComandoNoEncontradoException(f'Comando no encontra {entrada}', True)
 		else:
-			raise ComandoNoEncontradoException(f'Comando no encontra {entrada}')
+			self.escribirError('Parece que no estas logeado o registrado, podes hacer lo escribiendo login o registrar')
+			if(entrada in self.comandosSinSesion.keys()):
+				return self.comandosSinSesion.get(entrada)
+			else:
+				raise ComandoNoEncontradoException(f'Comando no encontra {entrada}')
 
 	def bucleDeConsola(self):
 		self.escribirCabeceraDeConsola()
 		while self.correrConsola:
 			entrada: str = self.ingresarEntradas()
-			if(self.sesion is None):
-				print('Parece que no estas registrado, vamos a hacerlo antes de continuar.')
-				self.analizarEntrada('registrar')
-			else:
-				self.analizarEntrada(entrada)
+			self.analizarEntrada(entrada)
 
 	def escribirCabeceraDeConsola(self):
 		comando = self.comandosEstandar['cabecera']
