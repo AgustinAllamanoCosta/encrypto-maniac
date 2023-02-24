@@ -1,4 +1,4 @@
-from Encryptador.terminal.terminal.factory.ManiacFactory import FactoryConsolaEncriptoManiac
+from Encryptador.terminal.factory.ManiacFactory import FactoryConsolaEncriptoManiac
 import sys
 
 def run():
