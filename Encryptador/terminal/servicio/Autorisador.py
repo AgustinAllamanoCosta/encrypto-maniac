@@ -1,11 +1,11 @@
-from Encryptador.servicio.CredencialesManiac import Credenciales
-from Encryptador.configuracion.Configuracion import Configuracion
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
-from Encryptador.exceptions.LoginErrorException import LoginErrorException
-from Encryptador.exceptions.NoUsuariosRegistradosException import NoUsuarioRegistradosException
-from Encryptador.repository.BaseRepository import BaseRepository
-from Encryptador.repository.KeyRepository import KeyRepository
-from Encryptador.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutorizadoException
+from Encryptador.terminal.servicio.CredencialesManiac import Credenciales
+from Encryptador.terminal.configuracion.Configuracion import Configuracion
+from Encryptador.terminal.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.terminal.exceptions.LoginErrorException import LoginErrorException
+from Encryptador.terminal.exceptions.NoUsuariosRegistradosException import NoUsuarioRegistradosException
+from Encryptador.terminal.repository.BaseRepository import BaseRepository
+from Encryptador.terminal.repository.KeyRepository import KeyRepository
+from Encryptador.terminal.exceptions.UsuarioNoAutorizadoException import UsuarioNoAutorizadoException
 from Util import ConstantesEncryptoManiac as CEM
 import secrets
 

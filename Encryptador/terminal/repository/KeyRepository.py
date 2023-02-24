@@ -1,5 +1,5 @@
 from cryptography.fernet import Fernet as ft
-from Encryptador.configuracion.Configuracion import Configuracion
+from Encryptador.terminal.configuracion.Configuracion import Configuracion
 import logging
 import os
 

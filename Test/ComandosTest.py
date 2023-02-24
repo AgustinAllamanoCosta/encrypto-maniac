@@ -1,19 +1,19 @@
 from getpass import getpass
-from Encryptador.terminal.comandos.ComandoAgregar import ComandoAgregar
-from Encryptador.terminal.comandos.ComandoLogin import ComandoLogin
-from Encryptador.terminal.comandos.ComandoModificar import ComandoModificar
-from Encryptador.terminal.comandos.ComandoEliminar import ComandoEliminar
-from Encryptador.terminal.comandos.ComandoListar import ComandoListar
-from Encryptador.terminal.comandos.ComandoMostrar import ComandoMostrar
-from Encryptador.terminal.comandos.ComandoConfigurar import ComandoConfigurar
-from Encryptador.terminal.comandos.ComandoSensible import ComandoSensibles
-from Encryptador.terminal.consola.EstadoDeSesion import EstadoDeSesion
-from Encryptador.terminal.consola.Historial import HistorialConsola
-from Encryptador.terminal.factory.ManiacFactory import FactoryServicio
-from Encryptador.terminal.servicio.CredencialesManiac import Credenciales
-from Encryptador.terminal.servicio.EncryptoManiac import EncryptoManiac
-from Encryptador.terminal.servicio.Autorisador import Autorisador
-from Encryptador.terminal.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
+from Encryptador.terminal.terminal.comandos.ComandoAgregar import ComandoAgregar
+from Encryptador.terminal.terminal.comandos.ComandoLogin import ComandoLogin
+from Encryptador.terminal.terminal.comandos.ComandoModificar import ComandoModificar
+from Encryptador.terminal.terminal.comandos.ComandoEliminar import ComandoEliminar
+from Encryptador.terminal.terminal.comandos.ComandoListar import ComandoListar
+from Encryptador.terminal.terminal.comandos.ComandoMostrar import ComandoMostrar
+from Encryptador.terminal.terminal.comandos.ComandoConfigurar import ComandoConfigurar
+from Encryptador.terminal.terminal.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.terminal.terminal.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.terminal.terminal.consola.Historial import HistorialConsola
+from Encryptador.terminal.terminal.factory.ManiacFactory import FactoryServicio
+from Encryptador.terminal.terminal.servicio.CredencialesManiac import Credenciales
+from Encryptador.terminal.terminal.servicio.EncryptoManiac import EncryptoManiac
+from Encryptador.terminal.terminal.servicio.Autorisador import Autorisador
+from Encryptador.terminal.terminal.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
 import unittest
 
 class TestComandosManiac(unittest.TestCase):

@@ -1,12 +1,12 @@
-from Encryptador.repository.BaseRepository import BaseRepository
-from Encryptador.repository.KeyRepository import KeyRepository
-from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
-from Encryptador.comandos.ComandoWin import ComandoWin
-from Encryptador.comandos.ComandoUnix import ComandoUnix
-from Encryptador.servicio.EncryptoManiac import EncryptoManiac
-from Encryptador.servicio.Autorisador import Autorisador
-from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
-from Encryptador.consola.Historial import HistorialConsola
+from Encryptador.terminal.terminal.repository.BaseRepository import BaseRepository
+from Encryptador.terminal.terminal.repository.KeyRepository import KeyRepository
+from Encryptador.terminal.terminal.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
+from Encryptador.terminal.terminal.comandos.ComandoWin import ComandoWin
+from Encryptador.terminal.terminal.comandos.ComandoUnix import ComandoUnix
+from Encryptador.terminal.terminal.servicio.EncryptoManiac import EncryptoManiac
+from Encryptador.terminal.terminal.servicio.Autorisador import Autorisador
+from Encryptador.terminal.terminal.servicio.ServicioEncrypto import ServicioEncrypto
+from Encryptador.terminal.terminal.consola.Historial import HistorialConsola
 import logging
 
 class ConsolaEncryptoManiacWin(ConsolaEncryptoManiac):

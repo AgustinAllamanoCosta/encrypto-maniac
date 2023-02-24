@@ -1,4 +1,4 @@
-from Encryptador.comandos.Comando import Comando
+from Encryptador.terminal.comandos.Comando import Comando
 
 class ComandoConfigurar(Comando):
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Encryptador.configuracion.Configuracion import Configuracion
+from Encryptador.terminal.configuracion.Configuracion import Configuracion
 import logging
 import sqlite3
 

@@ -1,4 +1,4 @@
-from Encryptador.exceptions.ManiacException import ManiacException
+from Encryptador.terminal.exceptions.ManiacException import ManiacException
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class NoExisteUsuarioEnLaBaseException(ManiacException):

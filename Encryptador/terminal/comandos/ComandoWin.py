@@ -1,5 +1,5 @@
 from os import system
-from Encryptador.comandos.Comando import Comando
+from Encryptador.terminal.comandos.Comando import Comando
 
 class ComandoWin(Comando):
 	def __init__(self):

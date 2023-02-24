@@ -1,7 +1,7 @@
 from getpass import getpass
-from Encryptador.comandos.Comando import Comando
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
-from Encryptador.servicio.CredencialesManiac import Credenciales
+from Encryptador.terminal.comandos.Comando import Comando
+from Encryptador.terminal.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.terminal.servicio.CredencialesManiac import Credenciales
 
 class ComandoSensibles(Comando):
 

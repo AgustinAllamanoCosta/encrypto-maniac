@@ -1,7 +1,7 @@
-from Encryptador.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.terminal.comandos.ComandoSensible import ComandoSensibles
 import logging, pyperclip
 
-from Encryptador.consola import EstadoDeSesion
+from Encryptador.terminal.consola import EstadoDeSesion
 
 class ComandoMostrar(ComandoSensibles):
 

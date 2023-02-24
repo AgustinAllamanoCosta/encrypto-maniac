@@ -1,6 +1,6 @@
-from Encryptador.servicio.ServicioEncrypto import ServicioEncrypto
-from Encryptador.consola.Historial import HistorialConsola
-from Encryptador.exceptions.ParametrosComandosNullosException import ParametrosComandosNullosException
+from Encryptador.terminal.servicio.ServicioEncrypto import ServicioEncrypto
+from Encryptador.terminal.consola.Historial import HistorialConsola
+from Encryptador.terminal.exceptions.ParametrosComandosNullosException import ParametrosComandosNullosException
 
 class Comando(object):
 

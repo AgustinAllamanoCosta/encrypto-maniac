@@ -1,7 +1,7 @@
 import logging
-from Encryptador.consola import EstadoDeSesion
-from Encryptador.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
-from Encryptador.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.terminal.consola import EstadoDeSesion
+from Encryptador.terminal.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
+from Encryptador.terminal.comandos.ComandoSensible import ComandoSensibles
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoModificar(ComandoSensibles):

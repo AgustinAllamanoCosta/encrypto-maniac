@@ -1,6 +1,6 @@
 import logging
-from Encryptador.comandos.ComandoSensible import ComandoSensibles
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.terminal.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.terminal.consola.EstadoDeSesion import EstadoDeSesion
 
 class ComandoListar(ComandoSensibles):
 

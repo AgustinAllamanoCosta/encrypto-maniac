@@ -1,8 +1,8 @@
 import logging
-from Encryptador.comandos.ComandoSensible import ComandoSensibles
-from Encryptador.consola import EstadoDeSesion
-from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
-from Encryptador.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
+from Encryptador.terminal.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.terminal.consola import EstadoDeSesion
+from Encryptador.terminal.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
+from Encryptador.terminal.exceptions.ParametrosComandoIncompletosException import ParametrosComandoIncompletosException
 from Util.ConstantesEncryptoManiac import ConstanteConsola
 
 class ComandoAgregar(ComandoSensibles):

@@ -1,5 +1,5 @@
-from Encryptador.repository.BaseRepository import BaseRepository
-from Encryptador.repository.KeyRepository import KeyRepository
+from Encryptador.terminal.repository.BaseRepository import BaseRepository
+from Encryptador.terminal.repository.KeyRepository import KeyRepository
 from Util import ConstantesEncryptoManiac as CEM
 import logging
 import sqlite3
