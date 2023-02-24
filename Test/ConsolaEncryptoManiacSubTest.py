@@ -1,11 +1,11 @@
 from os import sys
-from Encryptador.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
-from Encryptador.factory.ManiacFactory import FactoryConsolaEncriptoManiac
-from Encryptador.comandos.ComandoAyuda import ComandoAyuda
+from Encryptador.terminal.consola.ConsolaEncryptoManiac import ConsolaEncryptoManiac
+from Encryptador.terminal.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.terminal.factory.ManiacFactory import FactoryConsolaEncriptoManiac
+from Encryptador.terminal.comandos.ComandoAyuda import ComandoAyuda
 import unittest
 
-from Encryptador.servicio.Autorisador import Autorisador
+from Encryptador.terminal.servicio.Autorisador import Autorisador
 
 class SubTestConsolaEncriptoManiac(unittest.TestCase):
 	

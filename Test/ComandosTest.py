@@ -1,19 +1,19 @@
 from getpass import getpass
-from Encryptador.comandos.ComandoAgregar import ComandoAgregar
-from Encryptador.comandos.ComandoLogin import ComandoLogin
-from Encryptador.comandos.ComandoModificar import ComandoModificar
-from Encryptador.comandos.ComandoEliminar import ComandoEliminar
-from Encryptador.comandos.ComandoListar import ComandoListar
-from Encryptador.comandos.ComandoMostrar import ComandoMostrar
-from Encryptador.comandos.ComandoConfigurar import ComandoConfigurar
-from Encryptador.comandos.ComandoSensible import ComandoSensibles
-from Encryptador.consola.EstadoDeSesion import EstadoDeSesion
-from Encryptador.consola.Historial import HistorialConsola
-from Encryptador.factory.ManiacFactory import FactoryServicio
-from Encryptador.servicio.CredencialesManiac import Credenciales
-from Encryptador.servicio.EncryptoManiac import EncryptoManiac
-from Encryptador.servicio.Autorisador import Autorisador
-from Encryptador.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
+from Encryptador.terminal.comandos.ComandoAgregar import ComandoAgregar
+from Encryptador.terminal.comandos.ComandoLogin import ComandoLogin
+from Encryptador.terminal.comandos.ComandoModificar import ComandoModificar
+from Encryptador.terminal.comandos.ComandoEliminar import ComandoEliminar
+from Encryptador.terminal.comandos.ComandoListar import ComandoListar
+from Encryptador.terminal.comandos.ComandoMostrar import ComandoMostrar
+from Encryptador.terminal.comandos.ComandoConfigurar import ComandoConfigurar
+from Encryptador.terminal.comandos.ComandoSensible import ComandoSensibles
+from Encryptador.terminal.consola.EstadoDeSesion import EstadoDeSesion
+from Encryptador.terminal.consola.Historial import HistorialConsola
+from Encryptador.terminal.factory.ManiacFactory import FactoryServicio
+from Encryptador.terminal.servicio.CredencialesManiac import Credenciales
+from Encryptador.terminal.servicio.EncryptoManiac import EncryptoManiac
+from Encryptador.terminal.servicio.Autorisador import Autorisador
+from Encryptador.terminal.exceptions.CuentaEnBaseDuplicadaException import CuentaEnBaseDuplicadaException
 import unittest
 
 class TestComandosManiac(unittest.TestCase):

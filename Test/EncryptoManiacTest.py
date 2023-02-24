@@ -1,6 +1,6 @@
-from Encryptador.configuracion.Configuracion import Configuracion
-from Encryptador.repository import BaseRepository, KeyRepository
-from Encryptador.servicio.EncryptoManiac import EncryptoManiac
+from Encryptador.terminal.configuracion.Configuracion import Configuracion
+from Encryptador.terminal.repository import BaseRepository, KeyRepository
+from Encryptador.terminal.servicio.EncryptoManiac import EncryptoManiac
 import os 
 import sqlite3
 import unittest
