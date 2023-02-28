@@ -14,6 +14,15 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date(2023, 1, 27));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   describe('root', () => {
     it('should return "Mon Feb 27 2023"', () => {
       expect(appController.getHelathCheck()).toBe('Mon Feb 27 2023');
