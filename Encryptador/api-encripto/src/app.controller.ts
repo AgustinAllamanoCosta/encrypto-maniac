@@ -25,8 +25,8 @@ export class AppController {
   }
 
   @Put('/element')
-  putElement(@Body() elementoParam: ElementDto) {
-    return this.service.createElement(elementoParam);
+  putElement(@Body() elementParam: ElementDto) {
+    return this.service.createElement(elementParam);
   }
 
   @Delete('/elemento/:id')
