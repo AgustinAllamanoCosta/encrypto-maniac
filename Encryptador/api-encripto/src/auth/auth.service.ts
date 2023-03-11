@@ -15,6 +15,9 @@ export class AuthService {
     }
 
     public async addUserPublicKey(publicKey: UserPublicKeyDto) {
+        if(this.userRepository.findOneBy({ name: publicKey.name })){
+            throw new Error('The key alredy exist in the user');
+        }
         const userKey = this.userRepository.create(publicKey);
         const entityInTheDataBase = await this.userRepository.save(userKey);
         return entityInTheDataBase.id;
