@@ -13,11 +13,10 @@ describe('AuthService', () => {
       providers: [AuthService],
     })
     .useMocker((token) => {
-      const results = 'some.mongo.id';
       if (token === 'UserKeyRepository') {
         return { 
-          create: jest.fn().mockResolvedValue({ }),
-          save: jest.fn().mockResolvedValue(results)
+          create: jest.fn(),
+          save: jest.fn()
         };
       }
     })
@@ -36,11 +35,18 @@ describe('AuthService', () => {
       name: 'userName',
       key: 'some.rsa.public.key'
     };
-    it('when the key dosen`t exit, should add the key in the base', () => {
+    it('when the key dosen`t exit, should add the key in the base and return the ID 321', async () => {
 
-      service.addUserPublicKey(publicKey);
+      const EXPECTED_DOCUMENT_ID = 321;
+
+      repository.create.mockReturnValue(publicKey);
+      repository.save.mockReturnValue({id: EXPECTED_DOCUMENT_ID, ...publicKey});
+
+      const idFromService = await service.addUserPublicKey(publicKey);
+
       expect(repository.save).toBeCalled();
       expect(repository.create).toBeCalled();
+      expect(idFromService).toBe(EXPECTED_DOCUMENT_ID);
     });
   });
 });

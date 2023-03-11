@@ -14,8 +14,9 @@ export class AuthService {
         throw new Error('Method not implemented.');
     }
 
-    public addUserPublicKey(publicKey: UserPublicKeyDto) {
+    public async addUserPublicKey(publicKey: UserPublicKeyDto) {
         const userKey = this.userRepository.create(publicKey);
-        return this.userRepository.save(userKey);
+        const entityInTheDataBase = await this.userRepository.save(userKey);
+        return entityInTheDataBase.id;
     }
 }
