@@ -4,22 +4,24 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserKey } from './entity/user.keys.entity';
 
-describe.skip('AuthController', () => {
+describe('AuthController', () => {
   let controller: AuthController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [AuthService,
-        {
-          provide: Repository<UserKey>,
-          useValue: {
-            create: jest.fn(),
-            save: jest.fn(),
-          }
-        }
-      ]
-    }).compile();
+      providers: [AuthService]
+    })
+    .useMocker((token) => {
+      if (token === 'UserKeyRepository') {
+        return { 
+          create: jest.fn(),
+          save: jest.fn(),
+          findOneBy: jest.fn()
+        };
+      }
+    })
+    .compile();
 
     controller = module.get<AuthController>(AuthController);
   });
