@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { UserChallengeDto } from '../models/user.challenge.dto';
 import { UserPublicKeyDto } from '../models/user.public.key.dto';
-import { AuthRepository } from './auth.repository';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserKey } from './entity/user.keys.entity';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly repository: AuthRepository){}
+    constructor(@InjectRepository(UserKey) private userRepository: Repository<UserKey>){}
 
     public singInUser(userChalleng: UserChallengeDto) {
         throw new Error('Method not implemented.');
     }
 
     public addUserPublicKey(publicKey: UserPublicKeyDto) {
-        throw new Error('Method not implemented.');
+        const userKey = this.userRepository.create(publicKey);
+        return this.userRepository.save(userKey);
     }
 }
